@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:background="@color/ColorPrimary">
+    <!--
+    if background is set, don't see the tab stripes?
+    android:background="@drawable/tab_selector"
+    -->
+
+
+    <TextView
+        android:id="@+id/tab_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:drawablePadding="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textColor="@color/tabs_text_selector"
+        android:textSize="14sp"
+        tools:drawableLeft="@drawable/drawable_map_tab_title_selector"
+        tools:text="Tab title" />
+
+</LinearLayout>
