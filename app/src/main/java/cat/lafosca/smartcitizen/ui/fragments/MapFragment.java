@@ -6,9 +6,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.mapbox.mapboxsdk.views.MapView;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 
 public class MapFragment extends Fragment {
+
+    @InjectView(R.id.mapview) MapView mMapView;
 
     public static MapFragment newInstance(/*String param1, String param2*/) {
         MapFragment fragment = new MapFragment();
@@ -36,7 +42,10 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        View view =  inflater.inflate(R.layout.fragment_map, container, false);
+        ButterKnife.inject(this, view);
+
+        return view;
     }
 
 

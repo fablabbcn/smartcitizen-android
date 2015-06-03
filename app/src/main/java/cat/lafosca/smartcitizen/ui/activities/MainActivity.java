@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.ui.adapters.MainPagerAdapter;
 import cat.lafosca.smartcitizen.ui.widgets.CustomViewPager;
