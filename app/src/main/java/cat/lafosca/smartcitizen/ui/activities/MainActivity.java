@@ -19,22 +19,22 @@ import cat.lafosca.smartcitizen.ui.widgets.CustomViewPager;
 public class MainActivity extends AppCompatActivity {
 
     //private SlidingTabLayout tabs;
-    private TabLayout tabs;
+    @InjectView(R.id.tabs) TabLayout tabs;
 
     private MainPagerAdapter mTabAdapter;
-    private CustomViewPager mViewPager;
+    @InjectView(R.id.pager) CustomViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
         /*mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);*/
 
         mTabAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
 
-        mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mTabAdapter);
 
         initTabs();
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         //SlidingTabLayout
 
         //TabLayout (android dessign support)
-        tabs = (TabLayout)findViewById(R.id.tabs);
         tabs.setTabMode(TabLayout.MODE_FIXED);
         tabs.setBackgroundColor(getResources().getColor(R.color.ColorPrimary));
         //tabs.setupWithViewPager(mViewPager); //this create tabs from the viewpager adapter
