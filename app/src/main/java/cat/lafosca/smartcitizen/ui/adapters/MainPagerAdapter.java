@@ -1,9 +1,13 @@
 package cat.lafosca.smartcitizen.ui.adapters;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.lang.ref.WeakReference;
+
+import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.ui.fragments.AccountFragment;
 import cat.lafosca.smartcitizen.ui.fragments.MapFragment;
 
@@ -12,8 +16,12 @@ import cat.lafosca.smartcitizen.ui.fragments.MapFragment;
  */
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
-    public MainPagerAdapter(FragmentManager fm) {
+    private String[] mTitles;
+
+    public MainPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+
+        mTitles = context.getResources().getStringArray(R.array.tabs_titles);
     }
 
     // Returns the fragment to display for that page
@@ -32,7 +40,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     // Returns the page title for the top indicator
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Page " + position;
+        return mTitles[position];
     }
 
     @Override

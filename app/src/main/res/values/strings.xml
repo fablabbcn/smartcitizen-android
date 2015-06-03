@@ -2,6 +2,6 @@
     <string name="app_name">Smartcitizen-android</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="map_tab_title">browse</string>
+    <string name="account_tab_title">account</string>
 </resources>
