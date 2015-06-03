@@ -30,6 +30,8 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.android.support:design:22.2.0'
 
+    compile 'com.jakewharton:butterknife:6.1.0'
+
     compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:0.7.4-SNAPSHOT@aar'){
         transitive=true
     }
