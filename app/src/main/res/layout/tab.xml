@@ -20,7 +20,7 @@
         android:gravity="center"
         android:textAllCaps="true"
         android:textColor="@color/tabs_text_selector"
-        android:textSize="14sp"
+        android:textSize="22sp"
         tools:drawableLeft="@drawable/drawable_map_tab_title_selector"
         tools:text="Tab title" />
 
