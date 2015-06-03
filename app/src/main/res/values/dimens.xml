@@ -3,5 +3,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="tab_layout_height">90dp</dimen>
+    <dimen name="tab_layout_height">72dp</dimen>
 </resources>
