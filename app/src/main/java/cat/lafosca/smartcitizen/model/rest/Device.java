@@ -28,5 +28,15 @@ public class Device {
 
     private DeviceData data;
 
+    //GETTERS & SETTERS
+
     private Kit kit;
+
+    public String getName() {
+        return name;
+    }
+
+    public DeviceData getData() {
+        return data;
+    }
 }

@@ -24,4 +24,10 @@ public class DeviceData {
     private DeviceLocation location;
 
     private List<Sensor> sensors = new ArrayList<Sensor>();
+
+    //SETTERS & GETTERS
+
+    public DeviceLocation getLocation() {
+        return location;
+    }
 }

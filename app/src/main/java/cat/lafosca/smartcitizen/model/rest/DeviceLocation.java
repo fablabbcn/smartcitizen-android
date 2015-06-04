@@ -25,4 +25,14 @@ public class DeviceLocation {
     private String countryCode;
 
     private String country;
+
+    //GETTERS & SETTERS
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
 }

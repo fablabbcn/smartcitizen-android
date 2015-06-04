@@ -6,22 +6,28 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mapbox.mapboxsdk.geometry.BoundingBox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.overlay.Marker;
+import com.mapbox.mapboxsdk.util.GeoUtils;
 import com.mapbox.mapboxsdk.views.MapView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.controllers.KitsController;
+import cat.lafosca.smartcitizen.model.rest.Device;
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements KitsController.KitsControllerListenr {
 
     @InjectView(R.id.mapview) MapView mMapView;
 
-    public static MapFragment newInstance(/*String param1, String param2*/) {
+    public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
-        /*Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -33,8 +39,6 @@ public class MapFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            /*mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);*/
         }
     }
 
@@ -45,8 +49,50 @@ public class MapFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, view);
 
+        KitsController.getKits(this);//call in onCreate ?
+
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        /*mMapView.setMinZoomLevel(mMapView.getTileProvider().getMinimumZoomLevel());
+        mMapView.setMaxZoomLevel(mMapView.getTileProvider().getMaximumZoomLevel());
+        mMapView.setCenter(mMapView.getTileProvider().getCenterCoordinate());
+        mMapView.setZoom(0);
 
+        // Show user location (purposely not in follow mode)
+        mMapView.setUserLocationEnabled(true);
+
+        LatLng userLocation = mMapView.getUserLocation();
+        boolean imVisible = mMapView.isUserLocationVisible();
+        mMapView.goToUserLocation(true);
+        int i = 0;*/
+
+    }
+
+    @Override
+    public void onGetKits(List<Device> devices) {
+        int numOfDevices = devices.size();
+        if (numOfDevices > 0) {
+            List<Marker> markers = new ArrayList<Marker>();
+            List<LatLng> positions = new ArrayList<LatLng>();
+            for (int i = 0; i< numOfDevices; i++) {
+                Device device = devices.get(i);
+
+                LatLng position = new LatLng(device.getData().getLocation().getLatitude(), device.getData().getLocation().getLongitude());
+                positions.add(position);
+                Marker marker = new Marker(mMapView, device.getName(), "", position);
+                markers.add(marker);
+            }
+            mMapView.addMarkers(markers);
+            BoundingBox bbn = GeoUtils.findBoundingBoxForGivenLocations(positions, 10.0);
+
+            mMapView.zoomToBoundingBox(bbn, true, true);
+
+            int i = 0;
+
+        }
+    }
 }
