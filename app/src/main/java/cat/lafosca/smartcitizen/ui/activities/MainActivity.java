@@ -11,6 +11,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.ui.adapters.MainPagerAdapter;
 import cat.lafosca.smartcitizen.ui.widgets.CustomViewPager;
 
@@ -72,13 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
             int resourceId = (i == 0) ? R.drawable.drawable_map_tab_title_selector : R.drawable.drawable_account_tab_title_selector;
 
-            Drawable textDrawable;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textDrawable = this.getDrawable(resourceId);
-
-            } else {
-                textDrawable = this.getResources().getDrawable(resourceId);
-            }
+            Drawable textDrawable = Utils.getDrawable(this, resourceId);
 
             ((TextView) tabInflated.findViewById(R.id.tab_title)).setCompoundDrawablesWithIntrinsicBounds(textDrawable, null, null, null);
 

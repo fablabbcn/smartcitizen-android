@@ -1,6 +1,7 @@
 package cat.lafosca.smartcitizen.ui.fragments;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.overlay.Icon;
 import com.mapbox.mapboxsdk.overlay.Marker;
 import com.mapbox.mapboxsdk.util.GeoUtils;
 import com.mapbox.mapboxsdk.views.MapView;
@@ -19,12 +21,15 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.KitsController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 
 public class MapFragment extends Fragment implements KitsController.KitsControllerListenr {
 
     @InjectView(R.id.mapview) MapView mMapView;
+
+    private LatLng bcnPoint = new LatLng(41.394401, 2.197694);
 
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
@@ -76,18 +81,25 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
     public void onGetKits(List<Device> devices) {
         int numOfDevices = devices.size();
         if (numOfDevices > 0) {
+
             List<Marker> markers = new ArrayList<Marker>();
             List<LatLng> positions = new ArrayList<LatLng>();
+            //Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.custom_marker);
+
             for (int i = 0; i< numOfDevices; i++) {
                 Device device = devices.get(i);
 
                 LatLng position = new LatLng(device.getData().getLocation().getLatitude(), device.getData().getLocation().getLongitude());
-                positions.add(position);
-                Marker marker = new Marker(mMapView, device.getName(), "", position);
-                markers.add(marker);
+                if (position.distanceTo(bcnPoint) < 800000 ) { // 800 km offset
+                    positions.add(position);
+                    Marker marker = new Marker(mMapView, device.getName(), "", position);
+                    //marker.setMarker(customMarkerDrawable);
+                    marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
+                    markers.add(marker);
+                }
             }
             mMapView.addMarkers(markers);
-            BoundingBox bbn = GeoUtils.findBoundingBoxForGivenLocations(positions, 10.0);
+            BoundingBox bbn = GeoUtils.findBoundingBoxForGivenLocations(positions, 5.0);
 
             mMapView.zoomToBoundingBox(bbn, true, true);
 
