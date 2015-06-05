@@ -4,4 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="tab_layout_height">72dp</dimen>
+
+    <dimen name="button_location_height">64dp</dimen>
+    <dimen name="button_location_width">@dimen/button_location_height</dimen>
 </resources>

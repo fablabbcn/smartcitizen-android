@@ -12,4 +12,14 @@
         mapbox:accessToken="@string/accessToken"
         mapbox:mapid="@string/mapId" />
 
+    <ImageButton
+        android:layout_width="@dimen/button_location_width"
+        android:layout_height="@dimen/button_location_height"
+        android:src="@drawable/map_location_button_selector"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:layout_gravity="right|bottom"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"/>
+
 </FrameLayout>
