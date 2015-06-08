@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.overlay.ClusterMarker;
 import com.mapbox.mapboxsdk.overlay.Icon;
 import com.mapbox.mapboxsdk.overlay.Marker;
 import com.mapbox.mapboxsdk.util.GeoUtils;
@@ -21,7 +22,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
-import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.KitsController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 
@@ -53,6 +53,24 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, view);
+
+        /*final Resources res = getResources();
+        final Bitmap clusterBitmpap = BitmapFactory.decodeResource(res, R.drawable.custom_marker);*/
+
+        mMapView.setClusteringEnabled(
+                true, //enabled/disabled
+                //draw cluster listener
+                new ClusterMarker.OnDrawClusterListener() {
+                    @Override
+                    public Drawable drawCluster(ClusterMarker clusterMarker) {
+                        /*NumberBitmapDrawable customCluster = new NumberBitmapDrawable(res, clusterBitmpap);
+                        customCluster.setCount(clusterMarker.getMarkersReadOnly().size());
+                        return customCluster;*/
+                        return null;
+                    }
+                },
+                18 // min zoom level
+        );
 
         KitsController.getKits(this);//call in onCreate ?
 
