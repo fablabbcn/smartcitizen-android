@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         /*mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);*/
 
-        mTabAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        mTabAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
 
         mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mTabAdapter);
