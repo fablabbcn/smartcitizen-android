@@ -12,4 +12,19 @@
         <item name="colorControlHighlight">@color/accent_translucent</item>-->
     </style>
 
+    <style name="InfoWindowBase">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+
+    </style>
+
 </resources>

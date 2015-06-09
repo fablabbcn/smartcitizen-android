@@ -28,9 +28,17 @@ public class Device {
 
     private DeviceData data;
 
+    private Kit kit;
+
     //GETTERS & SETTERS
 
-    private Kit kit;
+    public Kit getKit() {
+        return kit;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
 
     public String getName() {
         return name;

@@ -20,4 +20,14 @@ public class Kit {
 
     @SerializedName("updated_at")
     private String updatedAt;
+
+    //GETTERS
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

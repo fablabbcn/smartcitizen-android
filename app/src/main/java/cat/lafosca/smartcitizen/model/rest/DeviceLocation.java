@@ -35,4 +35,12 @@ public class DeviceLocation {
     public Double getLongitude() {
         return longitude;
     }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
 }
