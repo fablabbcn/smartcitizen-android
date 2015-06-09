@@ -1,17 +1,16 @@
 package cat.lafosca.smartcitizen.ui.widgets;
 
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TextView;
 
-import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.overlay.Marker;
 import com.mapbox.mapboxsdk.views.InfoWindow;
 import com.mapbox.mapboxsdk.views.MapView;
 
+import java.text.ParseException;
+
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.model.rest.Device;
+import cat.lafosca.smartcitizen.util.PrettyTimeHelper;
 
 /**
  * Created by ferran on 08/06/15.
@@ -48,7 +47,13 @@ public class CustomInwoWindow extends InfoWindow {
 
         String name = mDevice.getName();
         String kitName= mDevice.getKit().getName();
-        String updatedAt = mDevice.getUpdatedAt();
+        kitName = kitName.toUpperCase();//xml doesn't work?
+        String updatedAt = "";
+        try {
+            updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getUpdatedAt());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         String location = mDevice.getData().getLocation().getCity();
 
         //Log.i("window", name+"\n"+kitName+"\n"+updatedAt+"\n"+location);
