@@ -105,7 +105,6 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
             List<LatLng> positions = new ArrayList<LatLng>();
             //Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.custom_marker);
 
-            //move to background thread? Receive the markers or the list of devices?
             for (int i = 0; i< numOfDevices; i++) {
                 Device device = devices.get(i);
 
@@ -122,7 +121,6 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
                         markers.add(marker);
                     }
                 } else {
-                    int x = 0;
                     continue;
                 }
             }
@@ -130,8 +128,6 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
             BoundingBox bbn = GeoUtils.findBoundingBoxForGivenLocations(positions, 5.0);
 
             mMapView.zoomToBoundingBox(bbn, true, true);
-
-            int i = 0;
 
         }
     }
