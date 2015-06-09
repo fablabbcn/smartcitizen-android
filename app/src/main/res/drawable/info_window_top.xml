@@ -7,9 +7,9 @@
             <corners
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp"
-                android:radius="2dp"
-                android:topLeftRadius="2dp"
-                android:topRightRadius="2dp" />
+                android:radius="@dimen/info_window_radius"
+                android:topLeftRadius="@dimen/info_window_radius"
+                android:topRightRadius="@dimen/info_window_radius" />
         </shape>
     </item>
 

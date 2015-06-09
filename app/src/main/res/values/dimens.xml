@@ -7,4 +7,6 @@
     <dimen name="button_location_width">@dimen/button_location_height</dimen>
     <dimen name="tab_layout_height">56dp</dimen>
     <dimen name="tab_text_size">16sp</dimen>
+
+    <dimen name="info_window_radius">2dp</dimen>
 </resources>
