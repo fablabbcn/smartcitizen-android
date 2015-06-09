@@ -24,6 +24,7 @@ import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.controllers.KitsController;
 import cat.lafosca.smartcitizen.model.rest.Device;
+import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
 
 public class MapFragment extends Fragment implements KitsController.KitsControllerListenr {
 
@@ -104,16 +105,25 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
             List<LatLng> positions = new ArrayList<LatLng>();
             //Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.custom_marker);
 
+            //move to background thread? Receive the markers or the list of devices?
             for (int i = 0; i< numOfDevices; i++) {
                 Device device = devices.get(i);
 
-                LatLng position = new LatLng(device.getData().getLocation().getLatitude(), device.getData().getLocation().getLongitude());
-                if (position.distanceTo(bcnPoint) < 800000 ) { // 800 km offset
-                    positions.add(position);
-                    Marker marker = new Marker(mMapView, device.getName(), "", position);
-                    //marker.setMarker(customMarkerDrawable);
-                    marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
-                    markers.add(marker);
+                if (device.getData() != null && device.getData().getLocation() != null) {
+                    LatLng position = new LatLng(device.getData().getLocation().getLatitude(), device.getData().getLocation().getLongitude());
+                    if (position.distanceTo(bcnPoint) < 800000 ) { // 800 km offset
+                        positions.add(position);
+                        Marker marker = new Marker(mMapView, device.getName(), "", position);
+                        //marker.setMarker(customMarkerDrawable);
+                        marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
+                        //marker.getToolTip(mMapView);
+                        //marker.setToolTip();
+                        marker.setToolTip( new CustomInwoWindow(mMapView, device));
+                        markers.add(marker);
+                    }
+                } else {
+                    int x = 0;
+                    continue;
                 }
             }
             mMapView.addMarkers(markers);
