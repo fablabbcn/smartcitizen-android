@@ -36,15 +36,18 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
+                <!--android:capitalize="characters"-->
                 <TextView
                     android:id="@+id/info_window_kit_type"
                     style="@style/InfoWindowBase"
                     android:textSize="12sp"
-                    tools:text="SMARTCITIZEN KIT" />
+                    tools:text="Smartcitizen Kit" />
 
                 <TextView
                     android:id="@+id/info_window_timestamp"
                     style="@style/InfoWindowBase"
+                    android:drawableLeft="@mipmap/ic_timestamp"
+                    android:drawablePadding="4dp"
                     android:textSize="14sp"
                     tools:text="4 days ago" />
 
