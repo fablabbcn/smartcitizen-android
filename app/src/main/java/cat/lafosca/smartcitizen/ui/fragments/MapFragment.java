@@ -13,6 +13,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.overlay.ClusterMarker;
 import com.mapbox.mapboxsdk.overlay.Icon;
 import com.mapbox.mapboxsdk.overlay.Marker;
+import com.mapbox.mapboxsdk.overlay.UserLocationOverlay;
 import com.mapbox.mapboxsdk.util.GeoUtils;
 import com.mapbox.mapboxsdk.views.MapView;
 
@@ -49,8 +50,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.inject(this, view);
@@ -81,6 +81,10 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mMapView.setUserLocationEnabled(true);
+        mMapView.setUserLocationTrackingMode(UserLocationOverlay.TrackingMode.NONE);
+
         /*mMapView.setMinZoomLevel(mMapView.getTileProvider().getMinimumZoomLevel());
         mMapView.setMaxZoomLevel(mMapView.getTileProvider().getMaximumZoomLevel());
         mMapView.setCenter(mMapView.getTileProvider().getCenterCoordinate());
@@ -108,7 +112,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
             for (int i = 0; i< numOfDevices; i++) {
                 Device device = devices.get(i);
 
-                if (device.getData() != null && device.getData().getLocation() != null) {
+                if (device != null && device.getData() != null && device.getData().getLocation() != null) {
                     LatLng position = new LatLng(device.getData().getLocation().getLatitude(), device.getData().getLocation().getLongitude());
                     if (position.distanceTo(bcnPoint) < 800000 ) { // 800 km offset
                         positions.add(position);
