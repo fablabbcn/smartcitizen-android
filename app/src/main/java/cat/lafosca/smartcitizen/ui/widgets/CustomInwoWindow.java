@@ -55,6 +55,10 @@ public class CustomInwoWindow extends InfoWindow {
             e.printStackTrace();
         }
         String location = mDevice.getData().getLocation().getCity();
+        String country = mDevice.getData().getLocation().getCountry();
+        if (country != null) {
+            location += ", "+country;
+        }
 
         //Log.i("window", name+"\n"+kitName+"\n"+updatedAt+"\n"+location);
 
