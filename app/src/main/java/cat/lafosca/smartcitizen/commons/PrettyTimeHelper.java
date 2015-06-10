@@ -1,4 +1,4 @@
-package cat.lafosca.smartcitizen.util;
+package cat.lafosca.smartcitizen.commons;
 
 import com.ocpsoft.pretty.time.PrettyTime;
 

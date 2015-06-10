@@ -10,7 +10,7 @@ import java.text.ParseException;
 
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.model.rest.Device;
-import cat.lafosca.smartcitizen.util.PrettyTimeHelper;
+import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
 
 /**
  * Created by ferran on 08/06/15.
