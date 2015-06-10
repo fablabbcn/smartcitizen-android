@@ -4,4 +4,7 @@
 
     <string name="map_tab_title">browse</string>
     <string name="account_tab_title">account</string>
+    <string name="gps_not_enabled">GPS is not enabled</string>
+    <string name="activate">Activate</string>
+    <string name="ask_activate_gps">Would you like to activate it?</string>
 </resources>

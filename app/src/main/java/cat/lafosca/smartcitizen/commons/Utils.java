@@ -2,6 +2,7 @@ package cat.lafosca.smartcitizen.commons;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.os.Build;
 
 /**
@@ -20,6 +21,19 @@ public class Utils {
         }
 
         return drawable;
+    }
+
+    public static boolean isGPSEnabled(Context context) {
+
+        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled;
+        //boolean network_enabled = false;
+
+        gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        //network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        return gps_enabled;
+
     }
 
 }

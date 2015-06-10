@@ -1,9 +1,15 @@
 package cat.lafosca.smartcitizen.ui.fragments;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.KitsController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
@@ -102,12 +109,39 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
     }
 
     @OnClick(R.id.userLocationButton) void submit() {
-        if (mMapView.getUserLocationEnabled() && !mMapView.isUserLocationVisible() && mMapView.getUserLocation()!=null) {
-            mMapView.setUserLocationRequiredZoom(5.0F);
-            mMapView.goToUserLocation(true);
+
+        if (Utils.isGPSEnabled(getActivity()) || mMapView.getUserLocation() != null) {
+            if (!mMapView.isUserLocationVisible() && mMapView.getUserLocation()!=null) {
+                mMapView.setUserLocationRequiredZoom(5.0F);
+                mMapView.goToUserLocation(true);
+            }
+        } else {
+            final Context context = getActivity();
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+
+            dialog.setTitle(context.getResources().getString(R.string.gps_not_enabled));
+            dialog.setMessage(context.getResources().getString(R.string.ask_activate_gps));
+
+            dialog.setPositiveButton(context.getResources().getString(R.string.activate), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    context.startActivity(myIntent);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton(context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                }
+            });
+            dialog.show();
         }
     }
 
+    //todo Remove/refactor
     @Override
     public void onGetKits(List<Device> devices) {
         int numOfDevices = devices.size();
@@ -123,7 +157,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
             for (int i = 0; i< numOfDevices; i++) {
                 Device device = devices.get(i);
 
-                if (device != null && device.getData() != null && device.getData().getLocation() != null) {
+                if (device.getData().getLocation().getLatitude() != null && device.getData().getLocation().getLongitude() != null) {
                     LatLng position = new LatLng(device.getData().getLocation().getLatitude(), device.getData().getLocation().getLongitude());
                     if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
                         positions.add(position);
