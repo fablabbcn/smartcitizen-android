@@ -13,6 +13,7 @@
         mapbox:mapid="@string/mapId" />
 
     <ImageButton
+        android:id="@+id/userLocationButton"
         android:layout_width="@dimen/button_location_width"
         android:layout_height="@dimen/button_location_height"
         android:src="@drawable/map_location_button_selector"

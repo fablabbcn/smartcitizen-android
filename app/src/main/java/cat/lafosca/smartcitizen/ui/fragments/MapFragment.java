@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.controllers.KitsController;
 import cat.lafosca.smartcitizen.model.rest.Device;
@@ -31,7 +32,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
 
     @InjectView(R.id.mapview) MapView mMapView;
 
-    private LatLng bcnPoint = new LatLng(41.394401, 2.197694);
+    private LatLng userLocationPoint = new LatLng(41.394401, 2.197694); //barcelona todo: Remove this
 
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
@@ -58,6 +59,9 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
         /*final Resources res = getResources();
         final Bitmap clusterBitmpap = BitmapFactory.decodeResource(res, R.drawable.custom_marker);*/
 
+        mMapView.setUserLocationEnabled(true);
+        mMapView.setUserLocationTrackingMode(UserLocationOverlay.TrackingMode.NONE);
+
         mMapView.setClusteringEnabled(
                 true, //enabled/disabled
                 //draw cluster listener
@@ -82,9 +86,6 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mMapView.setUserLocationEnabled(true);
-        mMapView.setUserLocationTrackingMode(UserLocationOverlay.TrackingMode.NONE);
-
         /*mMapView.setMinZoomLevel(mMapView.getTileProvider().getMinimumZoomLevel());
         mMapView.setMaxZoomLevel(mMapView.getTileProvider().getMaximumZoomLevel());
         mMapView.setCenter(mMapView.getTileProvider().getCenterCoordinate());
@@ -100,6 +101,13 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
 
     }
 
+    @OnClick(R.id.userLocationButton) void submit() {
+        if (mMapView.getUserLocationEnabled() && !mMapView.isUserLocationVisible() && mMapView.getUserLocation()!=null) {
+            mMapView.setUserLocationRequiredZoom(5.0F);
+            mMapView.goToUserLocation(true);
+        }
+    }
+
     @Override
     public void onGetKits(List<Device> devices) {
         int numOfDevices = devices.size();
@@ -108,13 +116,16 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
             List<Marker> markers = new ArrayList<Marker>();
             List<LatLng> positions = new ArrayList<LatLng>();
             //Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.custom_marker);
+            if (mMapView.isUserLocationVisible() && mMapView.getUserLocationEnabled()) {
+                userLocationPoint = mMapView.getUserLocation();
+            }
 
             for (int i = 0; i< numOfDevices; i++) {
                 Device device = devices.get(i);
 
                 if (device != null && device.getData() != null && device.getData().getLocation() != null) {
                     LatLng position = new LatLng(device.getData().getLocation().getLatitude(), device.getData().getLocation().getLongitude());
-                    if (position.distanceTo(bcnPoint) < 800000 ) { // 800 km offset
+                    if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
                         positions.add(position);
                         Marker marker = new Marker(mMapView, device.getName(), "", position);
                         //marker.setMarker(customMarkerDrawable);
