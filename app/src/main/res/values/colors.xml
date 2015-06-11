@@ -6,4 +6,5 @@
     <color name="tab_title_unselected">#80ffffff</color>
 
     <color name="blue_smartcitizen">#35C2E5</color>
+    <color name="blue_smartcitizen_selected">#2d7b9b</color>
 </resources>

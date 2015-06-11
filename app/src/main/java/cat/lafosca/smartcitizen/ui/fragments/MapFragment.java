@@ -166,7 +166,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
                         marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
                         //marker.getToolTip(mMapView);
                         //marker.setToolTip();
-                        marker.setToolTip( new CustomInwoWindow(mMapView, device));
+                        marker.setToolTip( new CustomInwoWindow(mMapView, device, getActivity()));
                         markers.add(marker);
                     }
                 } else {
