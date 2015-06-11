@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/blue_smartcitizen" />
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="0dp"
+                android:radius="@dimen/info_window_radius"
+                android:topLeftRadius="@dimen/info_window_radius"
+                android:topRightRadius="@dimen/info_window_radius" />
+        </shape>
+    </item>
+
+</layer-list>

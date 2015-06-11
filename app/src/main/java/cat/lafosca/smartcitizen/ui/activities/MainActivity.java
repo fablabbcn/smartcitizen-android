@@ -8,7 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.ui.adapters.MainPagerAdapter;
 import cat.lafosca.smartcitizen.ui.widgets.CustomViewPager;
 
@@ -17,22 +20,22 @@ import cat.lafosca.smartcitizen.ui.widgets.CustomViewPager;
 public class MainActivity extends AppCompatActivity {
 
     //private SlidingTabLayout tabs;
-    private TabLayout tabs;
+    @InjectView(R.id.tabs) TabLayout tabs;
 
     private MainPagerAdapter mTabAdapter;
-    private CustomViewPager mViewPager;
+    @InjectView(R.id.pager) CustomViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
         /*mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);*/
 
         mTabAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
 
-        mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mTabAdapter);
 
         initTabs();
@@ -58,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         //SlidingTabLayout
 
         //TabLayout (android dessign support)
-        tabs = (TabLayout)findViewById(R.id.tabs);
         tabs.setTabMode(TabLayout.MODE_FIXED);
         tabs.setBackgroundColor(getResources().getColor(R.color.ColorPrimary));
         //tabs.setupWithViewPager(mViewPager); //this create tabs from the viewpager adapter
@@ -71,13 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
             int resourceId = (i == 0) ? R.drawable.drawable_map_tab_title_selector : R.drawable.drawable_account_tab_title_selector;
 
-            Drawable textDrawable;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textDrawable = this.getDrawable(resourceId);
-
-            } else {
-                textDrawable = this.getResources().getDrawable(resourceId);
-            }
+            Drawable textDrawable = Utils.getDrawable(this, resourceId);
 
             ((TextView) tabInflated.findViewById(R.id.tab_title)).setCompoundDrawablesWithIntrinsicBounds(textDrawable, null, null, null);
 
