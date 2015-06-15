@@ -10,5 +10,6 @@
 
     <!--Activity labels-->
     <string name="title_activity_kit_detail">KitDetailActivity</string>
+    <string name="kit_detail_title">KIT DETAIL</string>
 
 </resources>

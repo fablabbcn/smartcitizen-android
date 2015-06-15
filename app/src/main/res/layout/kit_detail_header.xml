@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/blue_smartcitizen"
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <TextView
+        android:id="@+id/kit_detail_title"
+        style="@style/KitDetailHeaderText"
+        android:textSize="29sp"
+        tools:text="Independence Lab Spot" />
+
+    <TextView
+        android:id="@+id/kit_detail_kit_type"
+        style="@style/KitDetailHeaderText"
+        android:textSize="14sp"
+        tools:text="SMARTCITIZEN KIT" />
+
+    <TextView
+        style="@style/KitDetailHeaderText"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@mipmap/ic_timestamp"
+        android:drawablePadding="4dp"
+        android:textSize="18sp"
+        tools:text="4 days ago" />
+
+    <TextView
+        style="@style/KitDetailHeaderText"
+        android:drawableLeft="@mipmap/ic_account_selected"
+        android:drawablePadding="4dp"
+        android:textSize="18sp"
+        tools:text="gcamprodon" />
+
+    <TextView
+        style="@style/KitDetailHeaderText"
+        android:drawableLeft="@mipmap/ic_location_white"
+        android:drawablePadding="4dp"
+        android:textSize="18sp"
+        tools:text="78, Independence Ave SW, Washington" />
+
+</LinearLayout>

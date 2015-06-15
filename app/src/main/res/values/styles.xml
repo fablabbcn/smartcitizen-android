@@ -29,6 +29,15 @@
 
     </style>
 
+    <style name="KitDetailHeaderText">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="ToolbarTextExpanded">
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textSize">29sp</item>

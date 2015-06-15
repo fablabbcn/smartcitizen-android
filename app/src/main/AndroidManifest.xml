@@ -28,7 +28,10 @@
         <activity
             android:name=".ui.activities.KitDetailActivity"
             android:label="@string/title_activity_kit_detail"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activities.MainActivity" >
+        </activity>
+
     </application>
 
 </manifest>
