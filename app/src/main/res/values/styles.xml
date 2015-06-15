@@ -29,4 +29,14 @@
 
     </style>
 
+    <style name="ToolbarTextExpanded">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">29sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ToolbarTextCollapsed" parent="ToolbarTextExpanded">
+        <item name="android:textSize">20dp</item>
+    </style>
+
 </resources>
