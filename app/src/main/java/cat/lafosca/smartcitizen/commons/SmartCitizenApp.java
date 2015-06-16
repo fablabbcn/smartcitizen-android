@@ -2,6 +2,7 @@ package cat.lafosca.smartcitizen.commons;
 
 import android.app.Application;
 
+import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
 import cat.lafosca.smartcitizen.rest.RestController;
 
 /**
@@ -14,5 +15,7 @@ public class SmartCitizenApp extends Application {
         super.onCreate();
 
         RestController.init();
+
+        SharedPreferencesController.getInstance().init(getApplicationContext());
     }
 }
