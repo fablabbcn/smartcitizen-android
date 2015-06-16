@@ -64,8 +64,7 @@ public class CustomInwoWindow extends InfoWindow {
         mView.findViewById(R.id.info_window_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mActivity.get(), KitDetailActivity.class);
-                mActivity.get().startActivity(intent);
+                mActivity.get().startActivity( KitDetailActivity.getCallingIntent(mActivity.get(), mDevice) );
 
                 // Still close the InfoWindow though
                 close();
