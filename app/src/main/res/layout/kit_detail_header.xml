@@ -9,7 +9,7 @@
     android:paddingBottom="16dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
-    app:elevation="6dp">
+    android:elevation="6dp">
 
     <TextView
         android:id="@+id/kit_detail_title"
