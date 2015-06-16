@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_background"
+    android:orientation="vertical"
+    tools:context="cat.lafosca.smartcitizen.ui.fragments.AccountFragment">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="24dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/account_placeholder_background" />
+    <!---->
+
+    <TextView
+        android:id="@+id/account_placeholder_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:text="@string/welcome"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/account_placeholder_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="18dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:textSize="18sp"
+        tools:text="You need to log in to access to your\n Smartcitizen account. Step in or create your account." />
+
+    <Button
+        android:id="@+id/account_placeholder_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="42dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/login"
+        android:textColor="@android:color/white"
+        android:background="@drawable/login_button"
+        android:textSize="18sp" />
+
+
+</LinearLayout>

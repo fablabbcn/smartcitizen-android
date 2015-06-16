@@ -9,4 +9,10 @@
     <color name="blue_smartcitizen_selected">#2d7b9b</color>
 
     <color name="sensor_text_color">#9B9B9B</color>
+
+    <color name="base_background">#F1F5F7</color>
+
+    <color name="account_text_1">#88A3AD</color>
+    <color name="account_text_2">#637880</color>
+
 </resources>
