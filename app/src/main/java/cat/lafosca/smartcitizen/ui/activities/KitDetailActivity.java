@@ -28,7 +28,6 @@ public class KitDetailActivity extends AppCompatActivity {
         mDevice = getIntent().getParcelableExtra("Device");
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.kit_detail_title));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
