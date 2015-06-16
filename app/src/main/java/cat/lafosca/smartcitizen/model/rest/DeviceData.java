@@ -34,6 +34,10 @@ public class DeviceData implements Parcelable {
         return location;
     }
 
+    public List<Sensor> getSensors() {
+        return sensors;
+    }
+
     public DeviceData() {
     }
 

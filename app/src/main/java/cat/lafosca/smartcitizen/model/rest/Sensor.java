@@ -37,6 +37,23 @@ public class Sensor implements Parcelable {
     @SerializedName("prev_raw_value")
     private float prevRawValue;
 
+    //GETTERS
+    public String getName() {
+        return name;
+    }
+
+    public float getValue() {
+        return value;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public int describeContents() {
         return 0;

@@ -2,19 +2,24 @@ package cat.lafosca.smartcitizen.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
 import cat.lafosca.smartcitizen.model.rest.Device;
+import cat.lafosca.smartcitizen.model.rest.Sensor;
+import cat.lafosca.smartcitizen.ui.widgets.SensorView;
 
 public class KitDetailActivity extends AppCompatActivity {
 
@@ -34,6 +39,9 @@ public class KitDetailActivity extends AppCompatActivity {
 
     @InjectView(R.id.kit_detail_location)
     TextView mKitLocation;
+
+    @InjectView(R.id.sensors_layout)
+    LinearLayout mSensorsLayout;
 
     public static Intent getCallingIntent(Context context, Device device) {
 
@@ -61,6 +69,28 @@ public class KitDetailActivity extends AppCompatActivity {
 
     private void init() {
         setTextLabels();
+        setSensors();
+    }
+
+    private void setSensors() {
+        if (mDevice.getData()!= null && mDevice.getData().getSensors().size() > 0) {
+            List<Sensor> sensors = mDevice.getData().getSensors();
+            int numSensors = sensors.size();
+            for (int i = 0; i<numSensors; i++) {
+                Sensor sensor = sensors.get(i);
+
+                SensorView sensorView = new SensorView(this);
+                sensorView.setSensorName(sensor.getName(), 0);
+                float sensorValue = sensor.getValue();
+                sensorView.setSensorValue(sensorValue + " " + sensor.getUnit());
+
+                if (i == numSensors - 1) {
+                    sensorView.findViewById(R.id.sensor_separator).setVisibility(View.INVISIBLE);
+                }
+
+                mSensorsLayout.addView(sensorView);
+            }
+        }
     }
 
     private void setTextLabels() {
