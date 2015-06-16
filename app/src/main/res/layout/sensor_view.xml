@@ -11,10 +11,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
         android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:drawablePadding="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="16dp"
+        android:textColor="@color/sensor_text_color"
+        android:textSize="18sp"
         tools:text="sensor type" />
 
     <TextView
@@ -22,11 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="20dp"
         android:gravity="end"
+        android:textColor="@color/sensor_text_color"
+        android:textSize="18sp"
         tools:text="x units" />
 
     <View
