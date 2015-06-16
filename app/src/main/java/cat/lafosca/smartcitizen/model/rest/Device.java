@@ -51,6 +51,10 @@ public class Device implements Parcelable {
         return data;
     }
 
+    public Owner getOwner() {
+        return owner;
+    }
+
     public Device() {
     }
 

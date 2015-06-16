@@ -35,6 +35,12 @@ public class Owner implements Parcelable {
     @SerializedName("device_ids")
     private List<Integer> deviceIds = new ArrayList<Integer>();
 
+    //GETTERS AND SETTERS
+    public String getUsername() {
+        return username;
+    }
+    //GETTERS AND SETTERS
+
     @Override
     public int describeContents() {
         return 0;
