@@ -94,7 +94,8 @@ public class KitDetailActivity extends AppCompatActivity {
                 SensorView sensorView = new SensorView(this);
                 sensorView.setSensoViewrName(sensor.getPrettyName(), sensor.getIcon());
                 float sensorValue = sensor.getValue();
-                sensorView.setSensorValue(sensorValue + " " + sensor.getUnit());
+                //String.format("%.2f", floatValue);
+                sensorView.setSensorValue(String.format("%.1f", sensorValue) + " " + sensor.getUnit());
 
                 if (i == numSensors - 1) {
                     sensorView.findViewById(R.id.sensor_separator).setVisibility(View.INVISIBLE);
