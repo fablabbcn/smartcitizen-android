@@ -2,8 +2,6 @@ package cat.lafosca.smartcitizen.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -83,10 +81,10 @@ public class KitDetailActivity extends AppCompatActivity {
 
     private void init() {
         setTextLabels();
-        setSensors();
+        setSensorsView();
     }
 
-    private void setSensors() {
+    private void setSensorsView() {
         if (mDevice.getData()!= null && mDevice.getData().getSensors().size() > 0) {
             List<Sensor> sensors = mDevice.getData().getSensors();
             int numSensors = sensors.size();
@@ -94,7 +92,7 @@ public class KitDetailActivity extends AppCompatActivity {
                 Sensor sensor = sensors.get(i);
 
                 SensorView sensorView = new SensorView(this);
-                sensorView.setSensorName(sensor.getName(), 0);
+                sensorView.setSensorName(sensor.getPrettyName(), 0);
                 float sensorValue = sensor.getValue();
                 sensorView.setSensorValue(sensorValue + " " + sensor.getUnit());
 

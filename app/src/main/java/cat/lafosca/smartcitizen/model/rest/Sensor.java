@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.regex.Pattern;
+
 /**
  * Created by ferran on 03/06/15.
  */
@@ -72,6 +74,39 @@ public class Sensor implements Parcelable {
         dest.writeFloat(this.rawValue);
         dest.writeFloat(this.prevValue);
         dest.writeFloat(this.prevRawValue);
+    }
+
+
+    public String getPrettyName() {
+        String sensorName;
+
+        Pattern pattern = Pattern.compile(Pattern.quote(getDescription()), Pattern.CASE_INSENSITIVE);
+
+        if (pattern.matcher("custom circuit").find()) {
+            sensorName = getName();
+
+        } else {
+            if (pattern.matcher("noise").find()) {
+                sensorName = "SOUND";
+
+            } else if (pattern.matcher("light").find()) {
+                sensorName = "LIGHT";
+
+            } else if (pattern.matcher("wifi").find()) {
+                sensorName = "NETWORKS";
+
+            } else if (pattern.matcher("co").find()) {
+                sensorName = "CO";
+
+            } else if (pattern.matcher("no2").find()) {
+                sensorName = "NO2";
+
+            } else {
+                sensorName = getDescription();
+            }
+        }
+
+        return sensorName;
     }
 
     public Sensor() {
