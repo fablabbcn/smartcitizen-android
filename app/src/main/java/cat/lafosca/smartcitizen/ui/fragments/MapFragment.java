@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,11 +156,11 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
             for (int i = 0; i< numOfDevices; i++) {
                 Device device = devices.get(i);
 
-                if (device.getData().getLocation().getLatitude() != null && device.getData().getLocation().getLongitude() != null) {
-                    LatLng position = new LatLng(device.getData().getLocation().getLatitude(), device.getData().getLocation().getLongitude());
+                if (device.getDeviceData().getLocation().getLatitude() != null && device.getDeviceData().getLocation().getLongitude() != null) {
+                    LatLng position = new LatLng(device.getDeviceData().getLocation().getLatitude(), device.getDeviceData().getLocation().getLongitude());
                     if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
                         positions.add(position);
-                        Marker marker = new Marker(mMapView, device.getName(), "", position);
+                        Marker marker = new Marker(mMapView, device.getDeviceInfo().getName(), " ", position);
                         //marker.setMarker(customMarkerDrawable);
                         marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
                         //marker.getToolTip(mMapView);

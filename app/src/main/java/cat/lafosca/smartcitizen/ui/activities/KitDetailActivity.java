@@ -85,8 +85,8 @@ public class KitDetailActivity extends AppCompatActivity {
     }
 
     private void setSensorsView() {
-        if (mDevice.getData()!= null && mDevice.getData().getSensors().size() > 0) {
-            List<Sensor> sensors = mDevice.getData().getSensors();
+        if (mDevice.getDeviceData()!= null && mDevice.getDeviceData().getSensors().size() > 0) {
+            List<Sensor> sensors = mDevice.getDeviceData().getSensors();
             int numSensors = sensors.size();
             for (int i = 0; i<numSensors; i++) {
                 Sensor sensor = sensors.get(i);
@@ -106,13 +106,13 @@ public class KitDetailActivity extends AppCompatActivity {
     }
 
     private void setTextLabels() {
-        mKitTitle.setText(mDevice.getName());
+        mKitTitle.setText(mDevice.getDeviceInfo().getName());
         mKitType.setText(mDevice.getKit().getName().toUpperCase());
 
-        if (mDevice.getUpdatedAt() != null) {
+        if (mDevice.getDeviceInfo().getUpdatedAt() != null) {
             String updatedAt = "";
             try {
-                updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getUpdatedAt());
+                updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getDeviceInfo().getUpdatedAt());
                 mKitTimestamp.setText(updatedAt);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -128,9 +128,9 @@ public class KitDetailActivity extends AppCompatActivity {
             mKitUser.setVisibility(View.GONE);
         }
 
-        if (mDevice.getData() != null && mDevice.getData().getLocation() != null) {
-            String location = mDevice.getData().getLocation().getCity();
-            String country = mDevice.getData().getLocation().getCountry();
+        if (mDevice.getDeviceData() != null && mDevice.getDeviceData().getLocation() != null) {
+            String location = mDevice.getDeviceData().getLocation().getCity();
+            String country = mDevice.getDeviceData().getLocation().getCountry();
             if (country != null) {
                 location += ", " + country;
             }
