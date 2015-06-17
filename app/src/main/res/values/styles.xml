@@ -38,6 +38,11 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
     <style name="ToolbarTextExpanded">
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textSize">29sp</item>
