@@ -80,26 +80,27 @@ public class Sensor implements Parcelable {
     public String getPrettyName() {
         String sensorName;
 
-        Pattern pattern = Pattern.compile(Pattern.quote(getDescription()), Pattern.CASE_INSENSITIVE);
+        //Pattern pattern = Pattern.compile(Pattern.quote(getDescription()), Pattern.CASE_INSENSITIVE);
+        String description = getDescription().toLowerCase();
 
-        if (pattern.matcher("custom circuit").find()) {
+        if (description.contains("custom circuit")) {
             sensorName = getName();
 
         } else {
-            if (pattern.matcher("noise").find()) {
-                sensorName = "SOUND";
+            if (description.contains("noise")) {
+                sensorName = "Sound";
 
-            } else if (pattern.matcher("light").find()) {
-                sensorName = "LIGHT";
+            } else if (description.contains("light")) {
+                sensorName = "Light";
 
-            } else if (pattern.matcher("wifi").find()) {
-                sensorName = "NETWORKS";
+            } else if (description.contains("wifi")) {
+                sensorName = "Network";
 
-            } else if (pattern.matcher("co").find()) {
-                sensorName = "CO";
+            } else if (description.contains("co")) {
+                sensorName = "Co";
 
-            } else if (pattern.matcher("no2").find()) {
-                sensorName = "NO2";
+            } else if (description.contains("no2")) {
+                sensorName = "No2";
 
             } else {
                 sensorName = getDescription();
