@@ -37,8 +37,9 @@ public class SensorView extends FrameLayout {
         mSensorValue = (TextView)findViewById(R.id.sensor_value);
     }
 
-    public void setSensorName(String text, int drawable) {
+    public void setSensoViewrName(String text, int drawable) {
         mSensorName.setText(text);
+        mSensorName.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
     }
 
     public void setSensorValue(String text) {
