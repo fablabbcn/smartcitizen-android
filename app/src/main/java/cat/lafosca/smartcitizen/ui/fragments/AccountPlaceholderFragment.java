@@ -1,8 +1,14 @@
 package cat.lafosca.smartcitizen.ui.fragments;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +17,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.NonUnderlindeClickableSpan;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,12 +44,40 @@ public class AccountPlaceholderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account_placeholder, container, false);
         ButterKnife.inject(this, view);
 
+        setSpannableText();
+
+        return view;
+    }
+
+    private void setSpannableText() {
+
+
         String infoText = getString(R.string.account_placeholder_info);
         String infoTextLink = getString(R.string.account_placeholder_info_link);
 
-        mTextInfo.setText(infoText + infoTextLink);
+        String stringFormatted = infoText +" "+ infoTextLink;
 
-        return view;
+        SpannableString spannableString = SpannableString.valueOf(stringFormatted);
+
+        spannableString.setSpan(
+                new ForegroundColorSpan(getResources().getColor(R.color.account_text_2)),
+                stringFormatted.length() - infoTextLink.length(), //start
+                stringFormatted.length(), //end
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        String url = "http://katborealis.com/wp/wp-content/uploads/2014/09/12702-first-world-problems-template.jpg";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+
+        spannableString.setSpan(
+                new NonUnderlindeClickableSpan(getActivity(), i),
+                stringFormatted.length() - infoTextLink.length(), //start
+                stringFormatted.length(), //end
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        mTextInfo.setText(spannableString, TextView.BufferType.SPANNABLE);
+        mTextInfo.setMovementMethod(LinkMovementMethod.getInstance());
+
     }
 
 

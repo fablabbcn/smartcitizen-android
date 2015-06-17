@@ -38,6 +38,7 @@
         android:layout_marginBottom="88dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:clickable="true"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:textColor="@color/account_text_1"

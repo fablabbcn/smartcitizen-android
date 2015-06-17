@@ -15,7 +15,7 @@
     <string name="welcome">Welcome to Smartcitizen</string>
 
     <!--Account Placeholder-->
-    <string name="account_placeholder_info">You need to log in to access to your\n Smartcitizen account. Step in or </string>
+    <string name="account_placeholder_info">You need to log in to access to your\n Smartcitizen account. Step in or</string>
     <string name="account_placeholder_info_link">create your account.</string>
     <string name="login">Login</string>
 
