@@ -44,17 +44,12 @@
         android:textSize="18sp"
         tools:text="You need to log in to access to your\n Smartcitizen account. Step in or create your account." />
 
-    <Button
+    <include
+        layout="@layout/include_login_button"
         android:id="@+id/account_placeholder_login"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/login_button"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center"
-        android:text="@string/login"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:layout_alignParentBottom="true"/>
 
 
 </RelativeLayout>
