@@ -19,6 +19,7 @@
         app:titleTextAppearance="@style/Toolbar.TitleText" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
@@ -30,15 +31,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/kit_detail_header" />
+            <include
+                android:id="@+id/kit_detail_header"
+                layout="@layout/kit_detail_header" />
 
             <TextView
                 android:id="@+id/kit_detail_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:fontFamily="sans-serif-condensed"
-                android:layout_marginTop="8dp"
                 android:padding="8dp"
                 android:textColor="@color/tag_text_color"
                 android:textSize="18sp"

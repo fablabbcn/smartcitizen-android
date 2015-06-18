@@ -3,12 +3,16 @@ package cat.lafosca.smartcitizen.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.binaryfork.spanny.Spanny;
@@ -50,6 +54,16 @@ public class KitDetailActivity extends AppCompatActivity {
     @InjectView(R.id.sensors_layout)
     LinearLayout mSensorsLayout;
 
+    @InjectView(R.id.scrollView)
+    ScrollView mScrollView;
+
+    @InjectView(R.id.kit_detail_header)
+    LinearLayout mHeaderView;
+
+    private boolean mIsHeaderViewHidden;
+
+    private ViewTreeObserver.OnScrollChangedListener mScrollViewListener;
+
     public static Intent getCallingIntent(Context context, Device device) {
 
         Intent intent = new Intent(context, KitDetailActivity.class);
@@ -90,8 +104,43 @@ public class KitDetailActivity extends AppCompatActivity {
         setTextLabels();
         setSensorsView();
         setTags();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            setScrollViewListener();//if device version > lollipop
     }
 
+    @Override
+    protected void onDestroy() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mScrollView.getViewTreeObserver().removeOnScrollChangedListener(mScrollViewListener);
+
+        super.onDestroy();
+    }
+
+    private void setScrollViewListener() {
+
+        mIsHeaderViewHidden = false;
+        mScrollViewListener = new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (mScrollView.getScrollY() > mHeaderView.getHeight()) {
+                    if (!mIsHeaderViewHidden) {
+                        getSupportActionBar().setElevation(12);
+                        mIsHeaderViewHidden = true;
+                    }
+
+                } else {
+                    if (mIsHeaderViewHidden) {
+                        getSupportActionBar().setElevation(0);
+                        mIsHeaderViewHidden = false;
+                    }
+                }
+            }
+        };
+
+        mScrollView.getViewTreeObserver().addOnScrollChangedListener(mScrollViewListener);
+
+
+    }
     private void setTags() {
         String status = mDevice.getDeviceInfo().getStatus();
         String exposure = mDevice.getDeviceData().getLocation().getExposure();
