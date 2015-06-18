@@ -2,6 +2,7 @@ package cat.lafosca.smartcitizen.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.binaryfork.spanny.Spanny;
 
 import java.text.ParseException;
 import java.util.List;
@@ -19,6 +22,7 @@ import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.Sensor;
+import cat.lafosca.smartcitizen.ui.widgets.RoundedBackgroundSpan;
 import cat.lafosca.smartcitizen.ui.widgets.SensorView;
 
 public class KitDetailActivity extends AppCompatActivity {
@@ -39,6 +43,9 @@ public class KitDetailActivity extends AppCompatActivity {
 
     @InjectView(R.id.kit_detail_location)
     TextView mKitLocation;
+
+    @InjectView(R.id.kit_detail_tags)
+    TextView mTagsText;
 
     @InjectView(R.id.sensors_layout)
     LinearLayout mSensorsLayout;
@@ -82,6 +89,37 @@ public class KitDetailActivity extends AppCompatActivity {
     private void init() {
         setTextLabels();
         setSensorsView();
+        setTags();
+    }
+
+    private void setTags() {
+        String status = mDevice.getDeviceInfo().getStatus();
+        String exposure = mDevice.getDeviceData().getLocation().getExposure();
+        //moar tags?
+
+        if (status == null && exposure == null) {
+            mTagsText.setVisibility(View.GONE);
+
+        } else {
+            int tagColor = getResources().getColor(R.color.tag_background_color);
+            int tagTextColor = getResources().getColor(R.color.tag_text_color);
+            mTagsText.setVisibility(View.VISIBLE);
+
+            int corners = dp(8);
+            String space = "     ";
+
+            //todo: build tags dinamically?
+            Spanny spanny = new Spanny(status, new RoundedBackgroundSpan(corners, tagColor, tagTextColor))
+                    .append(space)
+                    .append(exposure, new RoundedBackgroundSpan(corners, tagColor, tagTextColor));
+
+            mTagsText.setText(spanny);
+
+        }
+    }
+
+    private int dp(int value) {
+        return (int) Math.ceil(getResources().getDisplayMetrics().density * value);
     }
 
     private void setSensorsView() {

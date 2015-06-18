@@ -29,7 +29,7 @@ public class DeviceLocation implements Parcelable {
 
     private String country;
 
-    //GETTERS & SETTERS
+    //GETTERS
 
     public Double getLatitude() {
         return latitude;
@@ -45,6 +45,10 @@ public class DeviceLocation implements Parcelable {
 
     public String getCountry() {
         return country;
+    }
+
+    public String getExposure() {
+        return exposure;
     }
 
     @Override

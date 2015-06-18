@@ -37,6 +37,10 @@ public class DeviceInfo implements Parcelable {
         return name;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
     @Override
     public int describeContents() {
         return 0;
