@@ -6,13 +6,15 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.controllers.SessionController;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements SessionController.SessionControllerListener {
 
     @InjectView(R.id.text_input_passw)
     TextInputLayout mTextInputLayoutPassw;
@@ -30,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         ButterKnife.inject(this);
-        
     }
 
     @OnClick(R.id.forgot_password_tv)
@@ -39,5 +40,28 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
+    }
+
+    @OnClick(R.id.login_button)
+    public void login() {
+        String name = mTextInputLayoutName.getEditText().getText().toString();
+        String passw = mTextInputLayoutPassw.getEditText().getText().toString();
+
+        if ( name.length() > 0 && passw.length() > 0) {
+            SessionController.userWantsToLogin(this, name, passw);
+
+        } else {
+            Toast.makeText(this, getString(R.string.incorrect_login_format), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onLoginSucces() {
+        Toast.makeText(this, "login Success!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLoginError() {
+        Toast.makeText(this, getString(R.string.generic_error), Toast.LENGTH_LONG).show();
     }
 }

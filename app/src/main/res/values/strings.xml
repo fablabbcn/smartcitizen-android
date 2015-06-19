@@ -26,5 +26,7 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="forgot_passw">I forgot it</string>
+    <string name="incorrect_login_format">Incorrect username or password</string>
+    <string name="generic_error">Something went wrong :(</string>
 
 </resources>
