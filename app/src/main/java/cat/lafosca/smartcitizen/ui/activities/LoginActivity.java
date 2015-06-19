@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,9 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
 
     @InjectView(R.id.forgot_password_tv)
     TextView mTvForgotPassw;
+
+    @InjectView(R.id.progress_login)
+    ProgressBar mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
         String passw = mTextInputLayoutPassw.getEditText().getText().toString();
 
         if ( name.length() > 0 && passw.length() > 0) {
+            mProgress.setVisibility(View.VISIBLE);
             SessionController.userWantsToLogin(this, name, passw);
 
         } else {
@@ -75,11 +81,13 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
 
     @Override
     public void onLoginSucces() {
+        mProgress.setVisibility(View.GONE);
         Toast.makeText(this, "login Success!", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onLoginError() {
+        mProgress.setVisibility(View.GONE);
         Toast.makeText(this, getString(R.string.generic_error), Toast.LENGTH_LONG).show();
     }
 }
