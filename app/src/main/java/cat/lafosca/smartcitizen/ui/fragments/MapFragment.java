@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,7 @@ import cat.lafosca.smartcitizen.controllers.KitsController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
 
-public class MapFragment extends Fragment implements KitsController.KitsControllerListenr {
+public class MapFragment extends Fragment implements KitsController.KitsControllerListener {
 
     @InjectView(R.id.mapview) MapView mMapView;
 
