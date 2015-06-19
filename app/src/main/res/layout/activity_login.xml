@@ -11,6 +11,17 @@
         android:layout_height="wrap_content"
         android:background="@color/base_background">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="top"
+            android:background="@color/ColorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="@string/login"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
+
         <!--app:hintTextAppearance="@android:style/TextAppearance.Medium"-->
 
         <ImageView
@@ -18,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="72dp"
             android:adjustViewBounds="true"
             android:src="@drawable/account_placeholder_background" />
 
@@ -67,7 +78,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/text_input_passw"
