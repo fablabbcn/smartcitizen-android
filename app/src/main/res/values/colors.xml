@@ -6,4 +6,10 @@
     <color name="tab_title_unselected">#80ffffff</color>
 
     <color name="blue_smartcitizen">#35C2E5</color>
+    <color name="blue_smartcitizen_selected">#2d7b9b</color>
+
+    <color name="sensor_text_color">#9B9B9B</color>
+
+    <color name="tag_text_color">#88A3AD</color>
+    <color name="tag_background_color">#DDE7EA</color>
 </resources>

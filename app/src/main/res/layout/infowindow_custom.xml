@@ -6,7 +6,8 @@
     android:background="@drawable/shadow_black"
     android:orientation="vertical">
 
-    <LinearLayout
+    <cat.lafosca.smartcitizen.ui.widgets.InterceptorLayout
+        android:id="@+id/info_window_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -36,7 +37,6 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!--android:capitalize="characters"-->
                 <TextView
                     android:id="@+id/info_window_kit_type"
                     style="@style/InfoWindowBase"
@@ -63,7 +63,7 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </cat.lafosca.smartcitizen.ui.widgets.InterceptorLayout>
 
     <TextView
         android:id="@+id/info_window_location"

@@ -1,63 +1,55 @@
 package cat.lafosca.smartcitizen.ui.widgets;
 
+import android.app.Activity;
+import android.content.Context;
+import android.view.View;
 import android.widget.TextView;
 
 import com.mapbox.mapboxsdk.overlay.Marker;
 import com.mapbox.mapboxsdk.views.InfoWindow;
 import com.mapbox.mapboxsdk.views.MapView;
 
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
+import cat.lafosca.smartcitizen.ui.activities.KitDetailActivity;
 
 /**
  * Created by ferran on 08/06/15.
  */
 public class CustomInwoWindow extends InfoWindow {
 
+    private WeakReference<Context> mActivity;
+
     private Device mDevice;
 
-    //public CustomInwoWindow(int layoutResId, MapView mapView, Device device) {
-    public CustomInwoWindow(MapView mapView, Device device) {
+    public CustomInwoWindow(MapView mapView, Device device, Activity activity) {
         super(R.layout.infowindow_custom, mapView);
 
+        mActivity = new WeakReference<Context>(activity);
+
         mDevice = device;
-
-        /*setOnTouchListener(new View.OnTouchListener() {
-             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    // Demonstrate custom onTouch() control
-                    Toast.makeText(mView.getContext(), R.string.customInfoWindowOnTouchMessage, Toast.LENGTH_SHORT).show();
-
-                    // Still close the InfoWindow though
-                    close();
-                }
-
-                // Return true as we're done processing this event
-                return true;
-            }
-        });*/
     }
 
     @Override
     public void onOpen(Marker overlayItem) {
 
-        String name = mDevice.getName();
-        String kitName= mDevice.getKit().getName();
+        String name = mDevice.getDeviceInfo().getName();
+        String kitName = mDevice.getKit().getName();
         kitName = kitName.toUpperCase();//xml doesn't work?
         String updatedAt = "";
         try {
-            updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getUpdatedAt());
+            updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getDeviceInfo()    .getUpdatedAt());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String location = mDevice.getData().getLocation().getCity();
-        String country = mDevice.getData().getLocation().getCountry();
+        String location = mDevice.getDeviceData().getLocation().getCity();
+        String country = mDevice.getDeviceData().getLocation().getCountry();
         if (country != null) {
-            location += ", "+country;
+            location += ", " + country;
         }
 
         //Log.i("window", name+"\n"+kitName+"\n"+updatedAt+"\n"+location);
@@ -66,6 +58,17 @@ public class CustomInwoWindow extends InfoWindow {
         ((TextView) mView.findViewById(R.id.info_window_kit_type)).setText(kitName);
         ((TextView) mView.findViewById(R.id.info_window_timestamp)).setText(updatedAt);
         ((TextView) mView.findViewById(R.id.info_window_location)).setText(location);
+
+
+        mView.findViewById(R.id.info_window_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivity.get().startActivity( KitDetailActivity.getCallingIntent(mActivity.get(), mDevice) );
+
+                // Still close the InfoWindow though
+                close();
+            }
+        });
 
     }
 }

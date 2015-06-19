@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/sensor_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/sensor_text_color"
+        android:textSize="20sp"
+        android:gravity="center"
+        tools:text="sensor type" />
+
+    <TextView
+        android:id="@+id/sensor_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/sensor_text_color"
+        android:textSize="20sp"
+        tools:text="x units" />
+
+    <View
+        android:id="@+id/sensor_separator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_gravity="bottom"
+        android:background="#E0E0E0" />
+
+</FrameLayout>

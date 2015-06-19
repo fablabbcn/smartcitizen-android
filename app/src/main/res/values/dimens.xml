@@ -9,4 +9,5 @@
     <dimen name="tab_text_size">16sp</dimen>
 
     <dimen name="info_window_radius">2dp</dimen>
+    <dimen name="detail_backdrop_height">256dp</dimen>
 </resources>

@@ -4,7 +4,7 @@
     <!--<item android:drawable="@android:drawable/ic_dialog_map" android:state_pressed="true"></item>-->
 
     <item android:drawable="@mipmap/ic_account_unselected" android:state_selected="true"></item>
-    <item android:drawable="@mipmap/ic_account_unselected" android:state_selected="false"></item>
+    <item android:drawable="@mipmap/ic_account_selected" android:state_selected="false"></item>
 
     <!--<item android:drawable="@android:drawable/ic_dialog_map" android:state_focused="true"></item>-->
     <!--<item android:drawable="@android:drawable/ic_dialog_map"/>-->

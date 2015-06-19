@@ -7,4 +7,9 @@
     <string name="gps_not_enabled">GPS is not enabled</string>
     <string name="activate">Activate</string>
     <string name="ask_activate_gps">Would you like to activate it?</string>
+
+    <!--Activity labels-->
+    <string name="title_activity_kit_detail">KitDetailActivity</string>
+    <string name="kit_detail_title">KIT DETAIL</string>
+
 </resources>
