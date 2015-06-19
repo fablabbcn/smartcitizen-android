@@ -5,12 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import java.lang.ref.WeakReference;
-
 import cat.lafosca.smartcitizen.R;
-import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
-import cat.lafosca.smartcitizen.ui.fragments.AccountFragment;
-import cat.lafosca.smartcitizen.ui.fragments.AccountPlaceholderFragment;
+import cat.lafosca.smartcitizen.ui.fragments.AccountRootFragment;
 import cat.lafosca.smartcitizen.ui.fragments.MapFragment;
 
 /**
@@ -33,12 +29,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return MapFragment.newInstance();
             case 1:
-                if (SharedPreferencesController.getInstance().isUserLoggedIn()) {
-                    return AccountFragment.newInstance();
-
-                } else {
-                    return AccountPlaceholderFragment.newInstance();
-                }
+                return new AccountRootFragment();
 
             default:
                 return null;

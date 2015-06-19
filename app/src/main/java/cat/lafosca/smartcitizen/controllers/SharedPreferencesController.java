@@ -42,4 +42,9 @@ public class SharedPreferencesController {
         preferences.edit().putString(SP_TOKEN_KEY, accesToken).apply();
     }
 
+    //make it part of the singleton instead of read it from shared preferences?
+    public String getUserToken() {
+        return mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).getString(SP_TOKEN_KEY, "");
+    }
+
 }

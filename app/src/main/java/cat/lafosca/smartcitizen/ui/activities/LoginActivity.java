@@ -20,6 +20,8 @@ import cat.lafosca.smartcitizen.controllers.SessionController;
 
 public class LoginActivity extends AppCompatActivity implements SessionController.SessionControllerListener {
 
+    public static final int LOGIN_OK = 1001;
+
     @InjectView(R.id.text_input_passw)
     TextInputLayout mTextInputLayoutPassw;
 
@@ -82,6 +84,8 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
     @Override
     public void onLoginSucces() {
         mProgress.setVisibility(View.GONE);
+        setResult(LoginActivity.LOGIN_OK);
+        finish();
         Toast.makeText(this, "login Success!", Toast.LENGTH_LONG).show();
     }
 

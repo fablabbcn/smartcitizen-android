@@ -1,9 +1,9 @@
 package cat.lafosca.smartcitizen.ui.activities;
 
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -13,6 +13,7 @@ import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.ui.adapters.MainPagerAdapter;
+import cat.lafosca.smartcitizen.ui.fragments.AccountFragment;
 import cat.lafosca.smartcitizen.ui.widgets.CustomViewPager;
 
 
@@ -20,10 +21,13 @@ import cat.lafosca.smartcitizen.ui.widgets.CustomViewPager;
 public class MainActivity extends AppCompatActivity {
 
     //private SlidingTabLayout tabs;
-    @InjectView(R.id.tabs) TabLayout tabs;
+    @InjectView(R.id.tabs)
+    TabLayout tabs;
 
     private MainPagerAdapter mTabAdapter;
-    @InjectView(R.id.pager) CustomViewPager mViewPager;
+
+    @InjectView(R.id.pager)
+    CustomViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +109,26 @@ public class MainActivity extends AppCompatActivity {
         //TabLayout (android dessign support)
     }
 
-   /* @Override
+    public void refreshAccountView() {
+
+        FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+				/*
+				 * IMPORTANT: We use the "root frame" defined in
+				 * "fragment_root_account.xml" as the reference to replace fragment
+				 */
+        trans.replace(R.id.root_frame, AccountFragment.newInstance());
+
+				/*
+				 * IMPORTANT: The following lines allow us to add the fragment
+				 * to the stack and return to it later, by pressing back
+				 */
+        /*trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        trans.addToBackStack(null);*/
+
+        trans.commit();
+    }
+
+    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);

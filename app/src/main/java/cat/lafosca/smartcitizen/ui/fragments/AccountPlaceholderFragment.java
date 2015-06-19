@@ -4,13 +4,11 @@ package cat.lafosca.smartcitizen.ui.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +20,12 @@ import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.NonUnderlindeClickableSpan;
 import cat.lafosca.smartcitizen.ui.activities.LoginActivity;
+import cat.lafosca.smartcitizen.ui.activities.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AccountPlaceholderFragment extends Fragment {
-
-    private static final int LOGIN_OK = 1001;
 
     @InjectView(R.id.account_placeholder_info)
     TextView mTextInfo;
@@ -90,12 +87,19 @@ public class AccountPlaceholderFragment extends Fragment {
     public void login() {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
 
-        startActivityForResult(intent, LOGIN_OK);
+        startActivityForResult(intent, LoginActivity.LOGIN_OK);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("activityResult", "requestCode "+requestCode+"\rresultCode "+resultCode);
+
+        //if (resultCode == Activity.RESULT_OK) { //resultCode == requestCode Why?
+            if (requestCode == LoginActivity.LOGIN_OK) {
+                //refresh viewpager adapte
+                if (getActivity() != null)
+                    ((MainActivity)getActivity()).refreshAccountView();
+            }
+        //}
     }
 }

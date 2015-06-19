@@ -5,6 +5,7 @@
     tools:context="cat.lafosca.smartcitizen.ui.fragments.AccountFragment">
 
     <TextView
+        android:id="@+id/account_text_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
