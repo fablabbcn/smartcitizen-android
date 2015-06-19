@@ -65,27 +65,46 @@
                 android:layout_height="0.5dp"
                 android:background="#E4E4E4" />
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/text_input_passw"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:paddingBottom="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
+                android:layout_height="wrap_content" >
 
-                <EditText
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_input_passw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#00000000"
-                    android:hint="@string/password"
-                    android:inputType="textPassword"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:singleLine="true" />
+                    android:layout_gravity="start|center_vertical"
+                    android:background="@android:color/white"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="8dp">
 
-            </android.support.design.widget.TextInputLayout>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/forgot_password_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginRight="16dp"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/forgot_passw"
+                    android:textColor="@color/forgot_passw_selector"
+                    android:textSize="17sp" />
+
+            </FrameLayout>
 
             <include
                 android:id="@+id/login_button"

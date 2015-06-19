@@ -25,5 +25,6 @@
     <!--Login-->
     <string name="password">Password</string>
     <string name="username">Username</string>
+    <string name="forgot_passw">I forgot it</string>
 
 </resources>

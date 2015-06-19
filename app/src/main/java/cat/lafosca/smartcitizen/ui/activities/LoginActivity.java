@@ -1,17 +1,15 @@
 package cat.lafosca.smartcitizen.ui.activities;
 
-import android.content.Context;
-import android.graphics.Typeface;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ScrollView;
+import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -21,6 +19,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @InjectView(R.id.text_input_name)
     TextInputLayout mTextInputLayoutName;
+
+    @InjectView(R.id.forgot_password_tv)
+    TextView mTvForgotPassw;
 
 //    @InjectView(R.id.scrollWrapper)
 //    ScrollView mScrollViewImageWrapper;
@@ -53,5 +54,13 @@ public class LoginActivity extends AppCompatActivity {
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(etName, InputMethodManager.SHOW_IMPLICIT);*/
+    }
+
+    @OnClick(R.id.forgot_password_tv)
+    public void userForgotPassw() {
+        String url = "http://i.imgur.com/0gUw5gH.gif";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 }
