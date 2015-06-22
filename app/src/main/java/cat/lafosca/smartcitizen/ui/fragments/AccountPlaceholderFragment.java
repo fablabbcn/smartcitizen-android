@@ -96,7 +96,6 @@ public class AccountPlaceholderFragment extends Fragment {
 
         //if (resultCode == Activity.RESULT_OK) { //resultCode == requestCode Why?
             if (requestCode == LoginActivity.LOGIN_OK) {
-                //refresh viewpager adapte
                 if (getActivity() != null)
                     ((MainActivity)getActivity()).refreshAccountView();
             }
