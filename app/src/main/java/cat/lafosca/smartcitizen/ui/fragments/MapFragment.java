@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -33,10 +35,14 @@ import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.KitsController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MapFragment extends Fragment implements KitsController.KitsControllerListener {
 
-    @InjectView(R.id.mapview) MapView mMapView;
+    private static final String TAG = MapFragment.class.getSimpleName();
+
+    @InjectView(R.id.mapview)   MapView mMapView;
 
     private LatLng userLocationPoint = new LatLng(41.394401, 2.197694); //barcelona todo: Remove this
 
@@ -178,5 +184,20 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
             mMapView.zoomToBoundingBox(bbn, true, true);
 
         }
+    }
+
+    @Override
+    public void onErrorGetKits(RetrofitError error) {
+        if (getActivity()!= null && this.isAdded())
+            Toast.makeText(getActivity(), "Error getting kits. Kind error: "+error.getKind().name(), Toast.LENGTH_LONG).show();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("ERROR " + error.getUrl() + " kind: " + error.getKind().name());
+        Response response = error.getResponse();
+        if (response != null) {
+            sb.append(response.getReason() +" "+ response.getStatus()+"\nBody: "+response.getBody().toString());
+        }
+
+        Log.e(TAG, sb.toString());
     }
 }

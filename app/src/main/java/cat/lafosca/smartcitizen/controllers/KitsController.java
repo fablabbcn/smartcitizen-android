@@ -1,5 +1,7 @@
 package cat.lafosca.smartcitizen.controllers;
 
+import android.util.Log;
+
 import java.util.List;
 
 import cat.lafosca.smartcitizen.model.rest.Device;
@@ -18,6 +20,7 @@ public class KitsController {
     //TODO: use event bus? listeners?
     public interface KitsControllerListener {
         void onGetKits(List<Device> devices);
+        void onErrorGetKits(RetrofitError error);
     }
 
     public static void getKits(final KitsControllerListener listener) {
@@ -31,7 +34,7 @@ public class KitsController {
 
             @Override
             public void failure(RetrofitError error) {
-
+                listener.onErrorGetKits(error);
             }
         });
     }
