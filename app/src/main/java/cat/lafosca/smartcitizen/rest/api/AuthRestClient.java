@@ -1,7 +1,7 @@
 package cat.lafosca.smartcitizen.rest.api;
 
+import cat.lafosca.smartcitizen.model.rest.CurrentUser;
 import retrofit.Callback;
-import retrofit.client.Response;
 import retrofit.http.GET;
 
 /**
@@ -10,5 +10,5 @@ import retrofit.http.GET;
 public interface AuthRestClient {
 
     @GET("/v0/me")
-    void getCurrentUser(Callback<Response> cb);
+    void getCurrentUser(Callback<CurrentUser> cb);
 }

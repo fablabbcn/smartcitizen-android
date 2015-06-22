@@ -3,6 +3,7 @@ package cat.lafosca.smartcitizen.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,14 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
+import cat.lafosca.smartcitizen.controllers.UserController;
+import cat.lafosca.smartcitizen.model.rest.CurrentUser;
+import retrofit.RetrofitError;
 
 
-public class AccountFragment extends Fragment {
+public class AccountFragment extends Fragment implements UserController.UserControllerListener{
+
+    private static final String TAG = AccountFragment.class.getSimpleName();
 
     @InjectView(R.id.account_text_info)
     TextView mTextInfo;
@@ -35,7 +41,7 @@ public class AccountFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_account, container, false);
         ButterKnife.inject(this, v);
-
+        UserController.getCurrentUserData(this);
         return v;
     }
 
@@ -49,5 +55,15 @@ public class AccountFragment extends Fragment {
         } else {
             mTextInfo.setText("User not logged in, but I shouldn't see it anyways...");
         }
+    }
+
+    @Override
+    public void onGetUserData(CurrentUser currentUser) {
+        Log.i(TAG, currentUser.toString());
+    }
+
+    @Override
+    public void onErrorGetUserData(RetrofitError error) {
+        Log.e(TAG, error.toString());
     }
 }
