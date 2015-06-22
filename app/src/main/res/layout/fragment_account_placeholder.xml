@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_background"
+    tools:context="cat.lafosca.smartcitizen.ui.fragments.AccountFragment">
+
+    <ImageView
+        android:id="@+id/account_placeholder_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="32dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/account_placeholder_background" />
+    <!---->
+
+    <TextView
+        android:id="@+id/account_placeholder_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/account_placeholder_info"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:text="@string/welcome"
+        android:textColor="@color/account_text_1"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/account_placeholder_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/account_placeholder_login"
+        android:layout_marginBottom="88dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:clickable="true"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:textColor="@color/account_text_1"
+        android:textSize="18sp"
+        tools:text="You need to log in to access to your\n Smartcitizen account. Step in or create your account." />
+
+    <include
+        layout="@layout/include_login_button"
+        android:id="@+id/account_placeholder_login"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

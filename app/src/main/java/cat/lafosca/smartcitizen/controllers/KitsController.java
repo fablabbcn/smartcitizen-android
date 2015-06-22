@@ -16,11 +16,11 @@ public class KitsController {
     //TODO: Decide: user reactive android or jobs (job queues)
 
     //TODO: use event bus? listeners?
-    public interface KitsControllerListenr {
-        public void onGetKits(List<Device> devices);
+    public interface KitsControllerListener {
+        void onGetKits(List<Device> devices);
     }
 
-    public static void getKits(final KitsControllerListenr listener) {
+    public static void getKits(final KitsControllerListener listener) {
         RestController.getRestClient().getAllDevices(new Callback<List<Device>>() {
             @Override
             public void success(List<Device> devices, Response response) {

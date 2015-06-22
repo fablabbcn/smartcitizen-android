@@ -2,6 +2,7 @@
     <string name="app_name">Smartcitizen-android</string>
     <string name="action_settings">Settings</string>
 
+    <!--map-->
     <string name="map_tab_title">browse</string>
     <string name="account_tab_title">account</string>
     <string name="gps_not_enabled">GPS is not enabled</string>
@@ -10,6 +11,22 @@
 
     <!--Activity labels-->
     <string name="title_activity_kit_detail">KitDetailActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <!--Kit detail-->
     <string name="kit_detail_title">KIT DETAIL</string>
+
+    <!--Account Placeholder-->
+    <string name="account_placeholder_info">You need to log in to access to your\n Smartcitizen account. Step in or</string>
+    <string name="account_placeholder_info_link">create your account.</string>
+    <string name="login">Login</string>
+    <string name="welcome">Welcome to Smartcitizen</string>
+
+    <!--Login-->
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="forgot_passw">I forgot it</string>
+    <string name="incorrect_login_format">Incorrect username or password</string>
+    <string name="generic_error">Something went wrong :(</string>
 
 </resources>

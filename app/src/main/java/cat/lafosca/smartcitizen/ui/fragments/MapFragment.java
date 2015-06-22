@@ -34,7 +34,7 @@ import cat.lafosca.smartcitizen.controllers.KitsController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
 
-public class MapFragment extends Fragment implements KitsController.KitsControllerListenr {
+public class MapFragment extends Fragment implements KitsController.KitsControllerListener {
 
     @InjectView(R.id.mapview) MapView mMapView;
 
