@@ -7,10 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
 import cat.lafosca.smartcitizen.controllers.UserController;
@@ -22,8 +26,23 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
     private static final String TAG = AccountFragment.class.getSimpleName();
 
-    @InjectView(R.id.account_text_info)
-    TextView mTextInfo;
+    @InjectView(R.id.userAvatar)
+    ImageView mAvatarView;
+
+    @InjectView(R.id.userName)
+    TextView mUserName;
+
+    @InjectView(R.id.userLocation)
+    TextView mUserLocation;
+
+    @InjectView(R.id.devices_label)
+    TextView mDevicesLabel;
+
+    @InjectView(R.id.devices_container)
+    LinearLayout mDevicesContainer;
+
+    @InjectView(R.id.button_view_all_kits)
+    Button bButtonViewKits;
 
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
@@ -46,18 +65,6 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if (SharedPreferencesController.getInstance().isUserLoggedIn()) {
-            mTextInfo.setText("User loged in\n"+"acces token "+SharedPreferencesController.getInstance().getUserToken());
-
-        } else {
-            mTextInfo.setText("User not logged in, but I shouldn't see it anyways...");
-        }
-    }
-
-    @Override
     public void onGetUserData(CurrentUser currentUser) {
         Log.i(TAG, currentUser.toString());
     }
@@ -65,5 +72,15 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     @Override
     public void onErrorGetUserData(RetrofitError error) {
         Log.e(TAG, error.toString());
+    }
+
+    @OnClick(R.id.button_contact_suport)
+    public void contactSupportTeam() {
+
+    }
+
+    @OnClick(R.id.button_logout)
+    public void logout() {
+
     }
 }

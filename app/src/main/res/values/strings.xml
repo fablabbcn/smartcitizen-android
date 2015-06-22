@@ -29,4 +29,9 @@
     <string name="incorrect_login_format">Incorrect username or password</string>
     <string name="generic_error">Something went wrong :(</string>
 
+    <!--Account-->
+    <string name="view_all_kits">VIEW ALL KITS</string>
+    <string name="contact_support_team">Contact support team</string>
+    <string name="logout">Log out</string>
+
 </resources>

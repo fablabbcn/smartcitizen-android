@@ -38,6 +38,13 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="AccountBaseText">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textColor">@color/account_text_1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">17sp</item>
         <item name="android:fontFamily">sans-serif-condensed</item>

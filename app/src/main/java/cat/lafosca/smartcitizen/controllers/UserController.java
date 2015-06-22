@@ -18,6 +18,7 @@ public class UserController {
 
     public static void getCurrentUserData(final UserControllerListener listener) {
 
+        //todo retrieve data from db before than the api
         RestController.getInstance().getAuthRestClient().getCurrentUser(new Callback<CurrentUser>() {
             @Override
             public void success(CurrentUser currentUser, Response response) {
