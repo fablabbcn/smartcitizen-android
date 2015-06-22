@@ -32,12 +32,19 @@ public class SharedPreferencesController {
 
     public boolean isUserLoggedIn() {
         SharedPreferences preferences = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        String token = preferences.getString("SP_TOKEN_KEY", "");
+        String token = preferences.getString(SP_TOKEN_KEY, "");
 
         return !TextUtils.isEmpty(token);
     }
 
-    //TODO
-    //public void setUserLoggedIn
+    public void setUserLoggedIn(String accesToken) {
+        SharedPreferences preferences = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        preferences.edit().putString(SP_TOKEN_KEY, accesToken).apply();
+    }
+
+    //make it part of the singleton instead of read it from shared preferences?
+    public String getUserToken() {
+        return mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).getString(SP_TOKEN_KEY, "");
+    }
 
 }

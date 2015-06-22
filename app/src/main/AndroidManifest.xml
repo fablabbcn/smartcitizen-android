@@ -28,10 +28,14 @@
         <activity
             android:name=".ui.activities.KitDetailActivity"
             android:label="@string/title_activity_kit_detail"
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.activities.LoginActivity"
+            android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
-            android:parentActivityName=".ui.activities.MainActivity" >
+            android:windowSoftInputMode="adjustResize">
         </activity>
-
     </application>
 
 </manifest>

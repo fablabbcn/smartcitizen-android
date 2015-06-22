@@ -16,8 +16,11 @@ import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.NonUnderlindeClickableSpan;
+import cat.lafosca.smartcitizen.ui.activities.LoginActivity;
+import cat.lafosca.smartcitizen.ui.activities.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,5 +83,23 @@ public class AccountPlaceholderFragment extends Fragment {
 
     }
 
+    @OnClick(R.id.account_placeholder_login)
+    public void login() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
 
+        startActivityForResult(intent, LoginActivity.LOGIN_OK);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //if (resultCode == Activity.RESULT_OK) { //resultCode == requestCode Why?
+            if (requestCode == LoginActivity.LOGIN_OK) {
+                //refresh viewpager adapte
+                if (getActivity() != null)
+                    ((MainActivity)getActivity()).refreshAccountView();
+            }
+        //}
+    }
 }
