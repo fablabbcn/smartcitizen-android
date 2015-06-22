@@ -1,6 +1,7 @@
 package cat.lafosca.smartcitizen.ui.fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.NonUnderlindeClickableSpan;
+import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
 import cat.lafosca.smartcitizen.ui.activities.LoginActivity;
 import cat.lafosca.smartcitizen.ui.activities.MainActivity;
 
@@ -94,11 +96,16 @@ public class AccountPlaceholderFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //if (resultCode == Activity.RESULT_OK) { //resultCode == requestCode Why?
+        if (resultCode == Activity.RESULT_CANCELED) {
+            return;
+
+        }else {
+            //if (resultCode == Activity.RESULT_OK) { //resultCode == requestCode Why?
             if (requestCode == LoginActivity.LOGIN_OK) {
-                if (getActivity() != null)
+                if (getActivity() != null && SharedPreferencesController.getInstance().isUserLoggedIn())
                     ((MainActivity)getActivity()).refreshAccountView();
             }
-        //}
+            //}
+        }
     }
 }
