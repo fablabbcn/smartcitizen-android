@@ -21,7 +21,7 @@ public class KitsController {
     }
 
     public static void getKits(final KitsControllerListener listener) {
-        RestController.getRestClient().getAllDevices(new Callback<List<Device>>() {
+        RestController.getInstance().getRestClient().getAllDevices(new Callback<List<Device>>() {
             @Override
             public void success(List<Device> devices, Response response) {
                 if (listener != null) {

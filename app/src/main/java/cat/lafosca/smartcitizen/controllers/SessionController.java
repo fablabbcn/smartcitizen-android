@@ -19,7 +19,7 @@ public class SessionController {
 
     public static void userWantsToLogin(final SessionControllerListener listener, String username, String passw) {
 
-        RestController.getRestClient().login(new UserAuth(username, passw), new Callback<LoginResponse>() {
+        RestController.getInstance().getRestClient().login(new UserAuth(username, passw), new Callback<LoginResponse>() {
             @Override
             public void success(LoginResponse loginResponse, Response response) {
                 SharedPreferencesController.getInstance().setUserLoggedIn(loginResponse.getAccesToken());
