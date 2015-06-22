@@ -5,6 +5,10 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.regex.Pattern;
+
+import cat.lafosca.smartcitizen.R;
+
 /**
  * Created by ferran on 03/06/15.
  */
@@ -72,6 +76,83 @@ public class Sensor implements Parcelable {
         dest.writeFloat(this.rawValue);
         dest.writeFloat(this.prevValue);
         dest.writeFloat(this.prevRawValue);
+    }
+
+
+    public String getPrettyName() {
+        String sensorName;
+
+        //Pattern pattern = Pattern.compile(Pattern.quote(getDescription()), Pattern.CASE_INSENSITIVE);
+        String description = getDescription().toLowerCase();
+
+        if (description.contains("custom circuit")) {
+            sensorName = getName();
+
+        } else {
+            if (description.contains("noise")) {
+                sensorName = "Sound";
+
+            } else if (description.contains("light")) {
+                sensorName = "Light";
+
+            } else if (description.contains("wifi")) {
+                sensorName = "Network";
+
+            } else if (description.contains("co")) {
+                sensorName = "Co";
+
+            } else if (description.contains("no2")) {
+                sensorName = "No2";
+
+            } else {
+                sensorName = getDescription();
+            }
+        }
+
+        return sensorName;
+    }
+
+    public int getIcon() {
+        int sensorIcon = 0;
+        switch (id) {
+            case 7:
+                sensorIcon = R.mipmap.ic_sensor_sound;
+                break;
+
+            case 12:
+                sensorIcon = R.mipmap.ic_sensor_temperature;
+                break;
+
+            case 13:
+                sensorIcon = R.mipmap.ic_sensor_humidity;
+                break;
+
+            case 14:
+                sensorIcon = R.mipmap.ic_sensor_light;
+                break;
+
+            case 15:
+                sensorIcon = R.mipmap.ic_sensor_no2;
+                break;
+
+            case 16:
+                sensorIcon = R.mipmap.ic_sensor_co;
+                break;
+
+            case 17:
+                sensorIcon = R.mipmap.ic_sensor_battery;
+                break;
+
+            case 18:
+                sensorIcon = R.mipmap.ic_sensor_solar_panel;
+                break;
+
+            case 21:
+                sensorIcon = R.mipmap.ic_sensor_net;
+                break;
+        }
+
+        return sensorIcon;
     }
 
     public Sensor() {

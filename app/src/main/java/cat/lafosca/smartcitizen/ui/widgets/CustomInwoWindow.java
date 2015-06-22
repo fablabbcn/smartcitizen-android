@@ -2,7 +2,6 @@ package cat.lafosca.smartcitizen.ui.widgets;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -38,17 +37,17 @@ public class CustomInwoWindow extends InfoWindow {
     @Override
     public void onOpen(Marker overlayItem) {
 
-        String name = mDevice.getName();
+        String name = mDevice.getDeviceInfo().getName();
         String kitName = mDevice.getKit().getName();
         kitName = kitName.toUpperCase();//xml doesn't work?
         String updatedAt = "";
         try {
-            updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getUpdatedAt());
+            updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getDeviceInfo()    .getUpdatedAt());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String location = mDevice.getData().getLocation().getCity();
-        String country = mDevice.getData().getLocation().getCountry();
+        String location = mDevice.getDeviceData().getLocation().getCity();
+        String country = mDevice.getDeviceData().getLocation().getCountry();
         if (country != null) {
             location += ", " + country;
         }

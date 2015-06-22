@@ -13,11 +13,13 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="top"
         android:background="@color/blue_smartcitizen"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/kit_detail_title" />
+        app:title="@string/kit_detail_title"
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
@@ -29,13 +31,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/kit_detail_header" />
+            <include
+                android:id="@+id/kit_detail_header"
+                layout="@layout/kit_detail_header" />
 
             <TextView
                 android:id="@+id/kit_detail_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:fontFamily="sans-serif-condensed"
                 android:padding="8dp"
+                android:textColor="@color/tag_text_color"
+                android:textSize="18sp"
                 tools:text="tag1 tag2" />
 
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
