@@ -40,17 +40,29 @@ public class RestController {
         mRestClient = baseBuilder.build().create(RestClient.class);
 
         //authentication
-        //todo if user is not loged in?
         final String acces_token = SharedPreferencesController.getInstance().getUserToken();
+        baseBuilder = createAuthRestBuilder(acces_token, baseBuilder);
+
+        mAuthRestClient = baseBuilder.build().create(AuthRestClient.class);
+    }
+
+    private RestAdapter.Builder createAuthRestBuilder(final String accessToken, RestAdapter.Builder baseBuilder) {
         baseBuilder.setRequestInterceptor(new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
                 request.addHeader("Content-Type", "application/json");
-                request.addHeader("Authorization", "Bearer "+acces_token);
+                request.addHeader("Authorization", "Bearer "+accessToken);
             }
         });
 
-        mAuthRestClient = baseBuilder.build().create(AuthRestClient.class);
+        return baseBuilder;
+    }
+
+    public void updateAuthRestController(String accessToken) {
+        RestAdapter.Builder builder = getBaseRestBuilder();
+
+        builder = createAuthRestBuilder(accessToken, builder);
+        mAuthRestClient = builder.build().create(AuthRestClient.class);
     }
 
     private RestAdapter.Builder getBaseRestBuilder() {

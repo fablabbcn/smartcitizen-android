@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.NonUnderlindeClickableSpan;
 import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
+import cat.lafosca.smartcitizen.rest.RestController;
 import cat.lafosca.smartcitizen.ui.activities.LoginActivity;
 import cat.lafosca.smartcitizen.ui.activities.MainActivity;
 
@@ -102,8 +103,11 @@ public class AccountPlaceholderFragment extends Fragment {
         }else {
             //if (resultCode == Activity.RESULT_OK) { //resultCode == requestCode Why?
             if (requestCode == LoginActivity.LOGIN_OK) {
-                if (getActivity() != null && SharedPreferencesController.getInstance().isUserLoggedIn())
-                    ((MainActivity)getActivity()).refreshAccountView();
+                String accessToken = SharedPreferencesController.getInstance().getUserToken();
+                if (getActivity() != null && !accessToken.isEmpty()) {
+                    RestController.getInstance().updateAuthRestController(accessToken);
+                    ((MainActivity) getActivity()).refreshAccountView();
+                }
             }
             //}
         }
