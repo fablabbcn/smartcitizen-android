@@ -14,8 +14,6 @@ public class SmartCitizenApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        RestController.init();
-
         SharedPreferencesController.getInstance().init(getApplicationContext());
     }
 }
