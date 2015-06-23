@@ -2,13 +2,13 @@ package cat.lafosca.smartcitizen.ui.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,10 +21,9 @@ import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.controllers.UserController;
 import cat.lafosca.smartcitizen.model.rest.CurrentUser;
-import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.DeviceInfo;
-import cat.lafosca.smartcitizen.model.rest.DeviceLocation;
 import cat.lafosca.smartcitizen.model.rest.UserLocation;
+import cat.lafosca.smartcitizen.ui.activities.AllUserDevicesActivity;
 import cat.lafosca.smartcitizen.ui.widgets.KitView;
 import retrofit.RetrofitError;
 
@@ -49,7 +48,9 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     LinearLayout mDevicesContainer;
 
     @InjectView(R.id.button_view_all_kits)
-    Button bButtonViewKits;
+    TextView bButtonViewKits;
+
+    private CurrentUser mUserData;
 
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
@@ -74,8 +75,11 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     @Override
     public void onGetUserData(CurrentUser currentUser) { //TODO fix this
         //Log.i(TAG, currentUser.toString());
-        setUpProfileData(currentUser);
-        setUpDevicesData(currentUser);
+
+        mUserData = currentUser;
+
+        setUpProfileData();
+        setUpDevicesData();
     }
 
     @Override
@@ -83,31 +87,31 @@ public class AccountFragment extends Fragment implements UserController.UserCont
         Log.e(TAG, error.toString());
     }
 
-    private void setUpProfileData(CurrentUser currentUser) {
-        mUserName.setText(currentUser.getUsername());
+    private void setUpProfileData() {
+        mUserName.setText(mUserData.getUsername());
 
-        UserLocation location = currentUser.getLocation();
+        UserLocation location = mUserData.getLocation();
         if (location != null && location.getCity() != null && location.getCountry() != null) {
             mUserLocation.setText(location.getCity() + ", " + location.getCountry());
         } else {
             mUserLocation.setVisibility(View.GONE);
         }
 
-        if (currentUser.getAvatar() != null) {
+        if (mUserData.getAvatar() != null) {
             //TODO Picasso
             //mAvatarView.setImage
         }
     }
 
-    private void setUpDevicesData(CurrentUser currentUser) {
-        List<DeviceInfo> devices = currentUser.getDevices();
+    private void setUpDevicesData() {
+        List<DeviceInfo> devices = mUserData.getDevices();
 
         if (devices == null || devices.size() == 0) {
             mDevicesLabel.setVisibility(View.GONE);
             mDevicesContainer.setVisibility(View.GONE);
 
         } else {
-            String deviceLabel = getString(R.string.device_owner_label, currentUser.getUsername());
+            String deviceLabel = getString(R.string.device_owner_label, mUserData.getUsername());
             deviceLabel.toUpperCase();
             mDevicesLabel.setText(deviceLabel);
 
@@ -151,5 +155,11 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     @OnClick(R.id.button_logout)
     public void logout() {
 
+    }
+
+    @OnClick(R.id.button_view_all_kits)
+    public void goToAllKits() {
+        Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData);
+        startActivity(intent);
     }
 }

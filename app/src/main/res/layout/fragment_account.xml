@@ -76,10 +76,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <Button
+                <TextView
+                    android:padding="16dp"
+                    android:gravity="center"
                     android:id="@+id/button_view_all_kits"
                     style="@style/AccountBaseText"
-                    android:background="#F4F4F4"
+                    android:background="@drawable/button_account"
                     android:text="@string/view_all_kits" />
             </LinearLayout>
 
