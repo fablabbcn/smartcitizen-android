@@ -39,6 +39,14 @@ public class User implements Parcelable {
     public String getUsername() {
         return username;
     }
+
+    public UserLocation getLocation() {
+        return location;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
     //GETTERS AND SETTERS
 
     @Override

@@ -1,7 +1,5 @@
 package cat.lafosca.smartcitizen.model.rest;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +8,11 @@ import java.util.List;
  */
 public class CurrentUser extends User {
 
-    private List<Device> devices = new ArrayList<Device>();
+    //currently, "/v0/me" returns another format for DeviceInfo data (missing : latitude (float), longitude (float), kit_id (int)
+    private List<DeviceInfo> devices = new ArrayList<DeviceInfo>();
 
     //GETTER
-    public List<Device> getDevices() {
+    public List<DeviceInfo> getDevices() {
         return devices;
     }
 }

@@ -97,26 +97,25 @@
             android:layout_marginTop="24dp"
             android:textSize="14sp" />
 
-        <Button
+        <TextView
             android:id="@+id/button_contact_suport"
             style="@style/AccountBaseText"
             android:textAllCaps="false"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="16dp"
+            android:padding="16dp"
             android:textSize="17sp"
             android:text="@string/contact_support_team"
             android:background="@drawable/button_account" />
-        <View
-            android:background="@color/separator"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"/>
 
-        <Button
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/separator" />
+
+        <TextView
             android:id="@+id/button_logout"
             style="@style/AccountBaseText"
             android:textAllCaps="false"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="16dp"
+            android:padding="16dp"
             android:textSize="17sp"
             android:text="@string/logout"
             android:background="@drawable/button_account" />

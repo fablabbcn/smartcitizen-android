@@ -33,5 +33,6 @@
     <string name="view_all_kits">VIEW ALL KITS</string>
     <string name="contact_support_team">Contact support team</string>
     <string name="logout">Log out</string>
+    <string name="device_owner_label">%1$s\'s kits</string>
 
 </resources>

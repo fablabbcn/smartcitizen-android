@@ -17,6 +17,16 @@ public class UserLocation implements Parcelable {
     @SerializedName("country_code")
     private String countryCode;
 
+    //GETTERS
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+    //GETTERS
+
     @Override
     public int describeContents() {
         return 0;
