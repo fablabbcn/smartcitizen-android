@@ -180,7 +180,8 @@ public class KitDetailActivity extends AppCompatActivity {
                 Sensor sensor = sensors.get(i);
 
                 SensorView sensorView = new SensorView(this);
-                sensorView.setSensoViewrName(sensor.getPrettyName(), sensor.getIcon());
+                String prettyName = sensor.getPrettyName();
+                sensorView.setSensoViewrName(sensor.getPrettyName(), sensor.getIcon(prettyName));
                 float sensorValue = sensor.getValue();
                 //String.format("%.2f", floatValue);
                 sensorView.setSensorValue(String.format("%.1f", sensorValue) + " " + sensor.getUnit());
