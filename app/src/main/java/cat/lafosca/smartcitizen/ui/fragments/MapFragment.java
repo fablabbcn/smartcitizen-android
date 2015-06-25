@@ -32,13 +32,13 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
-import cat.lafosca.smartcitizen.controllers.KitsController;
+import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MapFragment extends Fragment implements KitsController.KitsControllerListener {
+public class MapFragment extends Fragment implements DeviceController.DeviceControllerListener {
 
     private static final String TAG = MapFragment.class.getSimpleName();
 
@@ -89,7 +89,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
                 18 // min zoom level
         );
 
-        KitsController.getKits(this);//call in onCreate ?
+        DeviceController.getAllDevices(this);//call in onCreate ?
 
         return view;
     }
@@ -148,7 +148,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
 
     //todo Remove/refactor
     @Override
-    public void onGetKits(List<Device> devices) {
+    public void onGetDevices(List<Device> devices) {
         int numOfDevices = devices.size();
         if (numOfDevices > 0) {
 
@@ -187,7 +187,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
     }
 
     @Override
-    public void onErrorGetKits(RetrofitError error) {
+    public void onErrorGetDevices(RetrofitError error) {
         if (getActivity()!= null && this.isAdded())
             Toast.makeText(getActivity(), "Error getting kits. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
 

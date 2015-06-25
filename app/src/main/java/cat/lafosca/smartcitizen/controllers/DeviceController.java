@@ -1,7 +1,5 @@
 package cat.lafosca.smartcitizen.controllers;
 
-import android.util.Log;
-
 import java.util.List;
 
 import cat.lafosca.smartcitizen.model.rest.Device;
@@ -13,28 +11,28 @@ import retrofit.client.Response;
 /**
  * Created by ferran on 04/06/15.
  */
-public class KitsController {
+public class DeviceController {
 
     //TODO: Decide: user reactive android or jobs (job queues)
 
     //TODO: use event bus? listeners?
-    public interface KitsControllerListener {
-        void onGetKits(List<Device> devices);
-        void onErrorGetKits(RetrofitError error);
+    public interface DeviceControllerListener {
+        void onGetDevices(List<Device> devices);
+        void onErrorGetDevices(RetrofitError error);
     }
 
-    public static void getKits(final KitsControllerListener listener) {
+    public static void getAllDevices(final DeviceControllerListener listener) {
         RestController.getInstance().getRestClient().getAllDevices(new Callback<List<Device>>() {
             @Override
             public void success(List<Device> devices, Response response) {
                 if (listener != null) {
-                    listener.onGetKits(devices);
+                    listener.onGetDevices(devices);
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                listener.onErrorGetKits(error);
+                listener.onErrorGetDevices(error);
             }
         });
     }
