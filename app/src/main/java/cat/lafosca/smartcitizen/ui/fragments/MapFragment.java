@@ -189,7 +189,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
     @Override
     public void onErrorGetKits(RetrofitError error) {
         if (getActivity()!= null && this.isAdded())
-            Toast.makeText(getActivity(), "Error getting kits. Kind error: "+error.getKind().name(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Error getting kits. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
 
         StringBuilder sb = new StringBuilder();
         sb.append("ERROR " + error.getUrl() + " kind: " + error.getKind().name());

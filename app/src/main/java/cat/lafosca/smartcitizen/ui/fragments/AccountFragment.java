@@ -48,9 +48,11 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     LinearLayout mDevicesContainer;
 
     @InjectView(R.id.button_view_all_kits)
-    TextView bButtonViewKits;
+    TextView mButtonViewKits;
 
     private CurrentUser mUserData;
+
+    private final int MAX_DEVICES = 3;
 
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
@@ -115,10 +117,10 @@ public class AccountFragment extends Fragment implements UserController.UserCont
             deviceLabel.toUpperCase();
             mDevicesLabel.setText(deviceLabel);
 
-            int maxDevices = (devices.size() > 3) ? 3 : devices.size();
+            int maxDevices = (devices.size() > MAX_DEVICES) ? MAX_DEVICES : devices.size();
 
             Context ctx = getActivity();
-            for (int i = 0; i < maxDevices; i++) {
+            for (int i = maxDevices - 1; i >= 0; i--) {
                 KitView kitView = new KitView(ctx);
 
                 DeviceInfo device = devices.get(i);
@@ -143,6 +145,12 @@ public class AccountFragment extends Fragment implements UserController.UserCont
                 mDevicesContainer.addView(kitView, 0);
             }
 
+            if (devices.size() <= MAX_DEVICES) {
+                mButtonViewKits.setVisibility(View.GONE);
+            } else {
+                mButtonViewKits.setVisibility(View.VISIBLE);
+            }
+
         }
 
     }
@@ -159,7 +167,9 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
     @OnClick(R.id.button_view_all_kits)
     public void goToAllKits() {
-        Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData);
-        startActivity(intent);
+        if (mUserData != null && mUserData.getDevices()!= null && mUserData.getDevices().size() > 0) {
+            Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData);
+            startActivity(intent);
+        }
     }
 }
