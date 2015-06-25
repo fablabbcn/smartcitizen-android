@@ -106,7 +106,7 @@ public class AccountPlaceholderFragment extends Fragment {
                 String accessToken = SharedPreferencesController.getInstance().getUserToken();
                 if (getActivity() != null && !accessToken.isEmpty()) {
                     RestController.getInstance().updateAuthRestController(accessToken);
-                    ((MainActivity) getActivity()).refreshAccountView();
+                    ((MainActivity) getActivity()).refreshAccountView(true);
                 }
             }
             //}
