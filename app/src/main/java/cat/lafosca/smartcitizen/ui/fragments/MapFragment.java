@@ -154,7 +154,7 @@ public class MapFragment extends Fragment implements DeviceController.DeviceCont
 
             List<Marker> markers = new ArrayList<Marker>();
             List<LatLng> positions = new ArrayList<LatLng>();
-            //Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.custom_marker);
+            Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.marker);
             if (mMapView.isUserLocationVisible() && mMapView.getUserLocationEnabled()) {
                 userLocationPoint = mMapView.getUserLocation();
             }
@@ -167,8 +167,8 @@ public class MapFragment extends Fragment implements DeviceController.DeviceCont
                     if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
                         positions.add(position);
                         Marker marker = new Marker(mMapView, device.getDeviceInfo().getName(), " ", position);
-                        //marker.setMarker(customMarkerDrawable);
-                        marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
+                        marker.setMarker(customMarkerDrawable);
+                        //marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
                         //marker.getToolTip(mMapView);
                         //marker.setToolTip();
                         marker.setToolTip( new CustomInwoWindow(mMapView, device, getActivity()));
