@@ -34,6 +34,12 @@ public class Kit implements Parcelable {
         return description;
     }
 
+
+    public String getSlug() {
+        return slug;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;

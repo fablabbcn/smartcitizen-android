@@ -3,6 +3,7 @@ package cat.lafosca.smartcitizen.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
 import cat.lafosca.smartcitizen.controllers.UserController;
@@ -147,7 +149,8 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
                     kitView.setTag(device.getId());
 
-                    kitView.setKitsData(device.getName(), "loading info", 0);
+                    Drawable drawable = Utils.getDrawable(getActivity(), R.drawable.device_icon);//do it outside the foor loop?
+                    kitView.setKitsData(device.getName(), "loading info", drawable);
 
                     mDevicesContainer.addView(kitView, 0);
                 }
@@ -197,7 +200,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
         View view = mDevicesContainer.findViewWithTag(device.getDeviceInfo().getId());
         if (view instanceof KitView) {
             ((KitView)view).updateLocationText(device.getDeviceData().getLocation().getPrettyLocation());
-            
+            ((KitView)view).updateTitleColor(device.getKit().getSlug());
         }
 
         if (mDevicesInfo != null)

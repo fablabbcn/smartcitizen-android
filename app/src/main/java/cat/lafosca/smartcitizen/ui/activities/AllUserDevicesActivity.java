@@ -2,6 +2,7 @@ package cat.lafosca.smartcitizen.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.DeviceInfo;
 import cat.lafosca.smartcitizen.ui.widgets.KitView;
@@ -57,7 +59,9 @@ public class AllUserDevicesActivity extends AppCompatActivity {
             String name = device.getName();
             String location = devicesData.get(i).getDeviceData().getLocation().getPrettyLocation();
 
-            kitView.setKitsData(name, location, 0);
+            Drawable drawable = Utils.getDrawable(this, R.drawable.device_icon);//do it outside the foor loop?
+            kitView.setKitsData(name, location, drawable);
+            kitView.updateTitleColor(devicesData.get(i).getKit().getSlug());
 
             /*if (i == devicesSize - 1) {
                 kitView.findViewById(R.id.kit_row_separator).setVisibility(View.GONE);
