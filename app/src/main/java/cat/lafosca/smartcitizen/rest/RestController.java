@@ -1,6 +1,7 @@
 package cat.lafosca.smartcitizen.rest;
 
 import com.google.gson.Gson;
+import com.squareup.okhttp.OkHttpClient;
 
 import cat.lafosca.smartcitizen.BuildConfig;
 import cat.lafosca.smartcitizen.commons.Constants;
@@ -9,6 +10,7 @@ import cat.lafosca.smartcitizen.rest.api.AuthRestClient;
 import cat.lafosca.smartcitizen.rest.api.RestClient;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
@@ -69,11 +71,12 @@ public class RestController {
 
         RestAdapter.LogLevel logLevel = (BuildConfig.DEBUG) ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
 
-        RestAdapter.Builder builder = new RestAdapter.Builder();
-
-        builder.setEndpoint(Constants.URL_BASE);
-        builder.setConverter(new GsonConverter(new Gson()));
-        builder.setLogLevel(logLevel);
+        RestAdapter.Builder builder =
+                new RestAdapter.Builder()
+                .setEndpoint(Constants.URL_BASE)
+                .setConverter(new GsonConverter(new Gson()))
+                .setClient(new OkClient(new OkHttpClient()))
+                .setLogLevel(logLevel);
         /*builder.setErrorHandler(new ErrorHandler() {
             @Override
             public Throwable handleError(RetrofitError cause) {
