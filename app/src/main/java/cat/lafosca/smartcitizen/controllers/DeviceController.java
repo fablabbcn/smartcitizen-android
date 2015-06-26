@@ -1,5 +1,7 @@
 package cat.lafosca.smartcitizen.controllers;
 
+import android.util.Log;
+
 import java.util.List;
 
 import cat.lafosca.smartcitizen.model.rest.Device;
@@ -13,12 +15,12 @@ import retrofit.client.Response;
  */
 public class DeviceController {
 
-    //TODO: Decide: user reactive android or jobs (job queues)
-
-    //TODO: use event bus? listeners?
+    //TODO implement another solution? multiple interfaces? For every new method in the controller, we should add two methods (success and error) to this interface
     public interface DeviceControllerListener {
         void onGetDevices(List<Device> devices);
-        void onErrorGetDevices(RetrofitError error);
+        void onGetDevicesError(RetrofitError error);
+        void onGetDevice(Device device);
+        void onGetDeviceError(RetrofitError error);
     }
 
     public static void getAllDevices(final DeviceControllerListener listener) {
@@ -32,7 +34,23 @@ public class DeviceController {
 
             @Override
             public void failure(RetrofitError error) {
-                listener.onErrorGetDevices(error);
+                listener.onGetDevicesError(error);
+            }
+        });
+    }
+
+    public static void getDevice(int deviceId, final DeviceControllerListener listener) {
+        RestController.getInstance().getRestClient().getDevice(deviceId, new Callback<Device>() {
+            @Override
+            public void success(Device device, Response response) {
+                if (listener != null) {
+                    listener.onGetDevice(device);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                listener.onGetDeviceError(error);
             }
         });
     }

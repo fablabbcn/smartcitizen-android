@@ -41,6 +41,10 @@ public class DeviceInfo implements Parcelable {
         return status;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
