@@ -42,4 +42,8 @@ public class KitView extends LinearLayout {
         mKitLocation.setText(location);
         //mSensorName.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
     }
+
+    public void updateLocationText(String location) {
+        mKitLocation.setText(location);
+    }
 }

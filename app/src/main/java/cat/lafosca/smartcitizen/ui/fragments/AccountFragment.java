@@ -13,15 +13,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
 import cat.lafosca.smartcitizen.controllers.UserController;
 import cat.lafosca.smartcitizen.model.rest.CurrentUser;
+import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.DeviceInfo;
 import cat.lafosca.smartcitizen.model.rest.UserLocation;
 import cat.lafosca.smartcitizen.ui.activities.AllUserDevicesActivity;
@@ -30,7 +35,7 @@ import cat.lafosca.smartcitizen.ui.widgets.KitView;
 import retrofit.RetrofitError;
 
 
-public class AccountFragment extends Fragment implements UserController.UserControllerListener{
+public class AccountFragment extends Fragment implements UserController.UserControllerListener, DeviceController.DeviceControllerListener{
 
     private static final String TAG = AccountFragment.class.getSimpleName();
 
@@ -53,6 +58,9 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     TextView mButtonViewKits;
 
     private CurrentUser mUserData;
+
+    //this map contains full device info associated to the user ("/v0/devices/{device_id}" contains more device info than "/v0/me"
+    private Map mDevicesInfo;
 
     private final int MAX_DEVICES = 3;
 
@@ -77,7 +85,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     }
 
     @Override
-    public void onGetUserData(CurrentUser currentUser) { //TODO fix this
+    public void onGetUserData(CurrentUser currentUser) {
         //Log.i(TAG, currentUser.toString());
 
         mUserData = currentUser;
@@ -110,6 +118,11 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     private void setUpDevicesData() {
         List<DeviceInfo> devices = mUserData.getDevices();
 
+        mDevicesInfo = new HashMap(devices.size());
+
+        //test
+        //devices = devices.subList(0, 2);
+
         if (devices == null || devices.size() == 0) {
             mDevicesLabel.setVisibility(View.GONE);
             mDevicesContainer.setVisibility(View.GONE);
@@ -122,29 +135,24 @@ public class AccountFragment extends Fragment implements UserController.UserCont
             int maxDevices = (devices.size() > MAX_DEVICES) ? MAX_DEVICES : devices.size();
 
             Context ctx = getActivity();
-            for (int i = maxDevices - 1; i >= 0; i--) {
-                KitView kitView = new KitView(ctx);
+            //for (int i = maxDevices - 1; i >= 0; i--) {
+            for (int i = devices.size() - 1; i >= 0; i--) {
 
-                DeviceInfo device = devices.get(i);
+                //add to the preview list
+                if (i < maxDevices) {
 
-                //not location at this moment
-                /*StringBuilder sb = new StringBuilder();
-                DeviceLocation location = device.getDeviceData().getLocation();
-                if (location != null) {
-                    sb.append(device.getDeviceData().getLocation().getCity());
-                    sb.append(", "+device.getDeviceData().getLocation().getCountry());
+                    KitView kitView = new KitView(ctx);
+
+                    DeviceInfo device = devices.get(i);
+
+                    kitView.setTag(device.getId());
+
+                    kitView.setKitsData(device.getName(), "loading info", 0);
+
+                    mDevicesContainer.addView(kitView, 0);
                 }
 
-                kitView.setKitsData(devices.get(i).getKit().getName(), sb.toString(), 0);*/
-
-                kitView.setKitsData(device.getName(), "location", 0);
-
-
-                /*if (i == maxDevices - 1) {
-                    kitView.findViewById(R.id.kit_row_separator).setVisibility(View.GONE);
-                }*/
-
-                mDevicesContainer.addView(kitView, 0);
+                DeviceController.getDevice(mUserData.getDevices().get(i).getId(), this);
             }
 
             if (devices.size() <= MAX_DEVICES) {
@@ -171,8 +179,33 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     @OnClick(R.id.button_view_all_kits)
     public void goToAllKits() {
         if (mUserData != null && mUserData.getDevices()!= null && mUserData.getDevices().size() > 0) {
-            Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData);
+            ArrayList<Device> devices = new ArrayList<>(mDevicesInfo.values());
+            Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData.getUsername(), devices);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onGetDevices(List<Device> devices) {}
+
+    @Override
+    public void onGetDevicesError(RetrofitError error) {}
+
+    @Override
+    public void onGetDevice(Device device) {
+
+        View view = mDevicesContainer.findViewWithTag(device.getDeviceInfo().getId());
+        if (view instanceof KitView) {
+            ((KitView)view).updateLocationText(device.getDeviceData().getLocation().getPrettyLocation());
+            
+        }
+
+        if (mDevicesInfo != null)
+            mDevicesInfo.put(device.getDeviceInfo().getId(), device);
+    }
+
+    @Override
+    public void onGetDeviceError(RetrofitError error) {
+
     }
 }

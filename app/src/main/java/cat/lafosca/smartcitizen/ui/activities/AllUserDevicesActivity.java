@@ -6,28 +6,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
-import cat.lafosca.smartcitizen.model.rest.CurrentUser;
+import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.DeviceInfo;
 import cat.lafosca.smartcitizen.ui.widgets.KitView;
 
 public class AllUserDevicesActivity extends AppCompatActivity {
 
-    public static Intent getCallingIntent(Context context, CurrentUser userData) {
+    public static Intent getCallingIntent(Context context, String userName, ArrayList<Device> devicesInfoMap) {
         Intent intent = new Intent(context, AllUserDevicesActivity.class);
-        intent.putExtra("userData", userData);
+        intent.putParcelableArrayListExtra("devicesInfo", devicesInfoMap);
+        intent.putExtra("userName", userName);
         return intent;
     }
 
-    private CurrentUser mUserData;
+    //private CurrentUser mUserData;
 
     @InjectView(R.id.devices_container)
     LinearLayout mContainer;
@@ -37,11 +36,11 @@ public class AllUserDevicesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_user_devices);
 
-        mUserData = getIntent().getParcelableExtra("userData");
+        ArrayList<Device> devicesData = getIntent().getParcelableArrayListExtra("devicesInfo");
 
         ButterKnife.inject(this);
 
-        String toolbarTitle = getString(R.string.device_owner_label, mUserData.getUsername());
+        String toolbarTitle = getString(R.string.device_owner_label, getIntent().getStringExtra("userName"));
         toolbarTitle.toUpperCase();
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -49,14 +48,16 @@ public class AllUserDevicesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        int devicesSize = mUserData.getDevices().size();
+        int devicesSize = devicesData.size();
         for (int i = 0; i < devicesSize; i++) {
             KitView kitView = new KitView(this);
 
-            DeviceInfo device = mUserData.getDevices().get(i);
+            DeviceInfo device = devicesData.get(i).getDeviceInfo();
 
-            kitView.setKitsData(device.getName(), "location", 0);
+            String name = device.getName();
+            String location = devicesData.get(i).getDeviceData().getLocation().getPrettyLocation();
 
+            kitView.setKitsData(name, location, 0);
 
             /*if (i == devicesSize - 1) {
                 kitView.findViewById(R.id.kit_row_separator).setVisibility(View.GONE);

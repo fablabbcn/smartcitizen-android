@@ -51,6 +51,13 @@ public class DeviceLocation implements Parcelable {
         return exposure;
     }
 
+    public String getPrettyLocation() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getCity());
+        sb.append(", "+getCountry());
+        return sb.toString();
+    }
+
     @Override
     public int describeContents() {
         return 0;

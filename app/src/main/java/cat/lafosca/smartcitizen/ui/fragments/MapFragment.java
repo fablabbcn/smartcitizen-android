@@ -187,7 +187,7 @@ public class MapFragment extends Fragment implements DeviceController.DeviceCont
     }
 
     @Override
-    public void onErrorGetDevices(RetrofitError error) {
+    public void onGetDevicesError(RetrofitError error) {
         if (getActivity()!= null && this.isAdded())
             Toast.makeText(getActivity(), "Error getting kits. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
 
@@ -199,5 +199,13 @@ public class MapFragment extends Fragment implements DeviceController.DeviceCont
         }
 
         Log.e(TAG, sb.toString());
+    }
+
+    @Override
+    public void onGetDevice(Device device) {
+    }
+
+    @Override
+    public void onGetDeviceError(RetrofitError error) {
     }
 }
