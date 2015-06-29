@@ -5,7 +5,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 import cat.lafosca.smartcitizen.BuildConfig;
 import cat.lafosca.smartcitizen.commons.Constants;
-import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
+import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
 import cat.lafosca.smartcitizen.rest.api.AuthRestClient;
 import cat.lafosca.smartcitizen.rest.api.RestClient;
 import retrofit.RequestInterceptor;
@@ -42,7 +42,7 @@ public class RestController {
         mRestClient = baseBuilder.build().create(RestClient.class);
 
         //authentication
-        final String acces_token = SharedPreferencesController.getInstance().getUserToken();
+        final String acces_token = SharedPreferencesManager.getInstance().getUserToken();
         baseBuilder = createAuthRestBuilder(acces_token, baseBuilder);
 
         mAuthRestClient = baseBuilder.build().create(AuthRestClient.class);

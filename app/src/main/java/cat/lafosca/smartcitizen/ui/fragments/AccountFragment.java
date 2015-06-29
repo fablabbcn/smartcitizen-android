@@ -25,7 +25,7 @@ import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
-import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
+import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
 import cat.lafosca.smartcitizen.controllers.UserController;
 import cat.lafosca.smartcitizen.model.rest.CurrentUser;
 import cat.lafosca.smartcitizen.model.rest.Device;
@@ -174,7 +174,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
     @OnClick(R.id.button_logout)
     public void logout() {
-        SharedPreferencesController.getInstance().setUserLoggedIn("");
+        SharedPreferencesManager.getInstance().setUserLoggedIn("");
         ((MainActivity)getActivity()).refreshAccountView(false);
     }
 

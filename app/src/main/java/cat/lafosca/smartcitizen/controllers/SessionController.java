@@ -1,5 +1,6 @@
 package cat.lafosca.smartcitizen.controllers;
 
+import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
 import cat.lafosca.smartcitizen.model.rest.UserAuth;
 import cat.lafosca.smartcitizen.rest.RestController;
 import cat.lafosca.smartcitizen.rest.response.LoginResponse;
@@ -22,7 +23,7 @@ public class SessionController {
         RestController.getInstance().getRestClient().login(new UserAuth(username, passw), new Callback<LoginResponse>() {
             @Override
             public void success(LoginResponse loginResponse, Response response) {
-                SharedPreferencesController.getInstance().setUserLoggedIn(loginResponse.getAccesToken());
+                SharedPreferencesManager.getInstance().setUserLoggedIn(loginResponse.getAccesToken());
 
                 listener.onLoginSucces();
 

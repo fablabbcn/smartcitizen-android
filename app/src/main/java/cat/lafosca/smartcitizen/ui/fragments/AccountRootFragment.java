@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cat.lafosca.smartcitizen.R;
-import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
+import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
 
 /**
  * Created by ferran on 19/06/15.
@@ -31,7 +31,7 @@ public class AccountRootFragment extends Fragment {
 		/*
 		 * When this container fragment is created, we fill it with a fragment depending on user session
 		 */
-        Fragment accountFragment = (SharedPreferencesController.getInstance().isUserLoggedIn()) ? AccountFragment.newInstance() : AccountPlaceholderFragment.newInstance();
+        Fragment accountFragment = (SharedPreferencesManager.getInstance().isUserLoggedIn()) ? AccountFragment.newInstance() : AccountPlaceholderFragment.newInstance();
 
         transaction.replace(R.id.root_frame, accountFragment);
 

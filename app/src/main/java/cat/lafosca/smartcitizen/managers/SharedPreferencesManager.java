@@ -1,4 +1,4 @@
-package cat.lafosca.smartcitizen.controllers;
+package cat.lafosca.smartcitizen.managers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,19 +7,19 @@ import android.text.TextUtils;
 /**
  * Created by ferran on 16/06/15.
  */
-public class SharedPreferencesController {
+public class SharedPreferencesManager {
 
     private final String SHARED_PREFS = "smart-citizen";
 
     private final String SP_TOKEN_KEY = "token";
 
-    private static SharedPreferencesController ourInstance = new SharedPreferencesController();
+    private static SharedPreferencesManager ourInstance = new SharedPreferencesManager();
 
-    public static SharedPreferencesController getInstance() {
+    public static SharedPreferencesManager getInstance() {
         return ourInstance;
     }
 
-    private SharedPreferencesController() {
+    private SharedPreferencesManager() {
     }
 
     private Context mContext;
