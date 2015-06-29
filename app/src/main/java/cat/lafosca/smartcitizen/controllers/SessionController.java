@@ -14,7 +14,7 @@ public class SessionController {
 
     public interface SessionControllerListener {
         void onLoginSucces();
-        void onLoginError();
+        void onLoginError(RetrofitError error);
     }
 
     public static void userWantsToLogin(final SessionControllerListener listener, String username, String passw) {
@@ -32,7 +32,7 @@ public class SessionController {
             public void failure(RetrofitError error) {
 
                 //TODO error.getBodyAs()
-                listener.onLoginError();
+                listener.onLoginError(error);
             }
         });
     }

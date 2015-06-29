@@ -17,6 +17,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.controllers.SessionController;
+import retrofit.RetrofitError;
 
 public class LoginActivity extends AppCompatActivity implements SessionController.SessionControllerListener {
 
@@ -90,8 +91,20 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
     }
 
     @Override
-    public void onLoginError() {
+    public void onLoginError(RetrofitError error) {
         mProgress.setVisibility(View.GONE);
+        if (error.getResponse()!= null) {
+            int status = error.getResponse().getStatus();
+
+            //wrong username    / wrong passw -> 404
+            //wrong username    / correct passw -> 404
+            //correct username  / wrong passw -> 422
+
+            if (status == 422 || status == 404) {
+                Toast.makeText(this, getString(R.string.incorrect_login), Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
         Toast.makeText(this, getString(R.string.generic_error), Toast.LENGTH_LONG).show();
     }
 }
