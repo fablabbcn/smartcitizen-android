@@ -113,7 +113,8 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
 
     }
 
-    @OnClick(R.id.userLocationButton) void submit() {
+    @OnClick(R.id.userLocationButton)
+    void GoToUserLocation() {
 
         if (Utils.isGPSEnabled(getActivity()) || mMapView.getUserLocation() != null) {
             if (!mMapView.isUserLocationVisible() && mMapView.getUserLocation()!=null) {
