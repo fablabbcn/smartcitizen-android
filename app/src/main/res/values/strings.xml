@@ -12,6 +12,7 @@
     <!--Activity labels-->
     <string name="title_activity_kit_detail">KitDetailActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_all_user_devices">AllUserDevices</string>
 
     <!--Kit detail-->
     <string name="kit_detail_title">KIT DETAIL</string>
@@ -26,7 +27,14 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="forgot_passw">I forgot it</string>
-    <string name="incorrect_login_format">Incorrect username or password</string>
+    <string name="incorrect_login_format">Username and password must be filled</string>
+    <string name="incorrect_login">Incorrect username or password</string>
     <string name="generic_error">Something went wrong :(</string>
+
+    <!--Account-->
+    <string name="view_all_kits">VIEW ALL KITS</string>
+    <string name="contact_support_team">Contact support team</string>
+    <string name="logout">Log out</string>
+    <string name="device_owner_label">%1$s\'s kits</string>
 
 </resources>

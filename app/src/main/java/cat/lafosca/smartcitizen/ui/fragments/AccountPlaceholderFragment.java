@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.NonUnderlindeClickableSpan;
 import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
+import cat.lafosca.smartcitizen.rest.RestController;
 import cat.lafosca.smartcitizen.ui.activities.LoginActivity;
 import cat.lafosca.smartcitizen.ui.activities.MainActivity;
 
@@ -70,7 +71,7 @@ public class AccountPlaceholderFragment extends Fragment {
                 stringFormatted.length(), //end
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        String url = "http://katborealis.com/wp/wp-content/uploads/2014/09/12702-first-world-problems-template.jpg";
+        String url = "https://www.google.com";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
 
@@ -102,9 +103,11 @@ public class AccountPlaceholderFragment extends Fragment {
         }else {
             //if (resultCode == Activity.RESULT_OK) { //resultCode == requestCode Why?
             if (requestCode == LoginActivity.LOGIN_OK) {
-                //refresh viewpager adapte
-                if (getActivity() != null && SharedPreferencesController.getInstance().isUserLoggedIn())
-                    ((MainActivity)getActivity()).refreshAccountView();
+                String accessToken = SharedPreferencesController.getInstance().getUserToken();
+                if (getActivity() != null && !accessToken.isEmpty()) {
+                    RestController.getInstance().updateAuthRestController(accessToken);
+                    ((MainActivity) getActivity()).refreshAccountView(true);
+                }
             }
             //}
         }

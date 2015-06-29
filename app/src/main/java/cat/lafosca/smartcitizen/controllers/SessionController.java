@@ -14,12 +14,12 @@ public class SessionController {
 
     public interface SessionControllerListener {
         void onLoginSucces();
-        void onLoginError();
+        void onLoginError(RetrofitError error);
     }
 
     public static void userWantsToLogin(final SessionControllerListener listener, String username, String passw) {
 
-        RestController.getRestClient().login(new UserAuth(username, passw), new Callback<LoginResponse>() {
+        RestController.getInstance().getRestClient().login(new UserAuth(username, passw), new Callback<LoginResponse>() {
             @Override
             public void success(LoginResponse loginResponse, Response response) {
                 SharedPreferencesController.getInstance().setUserLoggedIn(loginResponse.getAccesToken());
@@ -32,7 +32,7 @@ public class SessionController {
             public void failure(RetrofitError error) {
 
                 //TODO error.getBodyAs()
-                listener.onLoginError();
+                listener.onLoginError(error);
             }
         });
     }

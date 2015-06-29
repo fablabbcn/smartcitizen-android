@@ -154,13 +154,14 @@ public class KitDetailActivity extends AppCompatActivity {
             int tagTextColor = getResources().getColor(R.color.tag_text_color);
             mTagsText.setVisibility(View.VISIBLE);
 
-            int corners = dp(8);
-            String space = "     ";
+            int corners = dp(12);
+            String space = "          ";
 
             //todo: build tags dinamically?
-            Spanny spanny = new Spanny(status, new RoundedBackgroundSpan(corners, tagColor, tagTextColor))
+            Spanny spanny = new Spanny("  ")
+                    .append(status, new RoundedBackgroundSpan(corners, 20, tagColor, tagTextColor))
                     .append(space)
-                    .append(exposure, new RoundedBackgroundSpan(corners, tagColor, tagTextColor));
+                    .append(exposure, new RoundedBackgroundSpan(corners, 20, tagColor, tagTextColor));
 
             mTagsText.setText(spanny);
 
@@ -179,7 +180,8 @@ public class KitDetailActivity extends AppCompatActivity {
                 Sensor sensor = sensors.get(i);
 
                 SensorView sensorView = new SensorView(this);
-                sensorView.setSensoViewrName(sensor.getPrettyName(), sensor.getIcon());
+                String prettyName = sensor.getPrettyName();
+                sensorView.setSensoViewrName(sensor.getPrettyName(), sensor.getIcon(prettyName));
                 float sensorValue = sensor.getValue();
                 //String.format("%.2f", floatValue);
                 sensorView.setSensorValue(String.format("%.1f", sensorValue) + " " + sensor.getUnit());

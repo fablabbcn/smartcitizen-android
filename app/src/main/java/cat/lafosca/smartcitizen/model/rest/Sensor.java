@@ -14,6 +14,20 @@ import cat.lafosca.smartcitizen.R;
  */
 public class Sensor implements Parcelable {
 
+    //Sensor names
+    private final String BATTERY =      "Battery";
+    private final String SOLAR_PANE =   "Solar Panel";
+    private final String HUMIDITY =     "Humidity";
+    private final String TEMPERATURE =  "Temperature";
+    private final String SOUND =        "Sound";
+    private final String NETWORK =      "Network";
+    private final String LIGHT =        "Light";
+    private final String NO2 =          "No2";
+    private final String CO =           "Co";
+
+
+    //Sensor names
+
     private Integer id;
 
     private String ancestry;
@@ -112,44 +126,35 @@ public class Sensor implements Parcelable {
         return sensorName;
     }
 
-    public int getIcon() {
+    public int getIcon(String prettyName) {
         int sensorIcon = 0;
-        switch (id) {
-            case 7:
-                sensorIcon = R.mipmap.ic_sensor_sound;
-                break;
+        if (prettyName.equalsIgnoreCase(SOUND)) {
+            sensorIcon = R.mipmap.ic_sensor_sound;
 
-            case 12:
-                sensorIcon = R.mipmap.ic_sensor_temperature;
-                break;
+        } else if (prettyName.equalsIgnoreCase(TEMPERATURE)) {
+            sensorIcon = R.mipmap.ic_sensor_temperature;
 
-            case 13:
-                sensorIcon = R.mipmap.ic_sensor_humidity;
-                break;
+        } else if (prettyName.equalsIgnoreCase(HUMIDITY)) {
+            sensorIcon = R.mipmap.ic_sensor_humidity;
 
-            case 14:
-                sensorIcon = R.mipmap.ic_sensor_light;
-                break;
+        } else if (prettyName.equalsIgnoreCase(LIGHT)) {
+            sensorIcon = R.mipmap.ic_sensor_light;
 
-            case 15:
-                sensorIcon = R.mipmap.ic_sensor_no2;
-                break;
+        } else if (prettyName.equalsIgnoreCase(NO2)) {
+            sensorIcon = R.mipmap.ic_sensor_no2;
 
-            case 16:
-                sensorIcon = R.mipmap.ic_sensor_co;
-                break;
+        } else if (prettyName.equalsIgnoreCase(CO)) {
+            sensorIcon = R.mipmap.ic_sensor_co;
 
-            case 17:
-                sensorIcon = R.mipmap.ic_sensor_battery;
-                break;
+        } else if (prettyName.equalsIgnoreCase(BATTERY)) {
+            sensorIcon = R.mipmap.ic_sensor_battery;
 
-            case 18:
-                sensorIcon = R.mipmap.ic_sensor_solar_panel;
-                break;
+        } else if (prettyName.equalsIgnoreCase(SOLAR_PANE)) {
+            sensorIcon = R.mipmap.ic_sensor_solar_panel;
 
-            case 21:
-                sensorIcon = R.mipmap.ic_sensor_net;
-                break;
+        } else if (prettyName.equalsIgnoreCase(NETWORK)) {
+            sensorIcon = R.mipmap.ic_sensor_net;
+
         }
 
         return sensorIcon;

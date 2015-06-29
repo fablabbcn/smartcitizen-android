@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by ferran on 03/06/15.
  */
-public class Owner implements Parcelable {
+public class User implements Parcelable {
 
     private Integer id;
 
@@ -30,7 +30,7 @@ public class Owner implements Parcelable {
     @SerializedName("joined_at")
     private String joinedAt;
 
-    private OwnerLocation location;
+    private UserLocation location;
 
     @SerializedName("device_ids")
     private List<Integer> deviceIds = new ArrayList<Integer>();
@@ -38,6 +38,14 @@ public class Owner implements Parcelable {
     //GETTERS AND SETTERS
     public String getUsername() {
         return username;
+    }
+
+    public UserLocation getLocation() {
+        return location;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
     //GETTERS AND SETTERS
 
@@ -59,10 +67,10 @@ public class Owner implements Parcelable {
         dest.writeList(this.deviceIds);
     }
 
-    public Owner() {
+    public User() {
     }
 
-    protected Owner(Parcel in) {
+    protected User(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.username = in.readString();
         this.firstName = in.readString();
@@ -70,18 +78,18 @@ public class Owner implements Parcelable {
         this.avatar = in.readString();
         this.url = in.readString();
         this.joinedAt = in.readString();
-        this.location = in.readParcelable(OwnerLocation.class.getClassLoader());
+        this.location = in.readParcelable(UserLocation.class.getClassLoader());
         this.deviceIds = new ArrayList<Integer>();
         in.readList(this.deviceIds, List.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Owner> CREATOR = new Parcelable.Creator<Owner>() {
-        public Owner createFromParcel(Parcel source) {
-            return new Owner(source);
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel source) {
+            return new User(source);
         }
 
-        public Owner[] newArray(int size) {
-            return new Owner[size];
+        public User[] newArray(int size) {
+            return new User[size];
         }
     };
 }

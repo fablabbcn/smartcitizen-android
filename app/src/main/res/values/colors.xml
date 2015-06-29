@@ -18,5 +18,7 @@
     <color name="forgot_passw">#35C2E5</color>
 
     <color name="tag_text_color">#88A3AD</color>
-    <color name="tag_background_color">#DDE7EA</color>
+    <color name="tag_background_color">#cfd9dc</color>
+
+    <color name="separator">#E0E0E0</color>
 </resources>

@@ -3,8 +3,6 @@ package cat.lafosca.smartcitizen.model.rest;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by ferran on 03/06/15.
  */
@@ -12,7 +10,7 @@ public class Device implements Parcelable {
 
     private DeviceInfo device;
 
-    private Owner owner;
+    private User owner;
 
     private DeviceData data;
 
@@ -31,7 +29,7 @@ public class Device implements Parcelable {
         return data;
     }
 
-    public Owner getOwner() {
+    public User getOwner() {
         return owner;
     }
 
@@ -53,7 +51,7 @@ public class Device implements Parcelable {
 
     protected Device(Parcel in) {
         this.device = in.readParcelable(DeviceInfo.class.getClassLoader());
-        this.owner = in.readParcelable(Owner.class.getClassLoader());
+        this.owner = in.readParcelable(User.class.getClassLoader());
         this.data = in.readParcelable(DeviceData.class.getClassLoader());
         this.kit = in.readParcelable(Kit.class.getClassLoader());
     }

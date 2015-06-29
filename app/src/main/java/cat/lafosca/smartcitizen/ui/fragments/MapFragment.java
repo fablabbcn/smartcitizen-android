@@ -32,13 +32,13 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
-import cat.lafosca.smartcitizen.controllers.KitsController;
+import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MapFragment extends Fragment implements KitsController.KitsControllerListener {
+public class MapFragment extends Fragment implements DeviceController.DeviceControllerListener {
 
     private static final String TAG = MapFragment.class.getSimpleName();
 
@@ -89,7 +89,7 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
                 18 // min zoom level
         );
 
-        KitsController.getKits(this);//call in onCreate ?
+        DeviceController.getAllDevices(this);//call in onCreate ?
 
         return view;
     }
@@ -148,13 +148,13 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
 
     //todo Remove/refactor
     @Override
-    public void onGetKits(List<Device> devices) {
+    public void onGetDevices(List<Device> devices) {
         int numOfDevices = devices.size();
         if (numOfDevices > 0) {
 
             List<Marker> markers = new ArrayList<Marker>();
             List<LatLng> positions = new ArrayList<LatLng>();
-            //Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.custom_marker);
+            Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.marker);
             if (mMapView.isUserLocationVisible() && mMapView.getUserLocationEnabled()) {
                 userLocationPoint = mMapView.getUserLocation();
             }
@@ -167,8 +167,8 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
                     if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
                         positions.add(position);
                         Marker marker = new Marker(mMapView, device.getDeviceInfo().getName(), " ", position);
-                        //marker.setMarker(customMarkerDrawable);
-                        marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
+                        marker.setMarker(customMarkerDrawable);
+                        //marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
                         //marker.getToolTip(mMapView);
                         //marker.setToolTip();
                         marker.setToolTip( new CustomInwoWindow(mMapView, device, getActivity()));
@@ -187,9 +187,9 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
     }
 
     @Override
-    public void onErrorGetKits(RetrofitError error) {
+    public void onGetDevicesError(RetrofitError error) {
         if (getActivity()!= null && this.isAdded())
-            Toast.makeText(getActivity(), "Error getting kits. Kind error: "+error.getKind().name(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Error getting kits. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
 
         StringBuilder sb = new StringBuilder();
         sb.append("ERROR " + error.getUrl() + " kind: " + error.getKind().name());
@@ -199,5 +199,13 @@ public class MapFragment extends Fragment implements KitsController.KitsControll
         }
 
         Log.e(TAG, sb.toString());
+    }
+
+    @Override
+    public void onGetDevice(Device device) {
+    }
+
+    @Override
+    public void onGetDeviceError(RetrofitError error) {
     }
 }

@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by ferran on 03/06/15.
  */
-public class OwnerLocation implements Parcelable {
+public class UserLocation implements Parcelable {
 
     private String city;
 
@@ -16,6 +16,16 @@ public class OwnerLocation implements Parcelable {
 
     @SerializedName("country_code")
     private String countryCode;
+
+    //GETTERS
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+    //GETTERS
 
     @Override
     public int describeContents() {
@@ -29,22 +39,22 @@ public class OwnerLocation implements Parcelable {
         dest.writeString(this.countryCode);
     }
 
-    public OwnerLocation() {
+    public UserLocation() {
     }
 
-    protected OwnerLocation(Parcel in) {
+    protected UserLocation(Parcel in) {
         this.city = in.readString();
         this.country = in.readString();
         this.countryCode = in.readString();
     }
 
-    public static final Parcelable.Creator<OwnerLocation> CREATOR = new Parcelable.Creator<OwnerLocation>() {
-        public OwnerLocation createFromParcel(Parcel source) {
-            return new OwnerLocation(source);
+    public static final Parcelable.Creator<UserLocation> CREATOR = new Parcelable.Creator<UserLocation>() {
+        public UserLocation createFromParcel(Parcel source) {
+            return new UserLocation(source);
         }
 
-        public OwnerLocation[] newArray(int size) {
-            return new OwnerLocation[size];
+        public UserLocation[] newArray(int size) {
+            return new UserLocation[size];
         }
     };
 }

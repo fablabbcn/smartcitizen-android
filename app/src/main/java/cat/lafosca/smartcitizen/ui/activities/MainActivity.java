@@ -14,6 +14,7 @@ import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.ui.adapters.MainPagerAdapter;
 import cat.lafosca.smartcitizen.ui.fragments.AccountFragment;
+import cat.lafosca.smartcitizen.ui.fragments.AccountPlaceholderFragment;
 import cat.lafosca.smartcitizen.ui.widgets.CustomViewPager;
 
 
@@ -109,14 +110,19 @@ public class MainActivity extends AppCompatActivity {
         //TabLayout (android dessign support)
     }
 
-    public void refreshAccountView() {
+    public void refreshAccountView(boolean isUserLoggedIn) {
 
         FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 				/*
 				 * IMPORTANT: We use the "root frame" defined in
 				 * "fragment_root_account.xml" as the reference to replace fragment
 				 */
-        trans.replace(R.id.root_frame, AccountFragment.newInstance());
+        if (isUserLoggedIn) {
+            trans.replace(R.id.root_frame, AccountFragment.newInstance());
+
+        } else {
+            trans.replace(R.id.root_frame, AccountPlaceholderFragment.newInstance());
+        }
 
 				/*
 				 * IMPORTANT: The following lines allow us to add the fragment
@@ -127,26 +133,4 @@ public class MainActivity extends AppCompatActivity {
 
         trans.commit();
     }
-
-    /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 }
