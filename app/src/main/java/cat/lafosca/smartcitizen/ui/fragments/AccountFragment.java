@@ -36,7 +36,7 @@ import cat.lafosca.smartcitizen.ui.widgets.KitView;
 import retrofit.RetrofitError;
 
 
-public class AccountFragment extends Fragment implements UserController.UserControllerListener, DeviceController.DeviceControllerListener{
+public class AccountFragment extends Fragment implements UserController.UserControllerListener, DeviceController.GetDeviceListener{
 
     private static final String TAG = AccountFragment.class.getSimpleName();
 
@@ -188,12 +188,6 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     }
 
     @Override
-    public void onGetDevices(List<Device> devices) {}
-
-    @Override
-    public void onGetDevicesError(RetrofitError error) {}
-
-    @Override
     public void onGetDevice(Device device) {
 
         View view = mDevicesContainer.findViewWithTag(device.getId());
@@ -207,7 +201,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     }
 
     @Override
-    public void onGetDeviceError(RetrofitError error) {
+    public void onError(RetrofitError error) {
 
     }
 }

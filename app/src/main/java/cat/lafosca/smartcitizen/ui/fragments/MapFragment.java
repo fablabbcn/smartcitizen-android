@@ -38,7 +38,7 @@ import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MapFragment extends Fragment implements DeviceController.DeviceControllerListener {
+public class MapFragment extends Fragment implements DeviceController.GetDevicesListener{
 
     private static final String TAG = MapFragment.class.getSimpleName();
 
@@ -187,7 +187,8 @@ public class MapFragment extends Fragment implements DeviceController.DeviceCont
     }
 
     @Override
-    public void onGetDevicesError(RetrofitError error) {
+    public void onError(RetrofitError error) {
+        //only triggered by GetDevicesListener
         if (getActivity()!= null && this.isAdded())
             Toast.makeText(getActivity(), "Error getting kits. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
 
@@ -199,13 +200,5 @@ public class MapFragment extends Fragment implements DeviceController.DeviceCont
         }
 
         Log.e(TAG, sb.toString());
-    }
-
-    @Override
-    public void onGetDevice(Device device) {
-    }
-
-    @Override
-    public void onGetDeviceError(RetrofitError error) {
     }
 }
