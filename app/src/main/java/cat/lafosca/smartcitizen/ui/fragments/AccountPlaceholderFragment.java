@@ -71,7 +71,7 @@ public class AccountPlaceholderFragment extends Fragment {
                 stringFormatted.length(), //end
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        String url = "http://katborealis.com/wp/wp-content/uploads/2014/09/12702-first-world-problems-template.jpg";
+        String url = "https://www.google.com";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
 
