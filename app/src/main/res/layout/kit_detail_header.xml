@@ -35,7 +35,7 @@
     <TextView
         android:id="@+id/kit_detail_user"
         style="@style/KitDetailHeaderText"
-        android:drawableLeft="@mipmap/ic_account_selected"
+        android:drawableLeft="@drawable/user_drawable"
         android:drawablePadding="4dp"
         android:textSize="18sp"
         tools:text="gcamprodon" />
