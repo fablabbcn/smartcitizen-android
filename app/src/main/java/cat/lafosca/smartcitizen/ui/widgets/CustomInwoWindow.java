@@ -37,12 +37,12 @@ public class CustomInwoWindow extends InfoWindow {
     @Override
     public void onOpen(Marker overlayItem) {
 
-        String name = mDevice.getDeviceInfo().getName();
+        String name = mDevice.getName();
         String kitName = mDevice.getKit().getName();
         kitName = kitName.toUpperCase();//xml doesn't work?
         String updatedAt = "";
         try {
-            updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getDeviceInfo()    .getUpdatedAt());
+            updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getUpdatedAt());
         } catch (ParseException e) {
             e.printStackTrace();
         }

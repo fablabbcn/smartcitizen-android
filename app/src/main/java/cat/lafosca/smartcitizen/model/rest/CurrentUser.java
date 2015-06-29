@@ -12,12 +12,12 @@ import java.util.List;
 public class CurrentUser extends User implements Parcelable {
 
     //currently, "/v0/me" returns another format for DeviceInfo data -> missing : latitude (float), longitude (float), kit_id (int)
-    private List<DeviceInfo> devices = new ArrayList<DeviceInfo>();
+    private List<Device> devices = new ArrayList<Device>();
 
     private String email;
 
     //GETTER
-    public List<DeviceInfo> getDevices() {
+    public List<Device> getDevices() {
         return devices;
     }
 
@@ -38,7 +38,7 @@ public class CurrentUser extends User implements Parcelable {
 
     protected CurrentUser(Parcel in) {
         super(in);
-        this.devices = in.createTypedArrayList(DeviceInfo.CREATOR);
+        this.devices = in.createTypedArrayList(Device.CREATOR);
         this.email = in.readString();
     }
 

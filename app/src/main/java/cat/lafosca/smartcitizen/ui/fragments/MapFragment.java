@@ -166,7 +166,7 @@ public class MapFragment extends Fragment implements DeviceController.DeviceCont
                     LatLng position = new LatLng(device.getDeviceData().getLocation().getLatitude(), device.getDeviceData().getLocation().getLongitude());
                     if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
                         positions.add(position);
-                        Marker marker = new Marker(mMapView, device.getDeviceInfo().getName(), " ", position);
+                        Marker marker = new Marker(mMapView, device.getName(), " ", position);
                         marker.setMarker(customMarkerDrawable);
                         //marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
                         //marker.getToolTip(mMapView);

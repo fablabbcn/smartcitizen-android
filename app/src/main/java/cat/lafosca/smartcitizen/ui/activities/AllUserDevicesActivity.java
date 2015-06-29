@@ -16,7 +16,6 @@ import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.model.rest.Device;
-import cat.lafosca.smartcitizen.model.rest.DeviceInfo;
 import cat.lafosca.smartcitizen.ui.widgets.KitView;
 
 public class AllUserDevicesActivity extends AppCompatActivity {
@@ -54,7 +53,7 @@ public class AllUserDevicesActivity extends AppCompatActivity {
         for (int i = 0; i < devicesSize; i++) {
             KitView kitView = new KitView(this);
 
-            DeviceInfo device = devicesData.get(i).getDeviceInfo();
+            Device device = devicesData.get(i);
 
             String name = device.getName();
             String location = devicesData.get(i).getDeviceData().getLocation().getPrettyLocation();

@@ -29,7 +29,6 @@ import cat.lafosca.smartcitizen.controllers.SharedPreferencesController;
 import cat.lafosca.smartcitizen.controllers.UserController;
 import cat.lafosca.smartcitizen.model.rest.CurrentUser;
 import cat.lafosca.smartcitizen.model.rest.Device;
-import cat.lafosca.smartcitizen.model.rest.DeviceInfo;
 import cat.lafosca.smartcitizen.model.rest.UserLocation;
 import cat.lafosca.smartcitizen.ui.activities.AllUserDevicesActivity;
 import cat.lafosca.smartcitizen.ui.activities.MainActivity;
@@ -118,7 +117,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     }
 
     private void setUpDevicesData() {
-        List<DeviceInfo> devices = mUserData.getDevices();
+        List<Device> devices = mUserData.getDevices();
 
         mDevicesInfo = new HashMap(devices.size());
 
@@ -145,7 +144,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
                     KitView kitView = new KitView(ctx);
 
-                    DeviceInfo device = devices.get(i);
+                    Device device = devices.get(i);
 
                     kitView.setTag(device.getId());
 
@@ -197,14 +196,14 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     @Override
     public void onGetDevice(Device device) {
 
-        View view = mDevicesContainer.findViewWithTag(device.getDeviceInfo().getId());
+        View view = mDevicesContainer.findViewWithTag(device.getId());
         if (view instanceof KitView) {
             ((KitView)view).updateLocationText(device.getDeviceData().getLocation().getPrettyLocation());
             ((KitView)view).updateTitleColor(device.getKit().getSlug());
         }
 
         if (mDevicesInfo != null)
-            mDevicesInfo.put(device.getDeviceInfo().getId(), device);
+            mDevicesInfo.put(device.getId(), device);
     }
 
     @Override

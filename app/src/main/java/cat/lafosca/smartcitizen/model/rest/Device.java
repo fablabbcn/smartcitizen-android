@@ -3,12 +3,29 @@ package cat.lafosca.smartcitizen.model.rest;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by ferran on 03/06/15.
  */
 public class Device implements Parcelable {
 
-    private DeviceInfo device;
+    private Integer id;
+
+    private String name;
+
+    private String description;
+
+    private String status;
+
+    @SerializedName("last_reading_at")
+    private String lastReadingAt;
+
+    @SerializedName("added_at")
+    private String addedAt;
+
+    @SerializedName("updated_at")
+    private String updatedAt;
 
     private User owner;
 
@@ -16,9 +33,22 @@ public class Device implements Parcelable {
 
     private Kit kit;
 
-    //GETTERS & SETTERS
-    public DeviceInfo getDeviceInfo() {
-        return device;
+    //GETTERS
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public Kit getKit() {
@@ -43,14 +73,26 @@ public class Device implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.device, 0);
+        dest.writeValue(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeString(this.status);
+        dest.writeString(this.lastReadingAt);
+        dest.writeString(this.addedAt);
+        dest.writeString(this.updatedAt);
         dest.writeParcelable(this.owner, 0);
         dest.writeParcelable(this.data, 0);
         dest.writeParcelable(this.kit, 0);
     }
 
     protected Device(Parcel in) {
-        this.device = in.readParcelable(DeviceInfo.class.getClassLoader());
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.name = in.readString();
+        this.description = in.readString();
+        this.status = in.readString();
+        this.lastReadingAt = in.readString();
+        this.addedAt = in.readString();
+        this.updatedAt = in.readString();
         this.owner = in.readParcelable(User.class.getClassLoader());
         this.data = in.readParcelable(DeviceData.class.getClassLoader());
         this.kit = in.readParcelable(Kit.class.getClassLoader());

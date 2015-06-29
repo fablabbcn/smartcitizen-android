@@ -142,7 +142,7 @@ public class KitDetailActivity extends AppCompatActivity {
 
     }
     private void setTags() {
-        String status = mDevice.getDeviceInfo().getStatus();
+        String status = mDevice.getStatus();
         String exposure = mDevice.getDeviceData().getLocation().getExposure();
         //moar tags?
 
@@ -196,13 +196,13 @@ public class KitDetailActivity extends AppCompatActivity {
     }
 
     private void setTextLabels() {
-        mKitTitle.setText(mDevice.getDeviceInfo().getName());
+        mKitTitle.setText(mDevice.getName());
         mKitType.setText(mDevice.getKit().getName().toUpperCase());
 
-        if (mDevice.getDeviceInfo().getUpdatedAt() != null) {
+        if (mDevice.getUpdatedAt() != null) {
             String updatedAt = "";
             try {
-                updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getDeviceInfo().getUpdatedAt());
+                updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getUpdatedAt());
                 mKitTimestamp.setText(updatedAt);
             } catch (ParseException e) {
                 e.printStackTrace();
