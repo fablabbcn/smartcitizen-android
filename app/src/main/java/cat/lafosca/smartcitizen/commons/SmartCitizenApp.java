@@ -9,10 +9,18 @@ import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
  */
 public class SmartCitizenApp extends Application {
 
+    private static SmartCitizenApp instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
+        instance = this;
+
         SharedPreferencesManager.getInstance().init(getApplicationContext());
+    }
+
+    public static SmartCitizenApp getInstance() {
+        return instance;
     }
 }

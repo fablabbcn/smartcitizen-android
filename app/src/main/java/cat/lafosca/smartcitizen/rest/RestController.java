@@ -1,10 +1,14 @@
 package cat.lafosca.smartcitizen.rest;
 
 import com.google.gson.Gson;
+import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
+
+import java.io.File;
 
 import cat.lafosca.smartcitizen.BuildConfig;
 import cat.lafosca.smartcitizen.commons.Constants;
+import cat.lafosca.smartcitizen.commons.SmartCitizenApp;
 import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
 import cat.lafosca.smartcitizen.rest.api.AuthRestClient;
 import cat.lafosca.smartcitizen.rest.api.RestClient;
@@ -52,7 +56,7 @@ public class RestController {
         baseBuilder.setRequestInterceptor(new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                request.addHeader("Content-Type", "application/json");
+                request.addHeader("Content-Type", "application/json; charset=utf-8");
                 request.addHeader("Authorization", "Bearer "+accessToken);
             }
         });
@@ -71,12 +75,17 @@ public class RestController {
 
         RestAdapter.LogLevel logLevel = (BuildConfig.DEBUG) ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
 
+        File cacheDir = SmartCitizenApp.getInstance().getCacheDir();
+        Cache cache = new Cache(cacheDir, 1024 * 1024); // 1 MiB
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setCache(cache);
+
         RestAdapter.Builder builder =
                 new RestAdapter.Builder()
                 .setEndpoint(Constants.URL_BASE)
-                .setConverter(new GsonConverter(new Gson()))
-                .setClient(new OkClient(new OkHttpClient()))
-                .setLogLevel(logLevel);
+                        .setConverter(new GsonConverter(new Gson()))
+                        .setClient(new OkClient(okHttpClient))
+                        .setLogLevel(logLevel);
         /*builder.setErrorHandler(new ErrorHandler() {
             @Override
             public Throwable handleError(RetrofitError cause) {
