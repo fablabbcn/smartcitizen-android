@@ -56,7 +56,7 @@ public class RestController {
         baseBuilder.setRequestInterceptor(new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                request.addHeader("Content-Type", "application/json");
+                //request.addHeader("Content-Type", "application/json");
                 request.addHeader("Accept", "application/vnd.smartcitizen; version=0,application/json");
                 request.addHeader("Authorization", "Bearer "+accessToken);
             }
@@ -98,7 +98,7 @@ public class RestController {
         builder.setRequestInterceptor(new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                request.addHeader("Content-Type", "application/json");
+                //request.addHeader("Content-Type", "application/json");
                 request.addHeader("Accept", "application/vnd.smartcitizen; version=0,application/json");
             }
         });
