@@ -15,7 +15,7 @@ import java.text.ParseException;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
-import cat.lafosca.smartcitizen.ui.activities.KitDetailActivity;
+import cat.lafosca.smartcitizen.ui.activities.DeviceDetailActivity;
 
 /**
  * Created by ferran on 08/06/15.
@@ -59,7 +59,7 @@ public class CustomInwoWindow extends InfoWindow {
         mView.findViewById(R.id.info_window_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActivity.get().startActivity( KitDetailActivity.getCallingIntent(mActivity.get(), mDevice) );
+                mActivity.get().startActivity( DeviceDetailActivity.getCallingIntent(mActivity.get(), mDevice) );
 
                 // Still close the InfoWindow though
                 close();

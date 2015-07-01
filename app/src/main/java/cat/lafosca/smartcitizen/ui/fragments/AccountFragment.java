@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,8 +32,9 @@ import cat.lafosca.smartcitizen.model.rest.CurrentUser;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.UserLocation;
 import cat.lafosca.smartcitizen.ui.activities.AllUserDevicesActivity;
+import cat.lafosca.smartcitizen.ui.activities.DeviceDetailActivity;
 import cat.lafosca.smartcitizen.ui.activities.MainActivity;
-import cat.lafosca.smartcitizen.ui.widgets.KitView;
+import cat.lafosca.smartcitizen.ui.widgets.DeviceItemView;
 import retrofit.RetrofitError;
 
 
@@ -142,7 +144,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
                 //add to the preview list
                 if (i < maxDevices) {
 
-                    KitView kitView = new KitView(ctx);
+                    DeviceItemView kitView = new DeviceItemView(ctx);
 
                     Device device = devices.get(i);
 
@@ -188,12 +190,20 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     }
 
     @Override
-    public void onGetDevice(Device device) {
+    public void onGetDevice(final Device device) {
 
         View view = mDevicesContainer.findViewWithTag(device.getId());
-        if (view instanceof KitView) {
-            ((KitView)view).updateLocationText(device.getDeviceData().getLocation().getPrettyLocation());
-            ((KitView)view).updateTitleColor(device.getKit().getSlug());
+        if (view instanceof DeviceItemView) {
+            ((DeviceItemView)view).updateLocationText(device.getDeviceData().getLocation().getPrettyLocation());
+            ((DeviceItemView)view).updateTitleColor(device.getKit().getSlug());
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = DeviceDetailActivity.getCallingIntent(getActivity(), device);
+                    startActivity(intent);
+                }
+            });
+
         }
 
         if (mDevicesInfo != null)

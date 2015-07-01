@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.model.rest.Device;
-import cat.lafosca.smartcitizen.ui.widgets.KitView;
+import cat.lafosca.smartcitizen.ui.widgets.DeviceItemView;
 
 public class AllUserDevicesActivity extends AppCompatActivity {
 
@@ -51,22 +52,29 @@ public class AllUserDevicesActivity extends AppCompatActivity {
 
         int devicesSize = devicesData.size();
         for (int i = 0; i < devicesSize; i++) {
-            KitView kitView = new KitView(this);
+            DeviceItemView deviceView = new DeviceItemView(this);
 
-            Device device = devicesData.get(i);
+            final Device device = devicesData.get(i);
 
             String name = device.getName();
             String location = devicesData.get(i).getDeviceData().getLocation().getPrettyLocation();
 
             Drawable drawable = Utils.getDrawable(this, R.drawable.device_icon);//do it outside the foor loop?
-            kitView.setKitsData(name, location, drawable);
-            kitView.updateTitleColor(devicesData.get(i).getKit().getSlug());
+            deviceView.setKitsData(name, location, drawable);
+            deviceView.updateTitleColor(devicesData.get(i).getKit().getSlug());
+            deviceView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = DeviceDetailActivity.getCallingIntent(AllUserDevicesActivity.this, device);
+                    startActivity(intent);
+                }
+            });
 
             /*if (i == devicesSize - 1) {
                 kitView.findViewById(R.id.kit_row_separator).setVisibility(View.GONE);
             }*/
 
-            mContainer.addView(kitView);
+            mContainer.addView(deviceView);
         }
     }
 

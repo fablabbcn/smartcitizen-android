@@ -2,12 +2,10 @@ package cat.lafosca.smartcitizen.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -29,7 +27,7 @@ import cat.lafosca.smartcitizen.model.rest.Sensor;
 import cat.lafosca.smartcitizen.ui.widgets.RoundedBackgroundSpan;
 import cat.lafosca.smartcitizen.ui.widgets.SensorView;
 
-public class KitDetailActivity extends AppCompatActivity {
+public class DeviceDetailActivity extends AppCompatActivity {
 
     private Device mDevice;
 
@@ -66,8 +64,8 @@ public class KitDetailActivity extends AppCompatActivity {
 
     public static Intent getCallingIntent(Context context, Device device) {
 
-        Intent intent = new Intent(context, KitDetailActivity.class);
-        intent.putExtra("Device", device);
+        Intent intent = new Intent(context, DeviceDetailActivity.class);
+        intent.putExtra("device", device);
         return intent;
     }
 
@@ -78,7 +76,7 @@ public class KitDetailActivity extends AppCompatActivity {
 
         ButterKnife.inject(this);
 
-        mDevice = getIntent().getParcelableExtra("Device");
+        mDevice = getIntent().getParcelableExtra("device");
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
