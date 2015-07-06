@@ -3,6 +3,7 @@ package cat.lafosca.smartcitizen.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.binaryfork.spanny.Spanny;
 
@@ -22,12 +24,14 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
+import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.Sensor;
 import cat.lafosca.smartcitizen.ui.widgets.RoundedBackgroundSpan;
 import cat.lafosca.smartcitizen.ui.widgets.SensorView;
+import retrofit.RetrofitError;
 
-public class DeviceDetailActivity extends AppCompatActivity {
+public class DeviceDetailActivity extends AppCompatActivity implements DeviceController.GetDeviceListener{
 
     private Device mDevice;
 
@@ -54,6 +58,9 @@ public class DeviceDetailActivity extends AppCompatActivity {
 
     @InjectView(R.id.scrollView)
     ScrollView mScrollView;
+
+    @InjectView(R.id.refreshLayout)
+    SwipeRefreshLayout mRegreshLayout;
 
     @InjectView(R.id.kit_detail_header)
     LinearLayout mHeaderView;
@@ -82,7 +89,16 @@ public class DeviceDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        init();
+        setDeviceViews();
+
+        mRegreshLayout.setColorSchemeResources(R.color.blue_smartcitizen, R.color.sensor_text_color, R.color.blue_smartcitizen_selected);
+        mRegreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mDevice != null)
+                    DeviceController.getDevice(mDevice.getId(), DeviceDetailActivity.this);
+            }
+        });
 
     }
 
@@ -98,7 +114,7 @@ public class DeviceDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void init() {
+    private void setDeviceViews() {
         setTextLabels();
         setSensorsView();
         setTags();
@@ -172,6 +188,13 @@ public class DeviceDetailActivity extends AppCompatActivity {
 
     private void setSensorsView() {
         if (mDevice.getDeviceData()!= null && mDevice.getDeviceData().getSensors().size() > 0) {
+
+            //clean data (if update)
+            int numChilds = mSensorsLayout.getChildCount();
+            if (numChilds > 0) {
+                mSensorsLayout.removeAllViews();
+            }
+
             List<Sensor> sensors = mDevice.getDeviceData().getSensors();
             int numSensors = sensors.size();
             for (int i = 0; i<numSensors; i++) {
@@ -226,5 +249,20 @@ public class DeviceDetailActivity extends AppCompatActivity {
         } else {
             mKitLocation.setVisibility(View.GONE);
         }
+    }
+
+    //Update device info
+    @Override
+    public void onGetDevice(Device device) {
+        mRegreshLayout.setRefreshing(false);
+        mDevice = device;
+        setDeviceViews();
+        Toast.makeText(this, "Device info updated", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError(RetrofitError error) {
+        mRegreshLayout.setRefreshing(false);
+        Toast.makeText(this, "Error updating device. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
     }
 }
