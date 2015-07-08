@@ -4,6 +4,7 @@ package cat.lafosca.smartcitizen.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.DeviceInfo;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
@@ -171,7 +173,19 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
     @OnClick(R.id.button_contact_suport)
     public void contactSupportTeam() {
+        Context ctx = getActivity();
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO,
+                Uri.fromParts("mailto", "support@smartcitizen.me", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, ctx.getString(R.string.support_mail_subject));
 
+        String body = ctx.getString(R.string.support_mail_body,
+                DeviceInfo.getDeviceName(),
+                DeviceInfo.getAndroidVersion(),
+                DeviceInfo.getAppVersion(ctx)
+        );
+
+        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(emailIntent, "Send email9    "));
     }
 
     @OnClick(R.id.button_logout)
