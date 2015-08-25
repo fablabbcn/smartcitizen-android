@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import cat.lafosca.smartcitizen.R;
@@ -41,10 +42,10 @@ public class Sensor implements Parcelable {
     private String unit;
 
     @SerializedName("created_at")
-    private String createdAt;
+    private Date createdAt;
 
     @SerializedName("updated_at")
-    private String updatedAt;
+    private Date updatedAt;
 
     //when asking for devices (/v0/devices), the data from sensors come in this fields (value, raw_value, prevValue, prevRawValue)
     //when asking for kits generic info (/v0/kits), this info doesn't exits, but you get a field called "measurement"
@@ -161,8 +162,8 @@ public class Sensor implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.description);
         dest.writeString(this.unit);
-        dest.writeString(this.createdAt);
-        dest.writeString(this.updatedAt);
+        dest.writeLong(createdAt != null ? createdAt.getTime() : -1);
+        dest.writeLong(updatedAt != null ? updatedAt.getTime() : -1);
         dest.writeFloat(this.value);
         dest.writeFloat(this.rawValue);
         dest.writeFloat(this.prevValue);
@@ -181,8 +182,10 @@ public class Sensor implements Parcelable {
         this.name = in.readString();
         this.description = in.readString();
         this.unit = in.readString();
-        this.createdAt = in.readString();
-        this.updatedAt = in.readString();
+        long tmpCreatedAt = in.readLong();
+        this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
+        long tmpUpdatedAt = in.readLong();
+        this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
         this.value = in.readFloat();
         this.rawValue = in.readFloat();
         this.prevValue = in.readFloat();

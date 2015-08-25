@@ -1,6 +1,9 @@
 package cat.lafosca.smartcitizen.rest;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -81,10 +84,25 @@ public class RestController {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setCache(cache);
 
+        Gson gson = new GsonBuilder()
+                /*.setExclusionStrategies(new ExclusionStrategy() { REALM
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes f) {
+                        return f.getDeclaringClass().equals(RealmObject.class);
+                    }
+
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz) {
+                        return false;
+                    }
+                })*/
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                .create();
+
         RestAdapter.Builder builder =
                 new RestAdapter.Builder()
                 .setEndpoint(Constants.URL_BASE)
-                        .setConverter(new GsonConverter(new Gson()))
+                        .setConverter(new GsonConverter(gson))
                         .setClient(new OkClient(okHttpClient))
                         .setLogLevel(logLevel);
         /*builder.setErrorHandler(new ErrorHandler() {

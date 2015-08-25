@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * Created by ferran on 03/06/15.
  */
@@ -22,10 +24,10 @@ public class Kit implements Parcelable {
     private String description;
 
     @SerializedName("created_at")
-    private String createdAt;
+    private Date createdAt;
 
     @SerializedName("updated_at")
-    private String updatedAt;
+    private Date updatedAt;
 
     //GETTERS
 
@@ -51,11 +53,12 @@ public class Kit implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
+        dest.writeString(this.uuid);
         dest.writeString(this.slug);
         dest.writeString(this.name);
         dest.writeString(this.description);
-        dest.writeString(this.createdAt);
-        dest.writeString(this.updatedAt);
+        dest.writeLong(createdAt != null ? createdAt.getTime() : -1);
+        dest.writeLong(updatedAt != null ? updatedAt.getTime() : -1);
     }
 
     public Kit() {
@@ -63,11 +66,14 @@ public class Kit implements Parcelable {
 
     protected Kit(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.uuid = in.readString();
         this.slug = in.readString();
         this.name = in.readString();
         this.description = in.readString();
-        this.createdAt = in.readString();
-        this.updatedAt = in.readString();
+        long tmpCreatedAt = in.readLong();
+        this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
+        long tmpUpdatedAt = in.readLong();
+        this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
     }
 
     public static final Parcelable.Creator<Kit> CREATOR = new Parcelable.Creator<Kit>() {

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,13 +28,13 @@ public class Device implements Parcelable {
     private List<String> systemTags = new ArrayList<String>();
 
     @SerializedName("last_reading_at")
-    private String lastReadingAt;
+    private Date lastReadingAt;
 
     @SerializedName("added_at")
-    private String addedAt;
+    private Date addedAt;
 
     @SerializedName("updated_at")
-    private String updatedAt;
+    private Date updatedAt;
 
     @SerializedName("mac_address")
     private String macAddress;
@@ -46,7 +47,7 @@ public class Device implements Parcelable {
 
     //GETTERS
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
@@ -82,9 +83,6 @@ public class Device implements Parcelable {
         return systemTags;
     }
 
-    public Device() {
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -98,13 +96,16 @@ public class Device implements Parcelable {
         dest.writeString(this.description);
         dest.writeString(this.state);
         dest.writeStringList(this.systemTags);
-        dest.writeString(this.lastReadingAt);
-        dest.writeString(this.addedAt);
-        dest.writeString(this.updatedAt);
+        dest.writeLong(lastReadingAt != null ? lastReadingAt.getTime() : -1);
+        dest.writeLong(addedAt != null ? addedAt.getTime() : -1);
+        dest.writeLong(updatedAt != null ? updatedAt.getTime() : -1);
         dest.writeString(this.macAddress);
         dest.writeParcelable(this.owner, 0);
         dest.writeParcelable(this.data, 0);
         dest.writeParcelable(this.kit, 0);
+    }
+
+    public Device() {
     }
 
     protected Device(Parcel in) {
@@ -114,9 +115,12 @@ public class Device implements Parcelable {
         this.description = in.readString();
         this.state = in.readString();
         this.systemTags = in.createStringArrayList();
-        this.lastReadingAt = in.readString();
-        this.addedAt = in.readString();
-        this.updatedAt = in.readString();
+        long tmpLastReadingAt = in.readLong();
+        this.lastReadingAt = tmpLastReadingAt == -1 ? null : new Date(tmpLastReadingAt);
+        long tmpAddedAt = in.readLong();
+        this.addedAt = tmpAddedAt == -1 ? null : new Date(tmpAddedAt);
+        long tmpUpdatedAt = in.readLong();
+        this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
         this.macAddress = in.readString();
         this.owner = in.readParcelable(User.class.getClassLoader());
         this.data = in.readParcelable(DeviceData.class.getClassLoader());
