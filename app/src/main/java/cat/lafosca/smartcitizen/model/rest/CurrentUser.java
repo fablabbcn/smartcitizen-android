@@ -16,6 +16,8 @@ public class CurrentUser extends User implements Parcelable {
 
     private String email;
 
+    private String role;
+
     //GETTER
     public List<Device> getDevices() {
         return devices;
@@ -31,6 +33,7 @@ public class CurrentUser extends User implements Parcelable {
         super.writeToParcel(dest, flags);
         dest.writeTypedList(devices);
         dest.writeString(this.email);
+        dest.writeString(this.role);
     }
 
     public CurrentUser() {
@@ -40,6 +43,7 @@ public class CurrentUser extends User implements Parcelable {
         super(in);
         this.devices = in.createTypedArrayList(Device.CREATOR);
         this.email = in.readString();
+        this.role = in.readString();
     }
 
     public static final Creator<CurrentUser> CREATOR = new Creator<CurrentUser>() {

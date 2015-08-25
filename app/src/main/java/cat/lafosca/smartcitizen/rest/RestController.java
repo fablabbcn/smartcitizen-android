@@ -74,7 +74,7 @@ public class RestController {
 
     private RestAdapter.Builder getBaseRestBuilder() {
 
-        RestAdapter.LogLevel logLevel = (BuildConfig.DEBUG) ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
+        RestAdapter.LogLevel logLevel = (BuildConfig.DEBUG) ? RestAdapter.LogLevel.BASIC : RestAdapter.LogLevel.NONE;
 
         File cacheDir = SmartCitizenApp.getInstance().getCacheDir();
         Cache cache = new Cache(cacheDir, 1024 * 1024); // 1 MiB
