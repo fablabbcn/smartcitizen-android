@@ -15,16 +15,13 @@ public class User implements Parcelable {
 
     private Integer id;
 
+    private String uuid;
+
     private String username;
-
-    @SerializedName("first_name")
-    private String firstName;
-
-    @SerializedName("last_name")
-    private String lastName;
 
     private String avatar;
 
+    //NULL
     private String url;
 
     @SerializedName("joined_at")
@@ -58,8 +55,6 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
         dest.writeString(this.username);
-        dest.writeString(this.firstName);
-        dest.writeString(this.lastName);
         dest.writeString(this.avatar);
         dest.writeString(this.url);
         dest.writeString(this.joinedAt);
@@ -73,8 +68,6 @@ public class User implements Parcelable {
     protected User(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.username = in.readString();
-        this.firstName = in.readString();
-        this.lastName = in.readString();
         this.avatar = in.readString();
         this.url = in.readString();
         this.joinedAt = in.readString();

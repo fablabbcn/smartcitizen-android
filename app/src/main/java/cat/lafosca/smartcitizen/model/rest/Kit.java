@@ -12,6 +12,9 @@ public class Kit implements Parcelable {
 
     private Integer id;
 
+    //new
+    private String uuid;
+
     private String slug;
 
     private String name;

@@ -19,9 +19,7 @@ public class DeviceData implements Parcelable {
     @SerializedName("added_at")
     private String addedAt;
 
-    @SerializedName("calibrated_at")
-    private String calibratedAt;
-
+    //todo IGNORE?
     private String firmware;
 
     private DeviceLocation location;
@@ -50,7 +48,6 @@ public class DeviceData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.recordedAt);
         dest.writeString(this.addedAt);
-        dest.writeString(this.calibratedAt);
         dest.writeString(this.firmware);
         dest.writeParcelable(this.location, flags);
         dest.writeTypedList(sensors);
@@ -59,7 +56,6 @@ public class DeviceData implements Parcelable {
     protected DeviceData(Parcel in) {
         this.recordedAt = in.readString();
         this.addedAt = in.readString();
-        this.calibratedAt = in.readString();
         this.firmware = in.readString();
         this.location = in.readParcelable(DeviceLocation.class.getClassLoader());
         this.sensors = in.createTypedArrayList(Sensor.CREATOR);
