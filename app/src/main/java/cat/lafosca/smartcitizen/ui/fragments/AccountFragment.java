@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +140,8 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
             int maxDevices = (devices.size() > MAX_DEVICES) ? MAX_DEVICES : devices.size();
 
+            Collections.sort(devices, Device.COMPARE_BY_UPDATED);
+
             Context ctx = getActivity();
             //for (int i = maxDevices - 1; i >= 0; i--) {
             for (int i = devices.size() - 1; i >= 0; i--) {
@@ -198,6 +201,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     public void goToAllKits() {
         if (mUserData != null && mUserData.getDevices()!= null && mUserData.getDevices().size() > 0) {
             ArrayList<Device> devices = new ArrayList<>(mDevicesInfo.values());
+            Collections.sort(devices, Device.COMPARE_BY_UPDATED);
             Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData.getUsername(), devices);
             startActivity(intent);
         }

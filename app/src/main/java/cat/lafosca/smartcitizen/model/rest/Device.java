@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -83,6 +84,17 @@ public class Device implements Parcelable {
         return systemTags;
     }
 
+    //UTILS
+    public static Comparator<Device> COMPARE_BY_UPDATED = new Comparator<Device>() {
+        @Override
+        public int compare(Device device, Device other) {
+            if (device.getUpdatedAt() == null || other.getUpdatedAt() == null)
+                return 0;
+            return device.getUpdatedAt().compareTo(other.getUpdatedAt());
+        }
+    };
+
+    //PARCELABLE
     @Override
     public int describeContents() {
         return 0;
