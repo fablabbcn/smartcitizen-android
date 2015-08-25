@@ -155,12 +155,12 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
 
 
     }
-    private void setTags() {
-        String status = mDevice.getStatus();
-        String exposure = mDevice.getDeviceData().getLocation().getExposure();
-        //moar tags?
 
-        if (status == null && exposure == null) {
+    private void setTags() {
+
+        List<String> tags = mDevice.getSystemTags();
+
+        if (tags == null || tags.size() == 0) {
             mTagsText.setVisibility(View.GONE);
 
         } else {
@@ -168,14 +168,20 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
             int tagTextColor = getResources().getColor(R.color.tag_text_color);
             mTagsText.setVisibility(View.VISIBLE);
 
-            int corners = dp(12);
             String space = "          ";
 
-            //todo: build tags dinamically?
-            Spanny spanny = new Spanny("  ")
-                    .append(status, new RoundedBackgroundSpan(corners, 20, tagColor, tagTextColor))
-                    .append(space)
-                    .append(exposure, new RoundedBackgroundSpan(corners, 20, tagColor, tagTextColor));
+            Spanny spanny = new Spanny("  ");
+
+            int numTags = tags.size();
+            for (int i = 0; i<numTags; i++) {
+                String tag = tags.get(i);
+                if (tag.length()>0)
+                    spanny.append(tag,  new RoundedBackgroundSpan(dp(12), 20, tagColor, tagTextColor));
+
+                if (i < numTags - 1) {
+                    spanny.append(space);
+                }
+            }
 
             mTagsText.setText(spanny);
 
