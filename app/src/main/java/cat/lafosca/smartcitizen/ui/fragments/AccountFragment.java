@@ -158,7 +158,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
                     mDevicesContainer.addView(kitView, 0);
                 }
 
-                DeviceController.getDevice(mUserData.getDevices().get(i).getId(), this);
+                DeviceController.getDevice(mUserData.getDevices().get(i).getId(), this);//need to do this api call for every device to get the extra info we don't get from callig /v0/me
             }
 
             if (devices.size() <= MAX_DEVICES) {
