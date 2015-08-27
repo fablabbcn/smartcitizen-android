@@ -13,26 +13,10 @@ import java.util.List;
 /**
  * Created by ferran on 03/06/15.
  */
-public class Device implements Parcelable {
-
-    private Integer id;
-
-    private String uuid;
-
-    private String name;
-
-    private String description;
-
-    private String state;
-
-    @SerializedName("system_tags")
-    private List<String> systemTags = new ArrayList<String>();
+public class Device extends BaseDevice implements Parcelable {
 
     @SerializedName("last_reading_at")
     private Date lastReadingAt;
-
-    @SerializedName("added_at")
-    private Date addedAt;
 
     @SerializedName("updated_at")
     private Date updatedAt;
@@ -52,18 +36,6 @@ public class Device implements Parcelable {
         return updatedAt;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
     public Kit getKit() {
         return kit;
     }
@@ -74,14 +46,6 @@ public class Device implements Parcelable {
 
     public User getOwner() {
         return owner;
-    }
-
-    public String getMacAddress() {
-        return macAddress;
-    }
-
-    public List<String> getSystemTags() {
-        return systemTags;
     }
 
     //UTILS
@@ -102,14 +66,8 @@ public class Device implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
-        dest.writeString(this.uuid);
-        dest.writeString(this.name);
-        dest.writeString(this.description);
-        dest.writeString(this.state);
-        dest.writeStringList(this.systemTags);
+        super.writeToParcel(dest, flags);
         dest.writeLong(lastReadingAt != null ? lastReadingAt.getTime() : -1);
-        dest.writeLong(addedAt != null ? addedAt.getTime() : -1);
         dest.writeLong(updatedAt != null ? updatedAt.getTime() : -1);
         dest.writeString(this.macAddress);
         dest.writeParcelable(this.owner, 0);
@@ -121,16 +79,9 @@ public class Device implements Parcelable {
     }
 
     protected Device(Parcel in) {
-        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.uuid = in.readString();
-        this.name = in.readString();
-        this.description = in.readString();
-        this.state = in.readString();
-        this.systemTags = in.createStringArrayList();
+        super(in);
         long tmpLastReadingAt = in.readLong();
         this.lastReadingAt = tmpLastReadingAt == -1 ? null : new Date(tmpLastReadingAt);
-        long tmpAddedAt = in.readLong();
-        this.addedAt = tmpAddedAt == -1 ? null : new Date(tmpAddedAt);
         long tmpUpdatedAt = in.readLong();
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
         this.macAddress = in.readString();

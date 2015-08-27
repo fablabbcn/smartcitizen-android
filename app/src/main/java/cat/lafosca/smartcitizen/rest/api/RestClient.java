@@ -2,6 +2,7 @@ package cat.lafosca.smartcitizen.rest.api;
 
 import java.util.List;
 
+import cat.lafosca.smartcitizen.model.rest.BaseDevice;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.UserAuth;
 import cat.lafosca.smartcitizen.rest.response.LoginResponse;
@@ -18,6 +19,9 @@ public interface RestClient {
 
     @GET("/v0/devices")
     void getAllDevices(Callback<List<Device>> cb);
+
+    @GET("/v0/devices/world_map")
+    void getWorldDevices(Callback<List<BaseDevice>> cb);
 
     @GET("/v0/devices/{device_id}")
     void getDevice(@Path("device_id") int deviceId, Callback<Device> callback);

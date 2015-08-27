@@ -1,6 +1,7 @@
 package cat.lafosca.smartcitizen.ui.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,12 +32,12 @@ import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
-import cat.lafosca.smartcitizen.model.rest.Device;
+import cat.lafosca.smartcitizen.model.rest.BaseDevice;
 import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MapFragment extends Fragment implements DeviceController.GetDevicesListener{
+public class MapFragment extends Fragment implements DeviceController.GetWorldMapDevicesListener{
 
     private static final String TAG = MapFragment.class.getSimpleName();
 
@@ -72,7 +73,7 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
         mMapView.setUserLocationEnabled(true);
         mMapView.setUserLocationTrackingMode(UserLocationOverlay.TrackingMode.NONE);
 
-        DeviceController.getAllDevices(this);//call in onCreate ?
+        DeviceController.getWorldMapDevices(this);//call in onCreate ?
 
         return view;
     }
@@ -135,7 +136,7 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
 
     //todo Remove/refactor
     @Override
-    public void onGetDevices(List<Device> devices) {
+    public void onGetDevices(List<BaseDevice> devices) {
         int numOfDevices = devices.size();
         if (numOfDevices > 0) {
 
@@ -146,33 +147,29 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
                 userLocationPoint = mMapView.getUserLocation();
             }
 
+            Activity act = getActivity();
             for (int i = 0; i< numOfDevices; i++) {
-                Device device = devices.get(i);
+                BaseDevice device = devices.get(i);
 
-                if (device.getDeviceData() == null || device.getDeviceData().getLocation() == null)
+                if (device.getLatitude() == null || device.getLongitude() == null)
                     continue;
 
-                if (device.getDeviceData().getLocation().getLatitude() != null || device.getDeviceData().getLocation().getLongitude() != null) {
-                    LatLng position = new LatLng(device.getDeviceData().getLocation().getLatitude(), device.getDeviceData().getLocation().getLongitude());
-//                    if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
-                        positions.add(position);
-                        Marker marker = new Marker(mMapView, device.getName(), " ", position);
-                        marker.setMarker(customMarkerDrawable);
-                        //marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
-                        //marker.getToolTip(mMapView);
-                        //marker.setToolTip();
-                        marker.setToolTip( new CustomInwoWindow(mMapView, device, getActivity()));
-                        markers.add(marker);
-//                    }
-                } else {
-                    continue;
-                }
+                LatLng position = new LatLng(device.getLatitude(), device.getLongitude());
+//                if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
+                positions.add(position);
+                Marker marker = new Marker(mMapView, device.getName(), " ", position);
+                marker.setMarker(customMarkerDrawable);
+                //marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
+                //marker.getToolTip(mMapView);
+                //marker.setToolTip();
+                marker.setToolTip( new CustomInwoWindow(mMapView, device, act));
+                markers.add(marker);
+//                }
             }
             mMapView.addMarkers(markers);
             BoundingBox bbn = GeoUtils.findBoundingBoxForGivenLocations(positions, 5.0);
 
             mMapView.zoomToBoundingBox(bbn, true, true);
-
         }
     }
 

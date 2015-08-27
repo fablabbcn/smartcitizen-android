@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -32,6 +33,8 @@ import cat.lafosca.smartcitizen.ui.widgets.SensorView;
 import retrofit.RetrofitError;
 
 public class DeviceDetailActivity extends AppCompatActivity implements DeviceController.GetDeviceListener{
+
+    private static final String TAG = DeviceDetailActivity.class.getName();
 
     private Device mDevice;
 
@@ -76,6 +79,13 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
         return intent;
     }
 
+    public static Intent getCallingIntent(Context context, int deviceId) {
+
+        Intent intent = new Intent(context, DeviceDetailActivity.class);
+        intent.putExtra("deviceId", deviceId);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,15 +93,39 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
 
         ButterKnife.inject(this);
 
-        mDevice = getIntent().getParcelableExtra("device");
-
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mRegreshLayout.setColorSchemeResources(R.color.blue_smartcitizen, R.color.sensor_text_color, R.color.blue_smartcitizen_selected);
+
+        if (getIntent().hasExtra("device")) {
+            Device device = getIntent().getParcelableExtra("device");
+            init(device);
+        } else if (getIntent().hasExtra("deviceId")) {
+            int deviceId = getIntent().getIntExtra("deviceId", 0);
+            mRegreshLayout.setRefreshing(true);
+            DeviceController.getDevice(deviceId, new DeviceController.GetDeviceListener() {
+                @Override
+                public void onGetDevice(Device device) {
+                    mRegreshLayout.setRefreshing(false);
+                    init(device);
+                }
+                @Override
+                public void onError(RetrofitError error) {
+                    mRegreshLayout.setRefreshing(false);
+                    Log.e(TAG, "onError "+error.toString());
+                }
+            });
+        }
+
+    }
+
+    private void init(Device device) {
+        mDevice = device;
+
         setDeviceViews();
 
-        mRegreshLayout.setColorSchemeResources(R.color.blue_smartcitizen, R.color.sensor_text_color, R.color.blue_smartcitizen_selected);
         mRegreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -99,7 +133,6 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
                     DeviceController.getDevice(mDevice.getId(), DeviceDetailActivity.this);
             }
         });
-
     }
 
     @Override
@@ -257,7 +290,7 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
         }
     }
 
-    //Update device info
+    //Update device info (refresh)
     @Override
     public void onGetDevice(Device device) {
         mRegreshLayout.setRefreshing(false);

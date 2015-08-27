@@ -13,6 +13,7 @@ import java.lang.ref.WeakReference;
 import java.text.ParseException;
 
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.model.rest.BaseDevice;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
 import cat.lafosca.smartcitizen.ui.activities.DeviceDetailActivity;
@@ -24,9 +25,9 @@ public class CustomInwoWindow extends InfoWindow {
 
     private WeakReference<Context> mActivity;
 
-    private Device mDevice;
+    private BaseDevice mDevice;
 
-    public CustomInwoWindow(MapView mapView, Device device, Activity activity) {
+    public CustomInwoWindow(MapView mapView, BaseDevice device, Activity activity) {
         super(R.layout.infowindow_custom, mapView);
 
         mActivity = new WeakReference<Context>(activity);
@@ -38,20 +39,28 @@ public class CustomInwoWindow extends InfoWindow {
     public void onOpen(Marker overlayItem) {
 
         String name = mDevice.getName();
-        String kitName = mDevice.getKit().getName();
-        kitName = kitName.toUpperCase();//xml doesn't work?
+        //String kitName = mDevice.getKit().getName();
+        //kitName = kitName.toUpperCase();//xml doesn't work?
         String updatedAt = "";
         try {
-            updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getUpdatedAt());
+            updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getAddedAt());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String location = mDevice.getDeviceData().getLocation().getPrettyLocation();
+        //String location = mDevice.getDeviceData().getLocation().getPrettyLocation();
+        String location = mDevice.getCity() + " " + mDevice.getCountryCode();
 
         //Log.i("window", name+"\n"+kitName+"\n"+updatedAt+"\n"+location);
 
         ((TextView) mView.findViewById(R.id.info_window_title)).setText(name);
-        ((TextView) mView.findViewById(R.id.info_window_kit_type)).setText(kitName);
+        String description = mDevice.getDescription();
+        TextView tvDescription = ((TextView) mView.findViewById(R.id.info_window_kit_type));
+        if (description == null) {
+            tvDescription.setVisibility(View.GONE);
+        } else {
+            tvDescription.setVisibility(View.VISIBLE);
+            tvDescription.setText(mDevice.getDescription());
+        }
         ((TextView) mView.findViewById(R.id.info_window_timestamp)).setText(updatedAt);
         ((TextView) mView.findViewById(R.id.info_window_location)).setText(location);
 
@@ -59,7 +68,8 @@ public class CustomInwoWindow extends InfoWindow {
         mView.findViewById(R.id.info_window_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActivity.get().startActivity( DeviceDetailActivity.getCallingIntent(mActivity.get(), mDevice) );
+                //mActivity.get().startActivity( DeviceDetailActivity.getCallingIntent(mActivity.get(), mDevice) );
+                mActivity.get().startActivity( DeviceDetailActivity.getCallingIntent( mActivity.get(), mDevice.getId()) );
 
                 // Still close the InfoWindow though
                 close();
