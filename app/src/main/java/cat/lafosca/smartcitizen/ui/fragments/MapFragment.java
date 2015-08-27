@@ -17,8 +17,6 @@ import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.overlay.ClusterMarker;
-import com.mapbox.mapboxsdk.overlay.Icon;
 import com.mapbox.mapboxsdk.overlay.Marker;
 import com.mapbox.mapboxsdk.overlay.UserLocationOverlay;
 import com.mapbox.mapboxsdk.util.GeoUtils;
@@ -74,21 +72,6 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
         mMapView.setUserLocationEnabled(true);
         mMapView.setUserLocationTrackingMode(UserLocationOverlay.TrackingMode.NONE);
 
-        mMapView.setClusteringEnabled(
-                true, //enabled/disabled
-                //draw cluster listener
-                new ClusterMarker.OnDrawClusterListener() {
-                    @Override
-                    public Drawable drawCluster(ClusterMarker clusterMarker) {
-                        /*NumberBitmapDrawable customCluster = new NumberBitmapDrawable(res, clusterBitmpap);
-                        customCluster.setCount(clusterMarker.getMarkersReadOnly().size());
-                        return customCluster;*/
-                        return null;
-                    }
-                },
-                18 // min zoom level
-        );
-
         DeviceController.getAllDevices(this);//call in onCreate ?
 
         return view;
@@ -98,18 +81,21 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*mMapView.setMinZoomLevel(mMapView.getTileProvider().getMinimumZoomLevel());
-        mMapView.setMaxZoomLevel(mMapView.getTileProvider().getMaximumZoomLevel());
-        mMapView.setCenter(mMapView.getTileProvider().getCenterCoordinate());
-        mMapView.setZoom(0);
-
-        // Show user location (purposely not in follow mode)
-        mMapView.setUserLocationEnabled(true);
-
-        LatLng userLocation = mMapView.getUserLocation();
-        boolean imVisible = mMapView.isUserLocationVisible();
-        mMapView.goToUserLocation(true);
-        int i = 0;*/
+        mMapView.setClusteringEnabled(
+                true, //enabled/disabled
+                //draw cluster listener
+//                new ClusterMarker.OnDrawClusterListener() {
+//                    @Override
+//                    public Drawable drawCluster(ClusterMarker clusterMarker) {
+//                        NumberBitmapDrawable customCluster = new NumberBitmapDrawable(res, clusterBitmpap);
+//                        customCluster.setCount(clusterMarker.getMarkersReadOnly().size());
+//                        return customCluster;
+//                        //return null;
+//                    }
+//                },
+                null,
+                0 // min zoom level
+        );
 
     }
 
@@ -163,9 +149,12 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
             for (int i = 0; i< numOfDevices; i++) {
                 Device device = devices.get(i);
 
-                if (device.getDeviceData().getLocation().getLatitude() != null && device.getDeviceData().getLocation().getLongitude() != null) {
+                if (device.getDeviceData() == null || device.getDeviceData().getLocation() == null)
+                    continue;
+
+                if (device.getDeviceData().getLocation().getLatitude() != null || device.getDeviceData().getLocation().getLongitude() != null) {
                     LatLng position = new LatLng(device.getDeviceData().getLocation().getLatitude(), device.getDeviceData().getLocation().getLongitude());
-                    if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
+//                    if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
                         positions.add(position);
                         Marker marker = new Marker(mMapView, device.getName(), " ", position);
                         marker.setMarker(customMarkerDrawable);
@@ -174,7 +163,7 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
                         //marker.setToolTip();
                         marker.setToolTip( new CustomInwoWindow(mMapView, device, getActivity()));
                         markers.add(marker);
-                    }
+//                    }
                 } else {
                     continue;
                 }

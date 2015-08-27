@@ -2,7 +2,8 @@
 <resources>
 
     <!--MAPBOX-->
-    <string name="accessToken">pk.eyJ1IjoiZmVycmFucGFsaWNpdSIsImEiOiJkNWUyM2VlZmEwMTdlZGU3OGE1YmE4MDRlNDRmMDdhZSJ9.2-WDl8I6gV8zUDIyB6B0oQ</string>
-    <string name="mapId">ferranpaliciu.fe406a64</string>
+    <!--<string name="accessToken">pk.eyJ1IjoiZmVycmFucGFsaWNpdSIsImEiOiJkNWUyM2VlZmEwMTdlZGU3OGE1YmE4MDRlNDRmMDdhZSJ9.2-WDl8I6gV8zUDIyB6B0oQ</string>-->
+    <string name="accessToken">pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg</string>
+    <string name="mapbox_id_street">mapbox.streets</string>
 
 </resources>
