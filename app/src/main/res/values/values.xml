@@ -6,4 +6,6 @@
     <string name="accessToken">pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg</string>
     <string name="mapbox_id_street">mapbox.streets</string>
 
+
+    <string name="forgot_passw_url">http://new-web.smartcitizen.me/password_recovery</string>
 </resources>
