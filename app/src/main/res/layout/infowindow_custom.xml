@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/info_window_title"
-            style="@style/InfoWindowBase"
+            style="@style/InfoWindowSingleLine"
             android:ellipsize="end"
             android:maxLines="2"
             android:scrollbars="none"
@@ -40,16 +40,21 @@
 
                 <TextView
                     android:id="@+id/info_window_kit_type"
-                    style="@style/InfoWindowBase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
                     android:ellipsize="end"
+                    android:fontFamily="sans-serif-condensed"
                     android:maxLines="2"
                     android:singleLine="false"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp"
-                    tools:text="Smartcitizen Kit" />
+                    tools:text="Smartcitizen Kit Smartcitizen Kit Smartcitizen Kit Smartcitizen Kit Smartcitizen Kit Smartcitizen Kit" />
 
                 <TextView
                     android:id="@+id/info_window_timestamp"
-                    style="@style/InfoWindowBase"
+                    style="@style/InfoWindowSingleLine"
                     android:drawableLeft="@mipmap/ic_timestamp"
                     android:drawablePadding="4dp"
                     android:textSize="14sp"
