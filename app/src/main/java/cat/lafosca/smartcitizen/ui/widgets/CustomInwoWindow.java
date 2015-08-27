@@ -13,6 +13,7 @@ import java.lang.ref.WeakReference;
 import java.text.ParseException;
 
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.CountyCode;
 import cat.lafosca.smartcitizen.model.rest.BaseDevice;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
@@ -48,9 +49,8 @@ public class CustomInwoWindow extends InfoWindow {
             e.printStackTrace();
         }
         //String location = mDevice.getDeviceData().getLocation().getPrettyLocation();
-        String location = mDevice.getCity() + " " + mDevice.getCountryCode();
-
-        //Log.i("window", name+"\n"+kitName+"\n"+updatedAt+"\n"+location);
+        String country = CountyCode.getInstance().getCountryNameByCode(mDevice.getCountryCode());
+        String location = mDevice.getCity() + ", " + country;
 
         ((TextView) mView.findViewById(R.id.info_window_title)).setText(name);
         String description = mDevice.getDescription();
