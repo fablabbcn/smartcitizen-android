@@ -8,4 +8,5 @@
 
 
     <string name="forgot_passw_url">http://new-web.smartcitizen.me/password_recovery</string>
+    <string name="sign_up">https://smartcitizen.me/users/add</string>
 </resources>
