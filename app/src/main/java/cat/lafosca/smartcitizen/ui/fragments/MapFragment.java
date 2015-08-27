@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
@@ -42,6 +43,8 @@ public class MapFragment extends Fragment implements DeviceController.GetWorldMa
     private static final String TAG = MapFragment.class.getSimpleName();
 
     @InjectView(R.id.mapview)   MapView mMapView;
+
+    @InjectView(R.id.mapProgress) ProgressBar mProgress;
 
     private LatLng userLocationPoint = new LatLng(41.394401, 2.197694); //barcelona todo: Remove this
 
@@ -73,6 +76,7 @@ public class MapFragment extends Fragment implements DeviceController.GetWorldMa
         mMapView.setUserLocationEnabled(true);
         mMapView.setUserLocationTrackingMode(UserLocationOverlay.TrackingMode.NONE);
 
+        mProgress.setVisibility(View.VISIBLE);
         DeviceController.getWorldMapDevices(this);//call in onCreate ?
 
         return view;
@@ -137,6 +141,7 @@ public class MapFragment extends Fragment implements DeviceController.GetWorldMa
     //todo Remove/refactor
     @Override
     public void onGetDevices(List<BaseDevice> devices) {
+        mProgress.setVisibility(View.GONE);
         int numOfDevices = devices.size();
         if (numOfDevices > 0) {
 
@@ -175,7 +180,8 @@ public class MapFragment extends Fragment implements DeviceController.GetWorldMa
 
     @Override
     public void onError(RetrofitError error) {
-        //only triggered by GetDevicesListener
+        mProgress.setVisibility(View.GONE);
+
         if (getActivity()!= null && this.isAdded())
             Toast.makeText(getActivity(), "Error getting kits. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
 
