@@ -5,11 +5,17 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Cache;
+import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import cat.lafosca.smartcitizen.BuildConfig;
+import cat.lafosca.smartcitizen.ConnectivityHelper;
 import cat.lafosca.smartcitizen.commons.Constants;
 import cat.lafosca.smartcitizen.commons.SmartCitizenApp;
 import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
@@ -83,6 +89,9 @@ public class RestController {
         Cache cache = new Cache(cacheDir, 1024 * 1024); // 1 MiB
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setCache(cache);
+        okHttpClient.setConnectTimeout(30, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(30, TimeUnit.SECONDS);
+        okHttpClient.networkInterceptors().add(mCacheControlInterceptor);
 
         Gson gson = new GsonBuilder()
                 /*.setExclusionStrategies(new ExclusionStrategy() { REALM
@@ -131,5 +140,36 @@ public class RestController {
     public AuthRestClient getAuthRestClient() {
         return mAuthRestClient;
     }
+
+
+    //https://gist.github.com/polbins/1c7f9303d2b7d169a3b1
+    private static final Interceptor mCacheControlInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+
+            // Add Cache Control only for GET methods
+            if (request.method().equals("GET")) {
+                if (ConnectivityHelper.isNetworkAvailable(SmartCitizenApp.getInstance())) {
+                    // 1 day
+                    request.newBuilder()
+                            .header("Cache-Control", "only-if-cached")
+                            .build();
+                } else {
+                    // 4 weeks stale
+                    request.newBuilder()
+                            .header("Cache-Control", "public, max-stale=2419200")
+                            .build();
+                }
+            }
+
+            Response response = chain.proceed(request);
+
+            // Re-write response CC header to force use of cache
+            return response.newBuilder()
+                    .header("Cache-Control", "public, max-age=86400") // 1 day
+                    .build();
+        }
+    };
 
 }
