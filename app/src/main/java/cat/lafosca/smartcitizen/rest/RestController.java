@@ -167,7 +167,7 @@ public class RestController {
 
             // Re-write response CC header to force use of cache
             return response.newBuilder()
-                    .header("Cache-Control", "public, max-age=86400") // 1 day
+                    .header("Cache-Control", "public, max-age=3600") // 1 hour
                     .build();
         }
     };
