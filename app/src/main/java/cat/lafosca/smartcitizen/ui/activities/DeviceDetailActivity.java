@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -59,6 +60,9 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
     @InjectView(R.id.sensors_layout)
     LinearLayout mSensorsLayout;
 
+    @InjectView(R.id.card_view)
+    CardView mCardView;
+
     @InjectView(R.id.scrollView)
     ScrollView mScrollView;
 
@@ -98,6 +102,8 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRegreshLayout.setColorSchemeResources(R.color.blue_smartcitizen, R.color.sensor_text_color, R.color.blue_smartcitizen_selected);
+
+        mCardView.setVisibility(View.GONE);
 
         if (getIntent().hasExtra("device")) {
             Device device = getIntent().getParcelableExtra("device");
@@ -227,6 +233,8 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
 
     private void setSensorsView() {
         if (mDevice.getDeviceData()!= null && mDevice.getDeviceData().getSensors().size() > 0) {
+
+            mCardView.setVisibility(View.VISIBLE);
 
             //clean data (if update)
             int numChilds = mSensorsLayout.getChildCount();
