@@ -15,7 +15,6 @@ import java.text.ParseException;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.CountyCode;
 import cat.lafosca.smartcitizen.model.rest.BaseDevice;
-import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
 import cat.lafosca.smartcitizen.ui.activities.DeviceDetailActivity;
 
