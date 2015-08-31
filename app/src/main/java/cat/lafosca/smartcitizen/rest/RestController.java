@@ -85,13 +85,13 @@ public class RestController {
 
         RestAdapter.LogLevel logLevel = (BuildConfig.DEBUG) ? RestAdapter.LogLevel.BASIC : RestAdapter.LogLevel.NONE;
 
-        File cacheDir = SmartCitizenApp.getInstance().getCacheDir();
+       /* File cacheDir = SmartCitizenApp.getInstance().getCacheDir();
         Cache cache = new Cache(cacheDir, 1024 * 1024); // 1 MiB
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setCache(cache);
         okHttpClient.setConnectTimeout(30, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(30, TimeUnit.SECONDS);
-        okHttpClient.networkInterceptors().add(mCacheControlInterceptor);
+        okHttpClient.networkInterceptors().add(mCacheControlInterceptor);*/
 
         Gson gson = new GsonBuilder()
                 /*.setExclusionStrategies(new ExclusionStrategy() { REALM
@@ -112,7 +112,8 @@ public class RestController {
                 new RestAdapter.Builder()
                 .setEndpoint(Constants.URL_BASE)
                         .setConverter(new GsonConverter(gson))
-                        .setClient(new OkClient(okHttpClient))
+                        //.setClient(new OkClient(okHttpClient))
+                        .setClient(new OkClient(new OkHttpClient()))
                         .setLogLevel(logLevel);
         /*builder.setErrorHandler(new ErrorHandler() {
             @Override
