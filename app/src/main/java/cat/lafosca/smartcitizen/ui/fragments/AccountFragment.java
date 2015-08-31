@@ -188,7 +188,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
         );
 
         emailIntent.putExtra(Intent.EXTRA_TEXT, body);
-        startActivity(Intent.createChooser(emailIntent, "Send email9    "));
+        startActivity(Intent.createChooser(emailIntent, "Send email "));
     }
 
     @OnClick(R.id.button_logout)
