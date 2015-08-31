@@ -5,27 +5,24 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by ferran on 03/06/15.
  */
-public class Device implements Parcelable {
-
-    private Integer id;
-
-    private String name;
-
-    private String description;
-
-    private String status;
+public class Device extends BaseDevice implements Parcelable {
 
     @SerializedName("last_reading_at")
-    private String lastReadingAt;
-
-    @SerializedName("added_at")
-    private String addedAt;
+    private Date lastReadingAt;
 
     @SerializedName("updated_at")
-    private String updatedAt;
+    private Date updatedAt;
+
+    @SerializedName("mac_address")
+    private String macAddress;
 
     private User owner;
 
@@ -35,20 +32,8 @@ public class Device implements Parcelable {
 
     //GETTERS
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public Kit getKit() {
@@ -63,9 +48,17 @@ public class Device implements Parcelable {
         return owner;
     }
 
-    public Device() {
-    }
+    //UTILS
+    public static Comparator<Device> COMPARE_BY_UPDATED = new Comparator<Device>() {
+        @Override
+        public int compare(Device device, Device other) {
+            if (device.getUpdatedAt() == null || other.getUpdatedAt() == null)
+                return 0;
+            return device.getUpdatedAt().compareTo(other.getUpdatedAt());
+        }
+    };
 
+    //PARCELABLE
     @Override
     public int describeContents() {
         return 0;
@@ -73,26 +66,25 @@ public class Device implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
-        dest.writeString(this.name);
-        dest.writeString(this.description);
-        dest.writeString(this.status);
-        dest.writeString(this.lastReadingAt);
-        dest.writeString(this.addedAt);
-        dest.writeString(this.updatedAt);
+        super.writeToParcel(dest, flags);
+        dest.writeLong(lastReadingAt != null ? lastReadingAt.getTime() : -1);
+        dest.writeLong(updatedAt != null ? updatedAt.getTime() : -1);
+        dest.writeString(this.macAddress);
         dest.writeParcelable(this.owner, 0);
         dest.writeParcelable(this.data, 0);
         dest.writeParcelable(this.kit, 0);
     }
 
+    public Device() {
+    }
+
     protected Device(Parcel in) {
-        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.name = in.readString();
-        this.description = in.readString();
-        this.status = in.readString();
-        this.lastReadingAt = in.readString();
-        this.addedAt = in.readString();
-        this.updatedAt = in.readString();
+        super(in);
+        long tmpLastReadingAt = in.readLong();
+        this.lastReadingAt = tmpLastReadingAt == -1 ? null : new Date(tmpLastReadingAt);
+        long tmpUpdatedAt = in.readLong();
+        this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
+        this.macAddress = in.readString();
         this.owner = in.readParcelable(User.class.getClassLoader());
         this.data = in.readParcelable(DeviceData.class.getClassLoader());
         this.kit = in.readParcelable(Kit.class.getClassLoader());

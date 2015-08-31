@@ -15,19 +15,19 @@ import cat.lafosca.smartcitizen.R;
 /**
  * Created by ferran on 22/06/15.
  */
-public class KitView extends LinearLayout {
+public class DeviceItemView extends InterceptorLayout {
 
     private TextView mKitName, mKitLocation;
 
     private static final int BLUE_KIT_COLOR = Color.parseColor("#35C2E5");
 
-    public KitView(Context context) {
+    public DeviceItemView(Context context) {
         super(context);
 
         init(context);
     }
 
-    public KitView(Context context, AttributeSet attrs) {
+    public DeviceItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init(context);
@@ -37,7 +37,7 @@ public class KitView extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        inflater.inflate(R.layout.kit_row_view, this, true);
+        inflater.inflate(R.layout.device_row_view, this, true);
 
         mKitName = (TextView)findViewById(R.id.kit_row_name);
         mKitLocation = (TextView)findViewById(R.id.kit_row_location);

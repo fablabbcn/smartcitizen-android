@@ -10,17 +10,25 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         mapbox:accessToken="@string/accessToken"
-        mapbox:mapid="@string/mapId" />
+        mapbox:mapid="@string/mapbox_id_street" />
+
+    <ProgressBar
+        android:id="@+id/mapProgress"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/userLocationButton"
         android:layout_width="@dimen/button_location_width"
         android:layout_height="@dimen/button_location_height"
-        android:src="@drawable/map_location_button_selector"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
-        android:layout_gravity="right|bottom"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:src="@drawable/map_location_button_selector" />
 
 </FrameLayout>

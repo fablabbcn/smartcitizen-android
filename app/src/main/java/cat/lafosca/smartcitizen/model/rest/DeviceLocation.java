@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class DeviceLocation implements Parcelable {
 
+    //todo NULL
     private String ip;
 
     private String exposure;

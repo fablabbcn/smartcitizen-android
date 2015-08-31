@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,14 +15,12 @@ import java.util.List;
 public class DeviceData implements Parcelable {
 
     @SerializedName("recorded_at")
-    private String recordedAt;
+    private Date recordedAt;
 
     @SerializedName("added_at")
-    private String addedAt;
+    private Date addedAt;
 
-    @SerializedName("calibrated_at")
-    private String calibratedAt;
-
+    //todo IGNORE?
     private String firmware;
 
     private DeviceLocation location;
@@ -38,9 +37,6 @@ public class DeviceData implements Parcelable {
         return sensors;
     }
 
-    public DeviceData() {
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -48,24 +44,27 @@ public class DeviceData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.recordedAt);
-        dest.writeString(this.addedAt);
-        dest.writeString(this.calibratedAt);
+        dest.writeLong(recordedAt != null ? recordedAt.getTime() : -1);
+        dest.writeLong(addedAt != null ? addedAt.getTime() : -1);
         dest.writeString(this.firmware);
-        dest.writeParcelable(this.location, flags);
+        dest.writeParcelable(this.location, 0);
         dest.writeTypedList(sensors);
     }
 
+    public DeviceData() {
+    }
+
     protected DeviceData(Parcel in) {
-        this.recordedAt = in.readString();
-        this.addedAt = in.readString();
-        this.calibratedAt = in.readString();
+        long tmpRecordedAt = in.readLong();
+        this.recordedAt = tmpRecordedAt == -1 ? null : new Date(tmpRecordedAt);
+        long tmpAddedAt = in.readLong();
+        this.addedAt = tmpAddedAt == -1 ? null : new Date(tmpAddedAt);
         this.firmware = in.readString();
         this.location = in.readParcelable(DeviceLocation.class.getClassLoader());
         this.sensors = in.createTypedArrayList(Sensor.CREATOR);
     }
 
-    public static final Creator<DeviceData> CREATOR = new Creator<DeviceData>() {
+    public static final Parcelable.Creator<DeviceData> CREATOR = new Parcelable.Creator<DeviceData>() {
         public DeviceData createFromParcel(Parcel source) {
             return new DeviceData(source);
         }

@@ -71,7 +71,7 @@ public class AccountPlaceholderFragment extends Fragment {
                 stringFormatted.length(), //end
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        String url = "https://www.google.com";
+        String url = getString(R.string.sign_up);
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
 

@@ -1,10 +1,12 @@
 package cat.lafosca.smartcitizen.ui.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -13,12 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.overlay.ClusterMarker;
-import com.mapbox.mapboxsdk.overlay.Icon;
 import com.mapbox.mapboxsdk.overlay.Marker;
 import com.mapbox.mapboxsdk.overlay.UserLocationOverlay;
 import com.mapbox.mapboxsdk.util.GeoUtils;
@@ -33,16 +34,18 @@ import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
-import cat.lafosca.smartcitizen.model.rest.Device;
+import cat.lafosca.smartcitizen.model.rest.BaseDevice;
 import cat.lafosca.smartcitizen.ui.widgets.CustomInwoWindow;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MapFragment extends Fragment implements DeviceController.GetDevicesListener{
+public class MapFragment extends Fragment implements DeviceController.GetWorldMapDevicesListener{
 
     private static final String TAG = MapFragment.class.getSimpleName();
 
     @InjectView(R.id.mapview)   MapView mMapView;
+
+    @InjectView(R.id.mapProgress) ProgressBar mProgress;
 
     private LatLng userLocationPoint = new LatLng(41.394401, 2.197694); //barcelona todo: Remove this
 
@@ -74,22 +77,8 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
         mMapView.setUserLocationEnabled(true);
         mMapView.setUserLocationTrackingMode(UserLocationOverlay.TrackingMode.NONE);
 
-        mMapView.setClusteringEnabled(
-                true, //enabled/disabled
-                //draw cluster listener
-                new ClusterMarker.OnDrawClusterListener() {
-                    @Override
-                    public Drawable drawCluster(ClusterMarker clusterMarker) {
-                        /*NumberBitmapDrawable customCluster = new NumberBitmapDrawable(res, clusterBitmpap);
-                        customCluster.setCount(clusterMarker.getMarkersReadOnly().size());
-                        return customCluster;*/
-                        return null;
-                    }
-                },
-                18 // min zoom level
-        );
-
-        DeviceController.getAllDevices(this);//call in onCreate ?
+        mProgress.setVisibility(View.VISIBLE);
+        DeviceController.getWorldMapDevices(this);//call in onCreate ?
 
         return view;
     }
@@ -98,18 +87,21 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*mMapView.setMinZoomLevel(mMapView.getTileProvider().getMinimumZoomLevel());
-        mMapView.setMaxZoomLevel(mMapView.getTileProvider().getMaximumZoomLevel());
-        mMapView.setCenter(mMapView.getTileProvider().getCenterCoordinate());
-        mMapView.setZoom(0);
-
-        // Show user location (purposely not in follow mode)
-        mMapView.setUserLocationEnabled(true);
-
-        LatLng userLocation = mMapView.getUserLocation();
-        boolean imVisible = mMapView.isUserLocationVisible();
-        mMapView.goToUserLocation(true);
-        int i = 0;*/
+        mMapView.setClusteringEnabled(
+                true, //enabled/disabled
+                //draw cluster listener
+//                new ClusterMarker.OnDrawClusterListener() {
+//                    @Override
+//                    public Drawable drawCluster(ClusterMarker clusterMarker) {
+//                        NumberBitmapDrawable customCluster = new NumberBitmapDrawable(res, clusterBitmpap);
+//                        customCluster.setCount(clusterMarker.getMarkersReadOnly().size());
+//                        return customCluster;
+//                        //return null;
+//                    }
+//                },
+                null,
+                0 // min zoom level
+        );
 
     }
 
@@ -149,47 +141,17 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
 
     //todo Remove/refactor
     @Override
-    public void onGetDevices(List<Device> devices) {
+    public void onGetDevices(List<BaseDevice> devices) {
         int numOfDevices = devices.size();
         if (numOfDevices > 0) {
-
-            List<Marker> markers = new ArrayList<Marker>();
-            List<LatLng> positions = new ArrayList<LatLng>();
-            Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.marker);
-            if (mMapView.isUserLocationVisible() && mMapView.getUserLocationEnabled()) {
-                userLocationPoint = mMapView.getUserLocation();
-            }
-
-            for (int i = 0; i< numOfDevices; i++) {
-                Device device = devices.get(i);
-
-                if (device.getDeviceData().getLocation().getLatitude() != null && device.getDeviceData().getLocation().getLongitude() != null) {
-                    LatLng position = new LatLng(device.getDeviceData().getLocation().getLatitude(), device.getDeviceData().getLocation().getLongitude());
-                    if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
-                        positions.add(position);
-                        Marker marker = new Marker(mMapView, device.getName(), " ", position);
-                        marker.setMarker(customMarkerDrawable);
-                        //marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
-                        //marker.getToolTip(mMapView);
-                        //marker.setToolTip();
-                        marker.setToolTip( new CustomInwoWindow(mMapView, device, getActivity()));
-                        markers.add(marker);
-                    }
-                } else {
-                    continue;
-                }
-            }
-            mMapView.addMarkers(markers);
-            BoundingBox bbn = GeoUtils.findBoundingBoxForGivenLocations(positions, 5.0);
-
-            mMapView.zoomToBoundingBox(bbn, true, true);
-
+            new MarkerTask(getActivity()).execute(devices);
         }
     }
 
     @Override
     public void onError(RetrofitError error) {
-        //only triggered by GetDevicesListener
+        mProgress.setVisibility(View.GONE);
+
         if (getActivity()!= null && this.isAdded())
             Toast.makeText(getActivity(), "Error getting kits. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
 
@@ -201,5 +163,60 @@ public class MapFragment extends Fragment implements DeviceController.GetDevices
         }
 
         Log.e(TAG, sb.toString());
+    }
+
+
+    private class MarkerTask extends AsyncTask<List<BaseDevice>, Void, Boolean> {
+
+        private Drawable customMarkerDrawable;
+        private List<Marker> markers;
+        private List<LatLng> positions;
+
+
+        public MarkerTask(Context context) {
+            customMarkerDrawable = Utils.getDrawable(context, R.drawable.marker);
+            markers = new ArrayList<Marker>();
+            positions = new ArrayList<LatLng>();
+        }
+
+        @Override
+        protected Boolean doInBackground(List<BaseDevice>... lists) {
+            List<BaseDevice> list = lists[0];
+
+            int numOfDevices = list.size();
+            if (numOfDevices > 0) {
+                Activity activity = getActivity();
+                for (int i = 0; i< numOfDevices; i++) {
+                    BaseDevice device = list.get(i);
+
+                    if (device.getLatitude() == null || device.getLongitude() == null)
+                        continue;
+
+                    LatLng position = new LatLng(device.getLatitude(), device.getLongitude());
+                    positions.add(position);
+                    Marker marker = new Marker(mMapView, device.getName(), " ", position);
+                    marker.setMarker(customMarkerDrawable);
+                    marker.setToolTip( new CustomInwoWindow(mMapView, device, activity));
+                    markers.add(marker);
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+
+            mProgress.setVisibility(View.GONE);
+
+            if (success && mMapView != null) {
+                mMapView.addMarkers(markers);
+                BoundingBox bbn = GeoUtils.findBoundingBoxForGivenLocations(positions, 5.0);
+
+                mMapView.zoomToBoundingBox(bbn, true, true);
+            }
+        }
     }
 }

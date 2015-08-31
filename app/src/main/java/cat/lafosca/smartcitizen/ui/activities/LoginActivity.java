@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
 
     @OnClick(R.id.forgot_password_tv)
     public void userForgotPassw() {
-        String url = "https://www.google.com";
+        String url = getString(R.string.forgot_passw_url);
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);

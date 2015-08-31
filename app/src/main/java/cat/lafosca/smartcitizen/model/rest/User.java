@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,20 +16,17 @@ public class User implements Parcelable {
 
     private Integer id;
 
+    private String uuid;
+
     private String username;
-
-    @SerializedName("first_name")
-    private String firstName;
-
-    @SerializedName("last_name")
-    private String lastName;
 
     private String avatar;
 
+    //NULL
     private String url;
 
     @SerializedName("joined_at")
-    private String joinedAt;
+    private Date joinedAt;
 
     private UserLocation location;
 
@@ -57,13 +55,12 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
+        dest.writeString(this.uuid);
         dest.writeString(this.username);
-        dest.writeString(this.firstName);
-        dest.writeString(this.lastName);
         dest.writeString(this.avatar);
         dest.writeString(this.url);
-        dest.writeString(this.joinedAt);
-        dest.writeParcelable(this.location, flags);
+        dest.writeLong(joinedAt != null ? joinedAt.getTime() : -1);
+        dest.writeParcelable(this.location, 0);
         dest.writeList(this.deviceIds);
     }
 
@@ -72,12 +69,12 @@ public class User implements Parcelable {
 
     protected User(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.uuid = in.readString();
         this.username = in.readString();
-        this.firstName = in.readString();
-        this.lastName = in.readString();
         this.avatar = in.readString();
         this.url = in.readString();
-        this.joinedAt = in.readString();
+        long tmpJoinedAt = in.readLong();
+        this.joinedAt = tmpJoinedAt == -1 ? null : new Date(tmpJoinedAt);
         this.location = in.readParcelable(UserLocation.class.getClassLoader());
         this.deviceIds = new ArrayList<Integer>();
         in.readList(this.deviceIds, List.class.getClassLoader());

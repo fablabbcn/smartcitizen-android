@@ -18,57 +18,64 @@
         app:title="@string/kit_detail_title"
         app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="top"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:scrollbars="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:scrollbars="vertical">
 
-            <include
-                android:id="@+id/kit_detail_header"
-                layout="@layout/kit_detail_header" />
-
-            <TextView
-                android:id="@+id/kit_detail_tags"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="8dp"
-                android:clickable="true"
-                android:fontFamily="sans-serif-condensed"
-                android:padding="12dp"
-                android:textColor="@color/tag_text_color"
-                android:textSize="16sp"
-                tools:text="tag1 tag2" />
+                android:orientation="vertical">
 
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                card_view:cardCornerRadius="4dp"
-                card_view:cardElevation="4dp">
+                <include
+                    android:id="@+id/kit_detail_header"
+                    layout="@layout/kit_detail_header" />
 
-                <LinearLayout
-                    android:id="@+id/sensors_layout"
+                <TextView
+                    android:id="@+id/kit_detail_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif-condensed"
+                    android:padding="12dp"
+                    android:textColor="@color/tag_text_color"
+                    android:textSize="16sp"
+                    tools:text="tag1 tag2" />
 
-                </LinearLayout>
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    card_view:cardCornerRadius="4dp"
+                    card_view:cardElevation="4dp">
 
-            </android.support.v7.widget.CardView>
+                    <LinearLayout
+                        android:id="@+id/sensors_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-        </LinearLayout>
+                    </LinearLayout>
 
-    </ScrollView>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

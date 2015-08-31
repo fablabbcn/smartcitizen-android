@@ -4,10 +4,12 @@ package cat.lafosca.smartcitizen.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.DeviceInfo;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
@@ -31,8 +35,9 @@ import cat.lafosca.smartcitizen.model.rest.CurrentUser;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.UserLocation;
 import cat.lafosca.smartcitizen.ui.activities.AllUserDevicesActivity;
+import cat.lafosca.smartcitizen.ui.activities.DeviceDetailActivity;
 import cat.lafosca.smartcitizen.ui.activities.MainActivity;
-import cat.lafosca.smartcitizen.ui.widgets.KitView;
+import cat.lafosca.smartcitizen.ui.widgets.DeviceItemView;
 import retrofit.RetrofitError;
 
 
@@ -135,6 +140,8 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
             int maxDevices = (devices.size() > MAX_DEVICES) ? MAX_DEVICES : devices.size();
 
+            Collections.sort(devices, Device.COMPARE_BY_UPDATED);
+
             Context ctx = getActivity();
             //for (int i = maxDevices - 1; i >= 0; i--) {
             for (int i = devices.size() - 1; i >= 0; i--) {
@@ -142,7 +149,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
                 //add to the preview list
                 if (i < maxDevices) {
 
-                    KitView kitView = new KitView(ctx);
+                    DeviceItemView kitView = new DeviceItemView(ctx);
 
                     Device device = devices.get(i);
 
@@ -154,7 +161,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
                     mDevicesContainer.addView(kitView, 0);
                 }
 
-                DeviceController.getDevice(mUserData.getDevices().get(i).getId(), this);
+                DeviceController.getDevice(mUserData.getDevices().get(i).getId(), this);//need to do this api call for every device to get the extra info we don't get from callig /v0/me
             }
 
             if (devices.size() <= MAX_DEVICES) {
@@ -169,7 +176,19 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
     @OnClick(R.id.button_contact_suport)
     public void contactSupportTeam() {
+        Context ctx = getActivity();
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO,
+                Uri.fromParts("mailto", "support@smartcitizen.me", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, ctx.getString(R.string.support_mail_subject));
 
+        String body = ctx.getString(R.string.support_mail_body,
+                DeviceInfo.getDeviceName(),
+                DeviceInfo.getAndroidVersion(),
+                DeviceInfo.getAppVersion(ctx)
+        );
+
+        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(emailIntent, "Send email "));
     }
 
     @OnClick(R.id.button_logout)
@@ -182,18 +201,27 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     public void goToAllKits() {
         if (mUserData != null && mUserData.getDevices()!= null && mUserData.getDevices().size() > 0) {
             ArrayList<Device> devices = new ArrayList<>(mDevicesInfo.values());
+            Collections.sort(devices, Device.COMPARE_BY_UPDATED);
             Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData.getUsername(), devices);
             startActivity(intent);
         }
     }
 
     @Override
-    public void onGetDevice(Device device) {
+    public void onGetDevice(final Device device) {
 
         View view = mDevicesContainer.findViewWithTag(device.getId());
-        if (view instanceof KitView) {
-            ((KitView)view).updateLocationText(device.getDeviceData().getLocation().getPrettyLocation());
-            ((KitView)view).updateTitleColor(device.getKit().getSlug());
+        if (view instanceof DeviceItemView) {
+            ((DeviceItemView)view).updateLocationText(device.getDeviceData().getLocation().getPrettyLocation());
+            ((DeviceItemView)view).updateTitleColor(device.getKit().getSlug());
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = DeviceDetailActivity.getCallingIntent(getActivity(), device);
+                    startActivity(intent);
+                }
+            });
+
         }
 
         if (mDevicesInfo != null)

@@ -2,10 +2,11 @@ package cat.lafosca.smartcitizen.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.binaryfork.spanny.Spanny;
 
@@ -24,12 +26,16 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
+import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.Sensor;
 import cat.lafosca.smartcitizen.ui.widgets.RoundedBackgroundSpan;
 import cat.lafosca.smartcitizen.ui.widgets.SensorView;
+import retrofit.RetrofitError;
 
-public class KitDetailActivity extends AppCompatActivity {
+public class DeviceDetailActivity extends AppCompatActivity implements DeviceController.GetDeviceListener{
+
+    private static final String TAG = DeviceDetailActivity.class.getName();
 
     private Device mDevice;
 
@@ -54,8 +60,14 @@ public class KitDetailActivity extends AppCompatActivity {
     @InjectView(R.id.sensors_layout)
     LinearLayout mSensorsLayout;
 
+    @InjectView(R.id.card_view)
+    CardView mCardView;
+
     @InjectView(R.id.scrollView)
     ScrollView mScrollView;
+
+    @InjectView(R.id.refreshLayout)
+    SwipeRefreshLayout mRegreshLayout;
 
     @InjectView(R.id.kit_detail_header)
     LinearLayout mHeaderView;
@@ -66,8 +78,15 @@ public class KitDetailActivity extends AppCompatActivity {
 
     public static Intent getCallingIntent(Context context, Device device) {
 
-        Intent intent = new Intent(context, KitDetailActivity.class);
-        intent.putExtra("Device", device);
+        Intent intent = new Intent(context, DeviceDetailActivity.class);
+        intent.putExtra("device", device);
+        return intent;
+    }
+
+    public static Intent getCallingIntent(Context context, int deviceId) {
+
+        Intent intent = new Intent(context, DeviceDetailActivity.class);
+        intent.putExtra("deviceId", deviceId);
         return intent;
     }
 
@@ -78,14 +97,48 @@ public class KitDetailActivity extends AppCompatActivity {
 
         ButterKnife.inject(this);
 
-        mDevice = getIntent().getParcelableExtra("Device");
-
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        init();
+        mRegreshLayout.setColorSchemeResources(R.color.blue_smartcitizen, R.color.sensor_text_color, R.color.blue_smartcitizen_selected);
 
+        mCardView.setVisibility(View.GONE);
+
+        if (getIntent().hasExtra("device")) {
+            Device device = getIntent().getParcelableExtra("device");
+            init(device);
+        } else if (getIntent().hasExtra("deviceId")) {
+            int deviceId = getIntent().getIntExtra("deviceId", 0);
+            mRegreshLayout.setRefreshing(true);
+            DeviceController.getDevice(deviceId, new DeviceController.GetDeviceListener() {
+                @Override
+                public void onGetDevice(Device device) {
+                    mRegreshLayout.setRefreshing(false);
+                    init(device);
+                }
+                @Override
+                public void onError(RetrofitError error) {
+                    mRegreshLayout.setRefreshing(false);
+                    Log.e(TAG, "onError "+error.toString());
+                }
+            });
+        }
+
+    }
+
+    private void init(Device device) {
+        mDevice = device;
+
+        setDeviceViews();
+
+        mRegreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mDevice != null)
+                    DeviceController.getDevice(mDevice.getId(), DeviceDetailActivity.this);
+            }
+        });
     }
 
     @Override
@@ -100,7 +153,7 @@ public class KitDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void init() {
+    private void setDeviceViews() {
         setTextLabels();
         setSensorsView();
         setTags();
@@ -141,12 +194,12 @@ public class KitDetailActivity extends AppCompatActivity {
 
 
     }
-    private void setTags() {
-        String status = mDevice.getStatus();
-        String exposure = mDevice.getDeviceData().getLocation().getExposure();
-        //moar tags?
 
-        if (status == null && exposure == null) {
+    private void setTags() {
+
+        List<String> tags = mDevice.getSystemTags();
+
+        if (tags == null || tags.size() == 0) {
             mTagsText.setVisibility(View.GONE);
 
         } else {
@@ -154,14 +207,20 @@ public class KitDetailActivity extends AppCompatActivity {
             int tagTextColor = getResources().getColor(R.color.tag_text_color);
             mTagsText.setVisibility(View.VISIBLE);
 
-            int corners = dp(12);
             String space = "          ";
 
-            //todo: build tags dinamically?
-            Spanny spanny = new Spanny("  ")
-                    .append(status, new RoundedBackgroundSpan(corners, 20, tagColor, tagTextColor))
-                    .append(space)
-                    .append(exposure, new RoundedBackgroundSpan(corners, 20, tagColor, tagTextColor));
+            Spanny spanny = new Spanny("  ");
+
+            int numTags = tags.size();
+            for (int i = 0; i<numTags; i++) {
+                String tag = tags.get(i);
+                if (tag.length()>0)
+                    spanny.append(tag,  new RoundedBackgroundSpan(dp(12), 20, tagColor, tagTextColor));
+
+                if (i < numTags - 1) {
+                    spanny.append(space);
+                }
+            }
 
             mTagsText.setText(spanny);
 
@@ -174,6 +233,15 @@ public class KitDetailActivity extends AppCompatActivity {
 
     private void setSensorsView() {
         if (mDevice.getDeviceData()!= null && mDevice.getDeviceData().getSensors().size() > 0) {
+
+            mCardView.setVisibility(View.VISIBLE);
+
+            //clean data (if update)
+            int numChilds = mSensorsLayout.getChildCount();
+            if (numChilds > 0) {
+                mSensorsLayout.removeAllViews();
+            }
+
             List<Sensor> sensors = mDevice.getDeviceData().getSensors();
             int numSensors = sensors.size();
             for (int i = 0; i<numSensors; i++) {
@@ -228,5 +296,20 @@ public class KitDetailActivity extends AppCompatActivity {
         } else {
             mKitLocation.setVisibility(View.GONE);
         }
+    }
+
+    //Update device info (refresh)
+    @Override
+    public void onGetDevice(Device device) {
+        mRegreshLayout.setRefreshing(false);
+        mDevice = device;
+        setDeviceViews();
+        Toast.makeText(this, "Device info updated", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError(RetrofitError error) {
+        mRegreshLayout.setRefreshing(false);
+        Toast.makeText(this, "Error updating device. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
     }
 }

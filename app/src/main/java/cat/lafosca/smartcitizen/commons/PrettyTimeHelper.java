@@ -14,7 +14,7 @@ import java.util.TimeZone;
 public class PrettyTimeHelper {
 
     PrettyTime pt;
-    SimpleDateFormat sdf;
+//    SimpleDateFormat sdf;
 
     private static PrettyTimeHelper ourInstance = new PrettyTimeHelper();
 
@@ -25,21 +25,20 @@ public class PrettyTimeHelper {
     private PrettyTimeHelper() {
         pt = new PrettyTime();
         pt.setLocale(Locale.getDefault());
-        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");//2015-05-25T07:30:29Z
+//        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");//2015-05-25T07:30:29Z
 
         /*Calendar cal = Calendar.getInstance();
         TimeZone timeZone1 = cal.getTimeZone();*/
 
         //sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-        sdf.setTimeZone(TimeZone.getDefault());
+//        sdf.setTimeZone(TimeZone.getDefault());
     }
 
-    public String getPrettyTime(String date) throws ParseException { // date: yyyy-MM-ddTHH:mm:ssZ
+    public String getPrettyTime(Date date) throws ParseException { // date: yyyy-MM-ddTHH:mm:ssZ
 
         String prettyDate = "";
-        Date d = sdf.parse(date);
-        prettyDate = pt.format(d);
+        prettyDate = pt.format(date);
         if (prettyDate.length() > 1 ) {
             prettyDate = prettyDate.substring(0,1).toUpperCase() + prettyDate.substring(1);
         }

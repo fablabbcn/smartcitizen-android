@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.KitDetailActivity"
+            android:name=".ui.activities.DeviceDetailActivity"
             android:label="@string/title_activity_kit_detail"
             android:parentActivityName=".ui.activities.MainActivity"
             android:screenOrientation="portrait" />

@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import cat.lafosca.smartcitizen.R;
@@ -25,10 +26,12 @@ public class Sensor implements Parcelable {
     private final String NO2 =          "No2";
     private final String CO =           "Co";
 
-
-    //Sensor names
-
     private Integer id;
+
+    @SerializedName("measurement_id")
+    private String measurementId;
+
+    private String uuid;
 
     private String ancestry;
 
@@ -39,10 +42,14 @@ public class Sensor implements Parcelable {
     private String unit;
 
     @SerializedName("created_at")
-    private String createdAt;
+    private Date createdAt;
 
     @SerializedName("updated_at")
-    private String updatedAt;
+    private Date updatedAt;
+
+    //when asking for devices (/v0/devices), the data from sensors come in this fields (value, raw_value, prevValue, prevRawValue)
+    //when asking for kits generic info (/v0/kits), this info doesn't exits, but you get a field called "measurement"
+    //there's an endpoint that given a device id & a timestamp, it returns the values of the kit sensors int the timestamp
 
     private float value;
 
@@ -54,6 +61,8 @@ public class Sensor implements Parcelable {
 
     @SerializedName("prev_raw_value")
     private float prevRawValue;
+
+    private Measurement measurement;
 
     //GETTERS
     public String getName() {
@@ -71,27 +80,6 @@ public class Sensor implements Parcelable {
     public String getDescription() {
         return description;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
-        dest.writeString(this.ancestry);
-        dest.writeString(this.name);
-        dest.writeString(this.description);
-        dest.writeString(this.unit);
-        dest.writeString(this.createdAt);
-        dest.writeString(this.updatedAt);
-        dest.writeFloat(this.value);
-        dest.writeFloat(this.rawValue);
-        dest.writeFloat(this.prevValue);
-        dest.writeFloat(this.prevRawValue);
-    }
-
 
     public String getPrettyName() {
         String sensorName;
@@ -160,21 +148,49 @@ public class Sensor implements Parcelable {
         return sensorIcon;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.measurementId);
+        dest.writeString(this.uuid);
+        dest.writeString(this.ancestry);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeString(this.unit);
+        dest.writeLong(createdAt != null ? createdAt.getTime() : -1);
+        dest.writeLong(updatedAt != null ? updatedAt.getTime() : -1);
+        dest.writeFloat(this.value);
+        dest.writeFloat(this.rawValue);
+        dest.writeFloat(this.prevValue);
+        dest.writeFloat(this.prevRawValue);
+        dest.writeParcelable(this.measurement, 0);
+    }
+
     public Sensor() {
     }
 
     protected Sensor(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.measurementId = in.readString();
+        this.uuid = in.readString();
         this.ancestry = in.readString();
         this.name = in.readString();
         this.description = in.readString();
         this.unit = in.readString();
-        this.createdAt = in.readString();
-        this.updatedAt = in.readString();
+        long tmpCreatedAt = in.readLong();
+        this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
+        long tmpUpdatedAt = in.readLong();
+        this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
         this.value = in.readFloat();
         this.rawValue = in.readFloat();
         this.prevValue = in.readFloat();
         this.prevRawValue = in.readFloat();
+        this.measurement = in.readParcelable(Measurement.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Sensor> CREATOR = new Parcelable.Creator<Sensor>() {
