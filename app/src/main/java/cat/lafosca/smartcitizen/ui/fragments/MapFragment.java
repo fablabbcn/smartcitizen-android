@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import com.mapbox.mapboxsdk.overlay.UserLocationOverlay;
 import com.mapbox.mapboxsdk.util.GeoUtils;
 import com.mapbox.mapboxsdk.views.MapView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,40 +143,9 @@ public class MapFragment extends Fragment implements DeviceController.GetWorldMa
     //todo Remove/refactor
     @Override
     public void onGetDevices(List<BaseDevice> devices) {
-        mProgress.setVisibility(View.GONE);
         int numOfDevices = devices.size();
         if (numOfDevices > 0) {
-
-            List<Marker> markers = new ArrayList<Marker>();
-            List<LatLng> positions = new ArrayList<LatLng>();
-            Drawable customMarkerDrawable = Utils.getDrawable(getActivity(), R.drawable.marker);
-            if (mMapView.isUserLocationVisible() && mMapView.getUserLocationEnabled()) {
-                userLocationPoint = mMapView.getUserLocation();
-            }
-
-            Activity act = getActivity();
-            for (int i = 0; i< numOfDevices; i++) {
-                BaseDevice device = devices.get(i);
-
-                if (device.getLatitude() == null || device.getLongitude() == null)
-                    continue;
-
-                LatLng position = new LatLng(device.getLatitude(), device.getLongitude());
-//                if (position.distanceTo(userLocationPoint) < 800000 ) { // 800 km offset
-                positions.add(position);
-                Marker marker = new Marker(mMapView, device.getName(), " ", position);
-                marker.setMarker(customMarkerDrawable);
-                //marker.setIcon(new Icon(getActivity(), Icon.Size.SMALL, "", "4AA9E2" ));
-                //marker.getToolTip(mMapView);
-                //marker.setToolTip();
-                marker.setToolTip( new CustomInwoWindow(mMapView, device, act));
-                markers.add(marker);
-//                }
-            }
-            mMapView.addMarkers(markers);
-            BoundingBox bbn = GeoUtils.findBoundingBoxForGivenLocations(positions, 5.0);
-
-            mMapView.zoomToBoundingBox(bbn, true, true);
+            new MarkerTask(getActivity()).execute(devices);
         }
     }
 
@@ -193,5 +164,60 @@ public class MapFragment extends Fragment implements DeviceController.GetWorldMa
         }
 
         Log.e(TAG, sb.toString());
+    }
+
+
+    private class MarkerTask extends AsyncTask<List<BaseDevice>, Void, Boolean> {
+
+        private Drawable customMarkerDrawable;
+        private List<Marker> markers;
+        private List<LatLng> positions;
+
+
+        public MarkerTask(Context context) {
+            customMarkerDrawable = Utils.getDrawable(context, R.drawable.marker);
+            markers = new ArrayList<Marker>();
+            positions = new ArrayList<LatLng>();
+        }
+
+        @Override
+        protected Boolean doInBackground(List<BaseDevice>... lists) {
+            List<BaseDevice> list = lists[0];
+
+            int numOfDevices = list.size();
+            if (numOfDevices > 0) {
+                Activity activity = getActivity();
+                for (int i = 0; i< numOfDevices; i++) {
+                    BaseDevice device = list.get(i);
+
+                    if (device.getLatitude() == null || device.getLongitude() == null)
+                        continue;
+
+                    LatLng position = new LatLng(device.getLatitude(), device.getLongitude());
+                    positions.add(position);
+                    Marker marker = new Marker(mMapView, device.getName(), " ", position);
+                    marker.setMarker(customMarkerDrawable);
+                    marker.setToolTip( new CustomInwoWindow(mMapView, device, activity));
+                    markers.add(marker);
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+
+            mProgress.setVisibility(View.GONE);
+
+            if (success && mMapView != null) {
+                mMapView.addMarkers(markers);
+                BoundingBox bbn = GeoUtils.findBoundingBoxForGivenLocations(positions, 5.0);
+
+                mMapView.zoomToBoundingBox(bbn, true, true);
+            }
+        }
     }
 }
