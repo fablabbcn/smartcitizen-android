@@ -12,14 +12,12 @@ import com.mapbox.mapboxsdk.views.InfoWindow;
 import com.mapbox.mapboxsdk.views.MapView;
 
 import java.lang.ref.WeakReference;
-import java.text.ParseException;
 import java.util.Date;
 
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.CountyCode;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.model.rest.BaseDevice;
-import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.ui.activities.DeviceDetailActivity;
 import cat.lafosca.smartcitizen.ui.activities.MainActivity;

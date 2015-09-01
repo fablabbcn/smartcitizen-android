@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +26,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
-import cat.lafosca.smartcitizen.commons.PrettyTimeHelper;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.Sensor;
@@ -269,12 +269,8 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
 
         if (mDevice.getLastReadingAt() != null) {
             String updatedAt = "";
-            try {
-                updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getUpdatedAt());
-                mKitTimestamp.setText(updatedAt);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            updatedAt = ""+DateUtils.getRelativeTimeSpanString(mDevice.getLastReadingAt().getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+            mKitTimestamp.setText(updatedAt);
 
         } else {
             mKitTimestamp.setText("N/A");
