@@ -168,13 +168,15 @@ public class MapFragment extends Fragment implements DeviceController.GetWorldMa
 
     private class MarkerTask extends AsyncTask<List<BaseDevice>, Void, Boolean> {
 
-        private Drawable customMarkerDrawable;
+        private Drawable customMarkerDrawableOnline;
+        private Drawable customMarkerDrawableOffline;
         private List<Marker> markers;
         private List<LatLng> positions;
 
 
         public MarkerTask(Context context) {
-            customMarkerDrawable = Utils.getDrawable(context, R.drawable.marker);
+            customMarkerDrawableOffline = Utils.getDrawable(context, R.drawable.marker_offline);
+            customMarkerDrawableOnline = Utils.getDrawable(context, R.drawable.marker_online);
             markers = new ArrayList<Marker>();
             positions = new ArrayList<LatLng>();
         }
@@ -195,7 +197,11 @@ public class MapFragment extends Fragment implements DeviceController.GetWorldMa
                     LatLng position = new LatLng(device.getLatitude(), device.getLongitude());
                     positions.add(position);
                     Marker marker = new Marker(mMapView, device.getName(), " ", position);
-                    marker.setMarker(customMarkerDrawable);
+                    if (device.getSystemTags().contains("offline")) {
+                        marker.setMarker(customMarkerDrawableOffline);
+                    } else {
+                        marker.setMarker(customMarkerDrawableOnline);
+                    }
                     marker.setToolTip( new CustomInwoWindow(mMapView, device, activity));
                     markers.add(marker);
                 }
