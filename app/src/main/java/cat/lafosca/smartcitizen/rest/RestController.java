@@ -4,6 +4,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -12,6 +13,7 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import cat.lafosca.smartcitizen.BuildConfig;
@@ -105,7 +107,8 @@ public class RestController {
                         return false;
                     }
                 })*/
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                //.setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .create();
 
         RestAdapter.Builder builder =
