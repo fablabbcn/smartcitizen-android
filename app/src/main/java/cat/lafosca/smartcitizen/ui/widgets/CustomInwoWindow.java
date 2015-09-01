@@ -2,6 +2,7 @@ package cat.lafosca.smartcitizen.ui.widgets;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -144,11 +145,8 @@ public class CustomInwoWindow extends InfoWindow {
         if (lastR == null) {
             lastReading = "N/A";
         } else {
-            try {
-                lastReading = PrettyTimeHelper.getInstance().getPrettyTime(lastR);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            //lastReading = ""+DateUtils.getRelativeDateTimeString(mActivity.get(), lastR.getTime(), DateUtils.SECOND_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, ); // X seconds/minuts ago, hh:mm
+            lastReading = ""+DateUtils.getRelativeTimeSpanString(lastR.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         }
 
         tvUpdated.setText(lastReading);
