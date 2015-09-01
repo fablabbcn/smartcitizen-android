@@ -3,10 +3,8 @@ package cat.lafosca.smartcitizen.commons;
 import com.ocpsoft.pretty.time.PrettyTime;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by ferran on 09/06/15.

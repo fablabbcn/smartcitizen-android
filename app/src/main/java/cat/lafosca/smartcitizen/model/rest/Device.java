@@ -36,6 +36,10 @@ public class Device extends BaseDevice implements Parcelable {
         return updatedAt;
     }
 
+    public Date getLastReadingAt() {
+        return lastReadingAt;
+    }
+
     public Kit getKit() {
         return kit;
     }

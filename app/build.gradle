@@ -42,7 +42,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.google.code.gson:gson:1.7.2'
-    compile 'com.ocpsoft:ocpsoft-pretty-time:1.0.6'
     compile 'com.binaryfork:spanny:1.0.2'
 
 
