@@ -267,7 +267,7 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
         mKitTitle.setText(mDevice.getName());
         mKitType.setText(mDevice.getKit().getName().toUpperCase());
 
-        if (mDevice.getUpdatedAt() != null) {
+        if (mDevice.getLastReadingAt() != null) {
             String updatedAt = "";
             try {
                 updatedAt = PrettyTimeHelper.getInstance().getPrettyTime(mDevice.getUpdatedAt());
@@ -277,7 +277,7 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
             }
 
         } else {
-            mKitTimestamp.setVisibility(View.GONE);
+            mKitTimestamp.setText("N/A");
         }
 
         if (mDevice.getOwner() != null && mDevice.getOwner().getUsername() != null) {

@@ -8,10 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.Utils;
+import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.ui.adapters.MainPagerAdapter;
 import cat.lafosca.smartcitizen.ui.fragments.AccountFragment;
 import cat.lafosca.smartcitizen.ui.fragments.AccountPlaceholderFragment;
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     @InjectView(R.id.pager)
     CustomViewPager mViewPager;
 
+    private Map<Integer, Device> mMapDevices;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);*/
+        mMapDevices = new HashMap<>();
 
         mTabAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
 
@@ -45,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
         initTabs();
 
+    }
+
+    public Device getDevice(Integer deviceId) {
+        return mMapDevices.get(deviceId);
+    }
+
+    public void addDevice(Device device) {
+        mMapDevices.put(device.getId(), device);
     }
 
     private void initTabs() {
