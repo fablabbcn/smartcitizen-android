@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="cat.lafosca.smartcitizen.ui.activities.LoginActivity">
+    tools:context="com.smartcitizen.ui.activities.LoginActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

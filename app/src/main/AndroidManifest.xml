@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cat.lafosca.smartcitizen" >
+    package="com.smartcitizen" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,13 +10,13 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:name=".commons.SmartCitizenApp"
+        android:name="com.smartcitizen.commons.SmartCitizenApp"
         android:allowBackup="true"
         android:icon="@mipmap/sc_icon"
         android:label="@string/app_name"
         android:theme="@style/AppMaterialTheme" >
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name="com.smartcitizen.ui.activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -26,18 +26,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.DeviceDetailActivity"
+            android:name="com.smartcitizen.ui.activities.DeviceDetailActivity"
             android:label="@string/title_activity_kit_detail"
-            android:parentActivityName=".ui.activities.MainActivity"
+            android:parentActivityName="com.smartcitizen.ui.activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activities.LoginActivity"
+            android:name="com.smartcitizen.ui.activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:name=".ui.activities.AllUserDevicesActivity"
+            android:name="com.smartcitizen.ui.activities.AllUserDevicesActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_all_user_devices" >
         </activity>

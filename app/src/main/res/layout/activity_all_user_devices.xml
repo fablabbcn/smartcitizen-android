@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context="cat.lafosca.smartcitizen.ui.activities.AllUserDevicesActivity">
+    tools:context="com.smartcitizen.ui.activities.AllUserDevicesActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
