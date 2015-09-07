@@ -19,12 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.binaryfork.spanny.Spanny;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.SmartCitizenApp;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.model.rest.Sensor;
@@ -128,6 +135,16 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
 
     private void init(Device device) {
         mDevice = device;
+
+        MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
+        if (mixpanelAPI != null) {
+
+            Map<String, Object> properties = new HashMap<>();
+            properties.put("device_id", String.valueOf(mDevice.getId()));
+            properties.put("device_name", mDevice.getName());
+
+            mixpanelAPI.trackMap("User viewed kit detail", properties);
+        }
 
         setDeviceViews();
 

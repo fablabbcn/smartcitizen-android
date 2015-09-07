@@ -45,6 +45,10 @@ public class User implements Parcelable {
     public String getAvatar() {
         return avatar;
     }
+
+    public Integer getId() {
+        return id;
+    }
     //GETTERS AND SETTERS
 
     @Override

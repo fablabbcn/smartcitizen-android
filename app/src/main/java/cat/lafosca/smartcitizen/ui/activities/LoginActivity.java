@@ -12,10 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.SmartCitizenApp;
 import cat.lafosca.smartcitizen.controllers.SessionController;
 import retrofit.RetrofitError;
 
@@ -85,6 +88,10 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
     @Override
     public void onLoginSucces() {
         mProgress.setVisibility(View.GONE);
+        MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
+        if (mixpanelAPI != null) {
+            mixpanelAPI.track("User logged in");
+        }
         setResult(LoginActivity.LOGIN_OK);
         finish();
         Toast.makeText(this, "login Success!", Toast.LENGTH_LONG).show();

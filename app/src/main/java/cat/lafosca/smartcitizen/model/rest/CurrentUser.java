@@ -23,6 +23,10 @@ public class CurrentUser extends User implements Parcelable {
         return devices;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public int describeContents() {
         return 0;

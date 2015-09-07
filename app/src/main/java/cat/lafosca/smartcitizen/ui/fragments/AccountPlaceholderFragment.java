@@ -9,17 +9,21 @@ import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.NonUnderlindeClickableSpan;
+import cat.lafosca.smartcitizen.commons.SmartCitizenApp;
 import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
 import cat.lafosca.smartcitizen.rest.RestController;
 import cat.lafosca.smartcitizen.ui.activities.LoginActivity;
@@ -71,12 +75,22 @@ public class AccountPlaceholderFragment extends Fragment {
                 stringFormatted.length(), //end
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        String url = getString(R.string.sign_up);
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-
         spannableString.setSpan(
-                new NonUnderlindeClickableSpan(getActivity(), i),
+                new ClickableSpan() {
+                    @Override
+                    public void onClick(View view) {
+                        MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
+                        if (mixpanelAPI != null) {
+                            mixpanelAPI.track("User tapped ‘create your account’");
+                        }
+
+                        String url = getString(R.string.sign_up);
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+
+                        startActivity(i);
+                    }
+                },
                 stringFormatted.length() - infoTextLink.length(), //start
                 stringFormatted.length(), //end
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

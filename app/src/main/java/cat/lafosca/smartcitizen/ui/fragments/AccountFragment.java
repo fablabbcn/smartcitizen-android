@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import cat.lafosca.smartcitizen.R;
 import cat.lafosca.smartcitizen.commons.DeviceInfo;
+import cat.lafosca.smartcitizen.commons.SmartCitizenApp;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.controllers.DeviceController;
 import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
@@ -95,6 +98,27 @@ public class AccountFragment extends Fragment implements UserController.UserCont
         //Log.i(TAG, currentUser.toString());
 
         mUserData = currentUser;
+
+        MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
+        if (mixpanelAPI != null) {
+            String userId = String.valueOf(mUserData.getId());
+            if (userId != null){
+                mixpanelAPI.identify(userId);
+                mixpanelAPI.getPeople().identify(userId);
+            }
+
+            String username = mUserData.getUsername();
+            if (username != null) mixpanelAPI.getPeople().set("Username", username);
+
+            String email = currentUser.getEmail();
+            if (email != null) mixpanelAPI.getPeople().set("Email", email);
+
+            String city = String.valueOf(currentUser.getLocation().getCity());
+            if (city != null) mixpanelAPI.getPeople().set("City", city);
+
+            String country = String.valueOf(currentUser.getLocation().getCountry());
+            if (city != null) mixpanelAPI.getPeople().set("Country", country);
+        }
 
         setUpProfileData();
         setUpDevicesData();
@@ -195,11 +219,27 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     public void logout() {
         SharedPreferencesManager.getInstance().setUserLoggedIn("");
         ((MainActivity)getActivity()).refreshAccountView(false);
+
+        MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
+        if (mixpanelAPI != null) {
+            mixpanelAPI.track("User logged out");
+            //need to flush before we reset the info?
+            mixpanelAPI.flush();
+
+            mixpanelAPI.reset();
+
+        }
     }
 
     @OnClick(R.id.button_view_all_kits)
     public void goToAllKits() {
         if (mUserData != null && mUserData.getDevices()!= null && mUserData.getDevices().size() > 0) {
+
+            MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
+            if (mixpanelAPI != null) {
+                mixpanelAPI.track("User tapped ‘view all kits’");
+            }
+
             ArrayList<Device> devices = new ArrayList<>(mDevicesInfo.values());
             Collections.sort(devices, Device.COMPARE_BY_UPDATED);
             Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData.getUsername(), devices);

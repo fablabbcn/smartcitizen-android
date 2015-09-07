@@ -65,6 +65,15 @@ public class MainActivity extends AppCompatActivity {
     private void initMixPanel() {
         MixpanelAPI mixpanelAPI = MixpanelAPI.getInstance(this.getApplicationContext(), Constants.MIXPANEL_TOKEN);
 
+        JSONObject platform = new JSONObject();
+        try {
+            platform.put("platform", "Android");
+            mixpanelAPI.registerSuperProperties(platform);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         SmartCitizenApp.getInstance().setMixpanelInstance(mixpanelAPI);
     }
 
