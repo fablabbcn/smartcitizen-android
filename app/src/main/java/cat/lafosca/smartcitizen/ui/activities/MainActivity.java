@@ -8,12 +8,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cat.lafosca.smartcitizen.R;
+import cat.lafosca.smartcitizen.commons.Constants;
+import cat.lafosca.smartcitizen.commons.SmartCitizenApp;
 import cat.lafosca.smartcitizen.commons.Utils;
 import cat.lafosca.smartcitizen.model.rest.Device;
 import cat.lafosca.smartcitizen.ui.adapters.MainPagerAdapter;
@@ -42,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
+        initMixPanel();
         /*mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);*/
         mMapDevices = new HashMap<>();
@@ -52,6 +60,18 @@ public class MainActivity extends AppCompatActivity {
 
         initTabs();
 
+    }
+
+    private void initMixPanel() {
+        MixpanelAPI mixpanelAPI = MixpanelAPI.getInstance(this.getApplicationContext(), Constants.MIXPANEL_TOKEN);
+
+        SmartCitizenApp.getInstance().setMixpanelInstance(mixpanelAPI);
+    }
+
+    @Override
+    protected void onDestroy() {
+        SmartCitizenApp.getInstance().getMixpanelInstance().flush();
+        super.onDestroy();
     }
 
     public Device getDevice(Integer deviceId) {

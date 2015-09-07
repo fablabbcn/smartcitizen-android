@@ -4,6 +4,8 @@ import android.app.Application;
 
 import cat.lafosca.smartcitizen.managers.SharedPreferencesManager;
 import com.crashlytics.android.Crashlytics;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -12,6 +14,8 @@ import io.fabric.sdk.android.Fabric;
 public class SmartCitizenApp extends Application {
 
     private static SmartCitizenApp instance;
+
+    private static MixpanelAPI mixpanelInstance;
 
     @Override
     public void onCreate() {
@@ -27,5 +31,13 @@ public class SmartCitizenApp extends Application {
 
     public static SmartCitizenApp getInstance() {
         return instance;
+    }
+
+    public MixpanelAPI getMixpanelInstance() {
+        return mixpanelInstance;
+    }
+
+    public void setMixpanelInstance(MixpanelAPI mixpanelAPI) {
+        mixpanelInstance = mixpanelAPI;
     }
 }
