@@ -20,7 +20,7 @@ public class SmartCitizenApp extends Application {
 
         instance = this;
 
-        CountyCode.getInstance();//init
+        CountryCode.getInstance();//init
 
         SharedPreferencesManager.getInstance().init(getApplicationContext());
     }

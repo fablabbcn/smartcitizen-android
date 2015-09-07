@@ -9,17 +9,17 @@ import java.util.Map;
  *
  * http://kodejava.org/how-do-i-get-a-list-of-country-names/
  */
-public class CountyCode {
+public class CountryCode {
 
-    private static CountyCode ourInstance = new CountyCode();
+    private static CountryCode ourInstance = new CountryCode();
 
-    public static CountyCode getInstance() {
+    public static CountryCode getInstance() {
         return ourInstance;
     }
 
     private Map<String, String> countries;
 
-    private CountyCode() {
+    private CountryCode() {
         countries = new HashMap<>();
 
         String[] isoCountries = Locale.getISOCountries();
