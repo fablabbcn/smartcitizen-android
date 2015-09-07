@@ -19,8 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.binaryfork.spanny.Spanny;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 
 import java.util.List;
 
@@ -130,27 +128,6 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
 
     private void init(Device device) {
         mDevice = device;
-
-        //Answers event
-        ContentViewEvent event = new ContentViewEvent();
-
-        event.
-                putContentName(mDevice.getName()).
-                putContentType("Device Detail View").
-                putContentId(String.valueOf(mDevice.getId()));
-
-        String country = mDevice.getDeviceData().getLocation().getCountry();
-        if (country != null) {
-            event.putCustomAttribute("Country", country);
-        }
-
-        String city = mDevice.getDeviceData().getLocation().getCity();
-        if (city != null){
-            event.putCustomAttribute("City", city);
-        }
-
-        Answers.getInstance().logContentView(event);
-
 
         setDeviceViews();
 

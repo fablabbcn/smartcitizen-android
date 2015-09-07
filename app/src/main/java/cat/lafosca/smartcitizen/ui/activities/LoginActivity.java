@@ -12,9 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -87,8 +84,6 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
 
     @Override
     public void onLoginSucces() {
-        Answers.getInstance().logLogin(new LoginEvent().putSuccess(true)); //.putMethod()? .putCustomAttribute()?
-
         mProgress.setVisibility(View.GONE);
         setResult(LoginActivity.LOGIN_OK);
         finish();
@@ -98,7 +93,6 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
     @Override
     public void onLoginError(RetrofitError error) {
         mProgress.setVisibility(View.GONE);
-        Answers.getInstance().logLogin(new LoginEvent().putSuccess(false));
         if (error.getResponse()!= null) {
             int status = error.getResponse().getStatus();
 
