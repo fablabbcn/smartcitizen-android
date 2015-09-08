@@ -41,6 +41,8 @@ import com.smartcitizen.ui.activities.AllUserDevicesActivity;
 import com.smartcitizen.ui.activities.DeviceDetailActivity;
 import com.smartcitizen.ui.activities.MainActivity;
 import com.smartcitizen.ui.widgets.DeviceItemView;
+import com.squareup.picasso.Picasso;
+
 import retrofit.RetrofitError;
 
 
@@ -142,8 +144,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
         }
 
         if (mUserData.getAvatar() != null) {
-            //TODO Picasso
-            //mAvatarView.setImage
+            Picasso.with(getActivity()).load(mUserData.getAvatar()).error(R.drawable.user_avatar_placeholder).into(mAvatarView);
         }
     }
 
