@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.smartcitizen.R;
+import com.smartcitizen.commons.CircleTransform;
 import com.smartcitizen.commons.Constants;
 import com.smartcitizen.commons.DeviceInfo;
 import com.smartcitizen.commons.SmartCitizenApp;
@@ -147,7 +148,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
         }
 
         if (mUserData.getAvatar() != null) {
-            Picasso.with(getActivity()).load(mUserData.getAvatar()).error(R.drawable.user_avatar_placeholder).into(mAvatarView);
+            Picasso.with(getActivity()).load(mUserData.getAvatar()).transform(new CircleTransform()).error(R.drawable.user_avatar_placeholder).into(mAvatarView);
         }
     }
 
