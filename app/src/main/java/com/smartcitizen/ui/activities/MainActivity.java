@@ -124,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
 
             Drawable textDrawable = Utils.getDrawable(this, resourceId);
 
-            ((TextView) tabInflated.findViewById(R.id.tab_title)).setCompoundDrawablesWithIntrinsicBounds(textDrawable, null, null, null);
+            if (textDrawable != null)
+                ((TextView) tabInflated.findViewById(R.id.tab_title)).setCompoundDrawablesWithIntrinsicBounds(textDrawable, null, null, null);
 
             tabs.addTab(tab);
 

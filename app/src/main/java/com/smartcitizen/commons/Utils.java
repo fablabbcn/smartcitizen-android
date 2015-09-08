@@ -12,6 +12,9 @@ public class Utils {
 
     public static Drawable getDrawable(Context context, int resourceId) {
 
+        if (context == null)
+            return null;
+
         Drawable drawable;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             drawable = context.getDrawable(resourceId);
