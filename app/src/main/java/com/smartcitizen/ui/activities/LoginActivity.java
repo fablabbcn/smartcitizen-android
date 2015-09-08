@@ -90,7 +90,8 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
         mProgress.setVisibility(View.GONE);
         MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
         if (mixpanelAPI != null) {
-            mixpanelAPI.track("User logged in");
+            mixpanelAPI.track("User logged in");//todo: user logged in? which user? need to call getUser from api
+            mixpanelAPI.flush();
             mixpanelAPI.reset();
         }
         setResult(LoginActivity.LOGIN_OK);
