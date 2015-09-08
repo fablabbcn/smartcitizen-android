@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Smartcitizen-android</string>
+    <string name="app_name">Smartcitizen</string>
     <string name="action_settings">Settings</string>
 
     <!--map-->
