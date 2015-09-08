@@ -3,6 +3,8 @@ package com.smartcitizen.ui.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +30,8 @@ import com.smartcitizen.managers.SharedPreferencesManager;
 import com.smartcitizen.rest.RestController;
 import com.smartcitizen.ui.activities.LoginActivity;
 import com.smartcitizen.ui.activities.MainActivity;
+
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,6 +72,9 @@ public class AccountPlaceholderFragment extends Fragment {
         mixpanelAPI.identify(distinctID);
         MixpanelAPI.People people = mixpanelAPI.getPeople();
         people.identify(distinctID);
+
+        people.set("Locale", Locale.getDefault().getDisplayLanguage());
+
         people.initPushHandling(Constants.GC_SENDER_ID);
     }
 

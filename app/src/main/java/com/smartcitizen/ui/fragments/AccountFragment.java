@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -104,24 +105,26 @@ public class AccountFragment extends Fragment implements UserController.UserCont
         MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
         if (mixpanelAPI != null) {
             String userId = String.valueOf(mUserData.getId());
+            MixpanelAPI.People people = mixpanelAPI.getPeople();
             if (userId != null){
                 mixpanelAPI.identify(userId);
-                MixpanelAPI.People people = mixpanelAPI.getPeople();
                 people.identify(userId);
                 people.initPushHandling(Constants.GC_SENDER_ID);
             }
 
             String username = mUserData.getUsername();
-            if (username != null) mixpanelAPI.getPeople().set("Username", username);
+            if (username != null) people.set("Username", username);
 
             String email = currentUser.getEmail();
-            if (email != null) mixpanelAPI.getPeople().set("Email", email);
+            if (email != null) people.set("Email", email);
 
             String city = String.valueOf(currentUser.getLocation().getCity());
-            if (city != null) mixpanelAPI.getPeople().set("City", city);
+            if (city != null) people.set("City", city);
 
             String country = String.valueOf(currentUser.getLocation().getCountry());
-            if (city != null) mixpanelAPI.getPeople().set("Country", country);
+            if (city != null) people.set("Country", country);
+
+            people.set("Locale", Locale.getDefault().getDisplayLanguage());
         }
 
         setUpProfileData();
