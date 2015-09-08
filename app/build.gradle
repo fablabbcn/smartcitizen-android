@@ -31,7 +31,7 @@ android {
     signingConfigs {
 
         release {
-            storeFile rootProject.file('signing/smartcitizen.keystore')
+            storeFile rootProject.file('signing/smartcitizen.jks')
             storePassword "..."
             keyAlias "..."
             keyPassword "..."
