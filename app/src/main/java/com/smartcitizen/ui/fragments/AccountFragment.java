@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.smartcitizen.R;
+import com.smartcitizen.commons.Constants;
 import com.smartcitizen.commons.DeviceInfo;
 import com.smartcitizen.commons.SmartCitizenApp;
 import com.smartcitizen.commons.Utils;
@@ -103,7 +104,9 @@ public class AccountFragment extends Fragment implements UserController.UserCont
             String userId = String.valueOf(mUserData.getId());
             if (userId != null){
                 mixpanelAPI.identify(userId);
-                mixpanelAPI.getPeople().identify(userId);
+                MixpanelAPI.People people = mixpanelAPI.getPeople();
+                people.identify(userId);
+                people.initPushHandling(Constants.GC_SENDER_ID);
             }
 
             String username = mUserData.getUsername();

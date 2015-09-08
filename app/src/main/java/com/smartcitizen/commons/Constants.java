@@ -8,4 +8,6 @@ public class Constants {
     public static final String URL_BASE = "https://new-api.smartcitizen.me";
 
     public static final String MIXPANEL_TOKEN = "b0b6171e7ef3125b02f9202165599181";
+
+    public static final String GC_SENDER_ID = "960508263842";
 }

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initMixPanel() {
-        MixpanelAPI mixpanelAPI = MixpanelAPI.getInstance(this.getApplicationContext(), Constants.MIXPANEL_TOKEN);
+        MixpanelAPI mixpanelAPI = MixpanelAPI.getInstance(this, Constants.MIXPANEL_TOKEN);
 
         JSONObject platform = new JSONObject();
         try {

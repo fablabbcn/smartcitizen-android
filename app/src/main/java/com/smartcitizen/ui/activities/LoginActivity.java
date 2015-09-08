@@ -91,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
         MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
         if (mixpanelAPI != null) {
             mixpanelAPI.track("User logged in");
+            mixpanelAPI.reset();
         }
         setResult(LoginActivity.LOGIN_OK);
         finish();

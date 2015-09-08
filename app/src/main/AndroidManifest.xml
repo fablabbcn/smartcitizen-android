@@ -9,6 +9,16 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <!--Mixpanel push notifications-->
+    <permission android:name="com.smartcitizen.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.smartcitizen.permission.C2D_MESSAGE" />
+
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission
+        android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name="com.smartcitizen.commons.SmartCitizenApp"
         android:allowBackup="true"
@@ -44,6 +54,28 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7390c73a6b94082c58b9e54848ff7d70cd821cd7" />
+
+        <!-- This activity allows your application to show Mixpanel surveys and takeover in app notifications.
+             If you only wish to show mini in app notifications, you do not need to declare this Activity.
+             You may also specify a different theme to better fit the look and feel of your application. -->
+        <activity android:name="com.mixpanel.android.surveys.SurveyActivity"
+            android:theme="@style/com_mixpanel_android_SurveyActivityTheme"/>
+
+        <receiver android:name="com.mixpanel.android.mpmetrics.GCMReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="com.smartcitizen" />
+            </intent-filter>
+        </receiver>
+
+        <!-- This receiver will allow your application to record referrer parameters as super properties automatically -->
+        <receiver android:name="com.mixpanel.android.mpmetrics.InstallReferrerReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

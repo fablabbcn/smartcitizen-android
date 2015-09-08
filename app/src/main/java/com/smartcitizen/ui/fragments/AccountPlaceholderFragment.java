@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.smartcitizen.R;
+import com.smartcitizen.commons.Constants;
 import com.smartcitizen.commons.SmartCitizenApp;
 import com.smartcitizen.managers.SharedPreferencesManager;
 import com.smartcitizen.rest.RestController;
@@ -56,6 +57,18 @@ public class AccountPlaceholderFragment extends Fragment {
         setSpannableText();
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //init mixpanel push
+        MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
+        String distinctID = mixpanelAPI.getDistinctId();
+        mixpanelAPI.identify(distinctID);
+        MixpanelAPI.People people = mixpanelAPI.getPeople();
+        people.identify(distinctID);
+        people.initPushHandling(Constants.GC_SENDER_ID);
     }
 
     private void setSpannableText() {
