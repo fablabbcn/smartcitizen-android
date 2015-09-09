@@ -96,7 +96,6 @@ public class LoginActivity extends AppCompatActivity implements SessionControlle
         }
         setResult(LoginActivity.LOGIN_OK);
         finish();
-        Toast.makeText(this, "login Success!", Toast.LENGTH_LONG).show();
     }
 
     @Override
