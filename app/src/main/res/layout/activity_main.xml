@@ -29,7 +29,7 @@
         android:elevation="2dp" />-->
 
 
-    <com.smartcitizen.ui.widgets.CustomViewPager
+    <com.fablabbcn.smartcitizen.ui.widgets.CustomViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

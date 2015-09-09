@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
-    tools:context="com.smartcitizen.ui.fragments.AccountFragment">
+    tools:context="com.fablabbcn.smartcitizen.ui.fragments.AccountFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

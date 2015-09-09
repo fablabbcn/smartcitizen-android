@@ -6,7 +6,7 @@
     android:background="@drawable/shadow_black"
     android:orientation="vertical">
 
-    <com.smartcitizen.ui.widgets.InterceptorLayout
+    <com.fablabbcn.smartcitizen.ui.widgets.InterceptorLayout
         android:id="@+id/info_window_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
 
         </LinearLayout>
 
-    </com.smartcitizen.ui.widgets.InterceptorLayout>
+    </com.fablabbcn.smartcitizen.ui.widgets.InterceptorLayout>
 
     <TextView
         android:id="@+id/info_window_location"

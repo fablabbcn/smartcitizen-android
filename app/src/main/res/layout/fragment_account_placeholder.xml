@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_background"
-    tools:context="com.smartcitizen.ui.fragments.AccountFragment">
+    tools:context="com.fablabbcn.smartcitizen.ui.fragments.AccountFragment">
 
     <ImageView
         android:id="@+id/account_placeholder_image"
