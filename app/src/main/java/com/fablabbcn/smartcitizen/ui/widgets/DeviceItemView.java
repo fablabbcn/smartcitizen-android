@@ -44,7 +44,13 @@ public class DeviceItemView extends InterceptorLayout {
 
     public void setKitsData(String name, String location, Drawable drawable) {
         mKitName.setText(name);
-        mKitLocation.setText(location);
+        if (location != null) {
+            mKitLocation.setVisibility(VISIBLE);
+            mKitLocation.setText(location);
+            mKitLocation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_location_device_view, 0, 0, 0);//R.mipmap.ic_location_device_view, null, null, null
+        } else {
+            mKitLocation.setVisibility(GONE);
+        }
         mKitName.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         //mSensorName.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
     }
@@ -57,10 +63,13 @@ public class DeviceItemView extends InterceptorLayout {
             Drawable[] drawables = mKitName.getCompoundDrawables();
             drawables[0].setColorFilter(new PorterDuffColorFilter(BLUE_KIT_COLOR, PorterDuff.Mode.MULTIPLY));
 
-        }//todo else if .... another type of kit
-    }
+        } else {
+            //default
+            mKitName.setTextColor(BLUE_KIT_COLOR);
 
-    public void updateLocationText(String location) {
-        mKitLocation.setText(location);
+            Drawable[] drawables = mKitName.getCompoundDrawables();
+            drawables[0].setColorFilter(new PorterDuffColorFilter(BLUE_KIT_COLOR, PorterDuff.Mode.MULTIPLY));
+
+        }//todo else if .... another type of kit
     }
 }

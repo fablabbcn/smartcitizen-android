@@ -25,6 +25,8 @@ public class DeviceLocation implements Parcelable {
 
     private String city;
 
+    private String address;//info only available from /v0/me
+
     @SerializedName("country_code")
     private String countryCode;
 
@@ -50,6 +52,10 @@ public class DeviceLocation implements Parcelable {
 
     public String getExposure() {
         return exposure;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public String getPrettyLocation() {

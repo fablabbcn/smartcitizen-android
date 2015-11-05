@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Created by ferran on 03/06/15.
  */
-public class Device extends BaseDevice implements Parcelable {
+public class Device extends BaseDevice  {
 
     @SerializedName("last_reading_at")
     private Date lastReadingAt;
@@ -27,6 +27,8 @@ public class Device extends BaseDevice implements Parcelable {
     private DeviceData data;
 
     private Kit kit;
+
+    private DeviceLocation location; //yes, this object may come here too (/v0/me), apart from 'data.location' (v0/devices/{device_id})
 
     //GETTERS
 
@@ -48,6 +50,10 @@ public class Device extends BaseDevice implements Parcelable {
 
     public User getOwner() {
         return owner;
+    }
+
+    public DeviceLocation getLocation() {
+        return location;
     }
 
     //UTILS
@@ -75,6 +81,7 @@ public class Device extends BaseDevice implements Parcelable {
         dest.writeParcelable(this.owner, 0);
         dest.writeParcelable(this.data, 0);
         dest.writeParcelable(this.kit, 0);
+        dest.writeParcelable(this.location, 0);
     }
 
     public Device() {
@@ -90,9 +97,10 @@ public class Device extends BaseDevice implements Parcelable {
         this.owner = in.readParcelable(User.class.getClassLoader());
         this.data = in.readParcelable(DeviceData.class.getClassLoader());
         this.kit = in.readParcelable(Kit.class.getClassLoader());
+        this.location = in.readParcelable(DeviceLocation.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Device> CREATOR = new Parcelable.Creator<Device>() {
+    public static final Creator<Device> CREATOR = new Creator<Device>() {
         public Device createFromParcel(Parcel source) {
             return new Device(source);
         }

@@ -15,14 +15,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fablabbcn.smartcitizen.ui.activities.DeviceDetailActivity;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,14 +31,12 @@ import com.fablabbcn.smartcitizen.commons.Constants;
 import com.fablabbcn.smartcitizen.commons.DeviceInfo;
 import com.fablabbcn.smartcitizen.commons.SmartCitizenApp;
 import com.fablabbcn.smartcitizen.commons.Utils;
-import com.fablabbcn.smartcitizen.controllers.DeviceController;
 import com.fablabbcn.smartcitizen.managers.SharedPreferencesManager;
 import com.fablabbcn.smartcitizen.controllers.UserController;
 import com.fablabbcn.smartcitizen.model.rest.CurrentUser;
 import com.fablabbcn.smartcitizen.model.rest.Device;
 import com.fablabbcn.smartcitizen.model.rest.UserLocation;
 import com.fablabbcn.smartcitizen.ui.activities.AllUserDevicesActivity;
-import com.fablabbcn.smartcitizen.ui.activities.DeviceDetailActivity;
 import com.fablabbcn.smartcitizen.ui.activities.MainActivity;
 import com.fablabbcn.smartcitizen.ui.widgets.DeviceItemView;
 import com.squareup.picasso.Picasso;
@@ -48,7 +44,7 @@ import com.squareup.picasso.Picasso;
 import retrofit.RetrofitError;
 
 
-public class AccountFragment extends Fragment implements UserController.UserControllerListener, DeviceController.GetDeviceListener{
+public class AccountFragment extends Fragment implements UserController.UserControllerListener/*, DeviceController.GetDeviceListener*/{
 
     private static final String TAG = AccountFragment.class.getSimpleName();
 
@@ -72,10 +68,9 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
     private CurrentUser mUserData;
 
-    //this map contains full device info associated to the user ("/v0/devices/{device_id}" contains more device info than "/v0/me"
-    private Map mDevicesInfo;
+    private ArrayList<Device> mDevices;
 
-    private final int MAX_DEVICES = 3;
+    private final int MAX_DEVICES_TO_SHOW = 3;
 
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
@@ -153,14 +148,13 @@ public class AccountFragment extends Fragment implements UserController.UserCont
     }
 
     private void setUpDevicesData() {
-        List<Device> devices = mUserData.getDevices();
-
-        mDevicesInfo = new HashMap(devices.size());
+        mDevices = new ArrayList<>();
+        mDevices.addAll(mUserData.getDevices());
 
         //test
         //devices = devices.subList(0, 2);
 
-        if (devices == null || devices.size() == 0) {
+        if (mDevices == null || mDevices.size() == 0) {
             mDevicesLabel.setVisibility(View.GONE);
             mDevicesContainer.setVisibility(View.GONE);
 
@@ -169,33 +163,41 @@ public class AccountFragment extends Fragment implements UserController.UserCont
             deviceLabel.toUpperCase();
             mDevicesLabel.setText(deviceLabel);
 
-            int maxDevices = (devices.size() > MAX_DEVICES) ? MAX_DEVICES : devices.size();
+            int maxDevices = (mDevices.size() > MAX_DEVICES_TO_SHOW) ? MAX_DEVICES_TO_SHOW : mDevices.size();
 
-            Collections.sort(devices, Device.COMPARE_BY_UPDATED);
+            Collections.sort(mDevices, Device.COMPARE_BY_UPDATED);
 
             Context ctx = getActivity();
-            //for (int i = maxDevices - 1; i >= 0; i--) {
-            for (int i = devices.size() - 1; i >= 0; i--) {
+            for (int i = maxDevices - 1; i >= 0; i--) {
 
                 //add to the preview list
-                if (i < maxDevices) {
+                //if (i < maxDevices) {
 
-                    DeviceItemView kitView = new DeviceItemView(ctx);
+                DeviceItemView kitView = new DeviceItemView(ctx);
 
-                    Device device = devices.get(i);
+                final Device device = mDevices.get(i);
 
-                    kitView.setTag(device.getId());
-
-                    Drawable drawable = Utils.getDrawable(getActivity(), R.drawable.device_icon);//do it outside the foor loop?
-                    kitView.setKitsData(device.getName(), "loading info", drawable);
-
-                    mDevicesContainer.addView(kitView, 0);
+                Drawable drawable = Utils.getDrawable(getActivity(), R.drawable.device_icon);//do it outside the foor loop?
+                if (device.getLocation() != null) {
+                    kitView.setKitsData(device.getName(), device.getLocation().getAddress(), drawable);
+                } else {
+                    kitView.setKitsData(device.getName(), null, drawable);
                 }
+                kitView.updateTitleColor("todo");//todo no kit info from /v0/me endpoint (need slug info : sck 1.1....). How determine the title color?
 
-                DeviceController.getDevice(mUserData.getDevices().get(i).getId(), this);//need to do this api call for every device to get the extra info we don't get from callig /v0/me
+                kitView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = DeviceDetailActivity.getCallingIntent(getActivity(), device.getId());
+                        startActivity(intent);
+                    }
+                });
+
+                mDevicesContainer.addView(kitView, 0);
+
             }
 
-            if (devices.size() <= MAX_DEVICES) {
+            if (mDevices.size() <= MAX_DEVICES_TO_SHOW) {
                 mButtonViewKits.setVisibility(View.GONE);
             } else {
                 mButtonViewKits.setVisibility(View.VISIBLE);
@@ -203,6 +205,20 @@ public class AccountFragment extends Fragment implements UserController.UserCont
 
         }
 
+    }
+
+    @OnClick(R.id.button_view_all_kits)
+    public void goToAllKits() {
+        if (mUserData != null && mUserData.getDevices()!= null && mUserData.getDevices().size() > 0) {
+
+            MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
+            if (mixpanelAPI != null) {
+                mixpanelAPI.track("User tapped ‘view all kits’");
+            }
+
+            Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData.getUsername(), mDevices);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.button_contact_suport)
@@ -236,47 +252,5 @@ public class AccountFragment extends Fragment implements UserController.UserCont
             mixpanelAPI.reset();
 
         }
-    }
-
-    @OnClick(R.id.button_view_all_kits)
-    public void goToAllKits() {
-        if (mUserData != null && mUserData.getDevices()!= null && mUserData.getDevices().size() > 0) {
-
-            MixpanelAPI mixpanelAPI = SmartCitizenApp.getInstance().getMixpanelInstance();
-            if (mixpanelAPI != null) {
-                mixpanelAPI.track("User tapped ‘view all kits’");
-            }
-
-            ArrayList<Device> devices = new ArrayList<>(mDevicesInfo.values());
-            Collections.sort(devices, Device.COMPARE_BY_UPDATED);
-            Intent intent = AllUserDevicesActivity.getCallingIntent(getActivity(), mUserData.getUsername(), devices);
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onGetDevice(final Device device) {
-
-        View view = mDevicesContainer.findViewWithTag(device.getId());
-        if (view instanceof DeviceItemView) {
-            ((DeviceItemView)view).updateLocationText(device.getDeviceData().getLocation().getPrettyLocation());
-            ((DeviceItemView)view).updateTitleColor(device.getKit().getSlug());
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = DeviceDetailActivity.getCallingIntent(getActivity(), device);
-                    startActivity(intent);
-                }
-            });
-
-        }
-
-        if (mDevicesInfo != null)
-            mDevicesInfo.put(device.getId(), device);
-    }
-
-    @Override
-    public void onError(RetrofitError error) {
-
     }
 }

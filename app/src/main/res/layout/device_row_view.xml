@@ -5,17 +5,18 @@
     android:layout_height="match_parent"
     android:background="@drawable/button_account"
     android:clickable="true"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingTop="8dp">
 
     <TextView
         android:id="@+id/kit_row_name"
         style="@style/AccountBaseText"
         android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
         android:drawablePadding="8dp"
-        android:gravity="center_vertical"
         android:textSize="20sp"
         tools:drawableLeft="@drawable/device_icon"
         tools:text="Independence Lab Spot" />
@@ -23,8 +24,9 @@
     <TextView
         android:id="@+id/kit_row_location"
         style="@style/AccountBaseText"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="4dp"
         android:drawableLeft="@mipmap/ic_location_device_view"
         android:drawablePadding="8dp"
@@ -37,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_gravity="bottom"
+        android:layout_marginTop="8dp"
         android:background="@color/separator" />
 
 </com.fablabbcn.smartcitizen.ui.widgets.InterceptorLayout>
