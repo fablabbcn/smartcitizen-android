@@ -51,21 +51,22 @@ public class AllUserDevicesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         int devicesSize = devicesData.size();
+        String noLocation = getString(R.string.no_location);
         for (int i = 0; i < devicesSize; i++) {
             DeviceItemView deviceView = new DeviceItemView(this);
 
             final Device device = devicesData.get(i);
 
             String name = device.getName();
-            String location = devicesData.get(i).getDeviceData().getLocation().getPrettyLocation();
+            String location = device.getLocation() != null ? device.getLocation().getAddress() : noLocation;
 
-            Drawable drawable = Utils.getDrawable(this, R.drawable.device_icon);//do it outside the foor loop?
+            Drawable drawable = Utils.getDrawable(this, R.drawable.device_icon);
             deviceView.setKitsData(name, location, drawable);
-            deviceView.updateTitleColor(devicesData.get(i).getKit().getSlug());
+            deviceView.updateTitleColor("todo");
             deviceView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = DeviceDetailActivity.getCallingIntent(AllUserDevicesActivity.this, device);
+                    Intent intent = DeviceDetailActivity.getCallingIntent(AllUserDevicesActivity.this, device.getId());
                     startActivity(intent);
                 }
             });

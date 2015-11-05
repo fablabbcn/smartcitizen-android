@@ -81,6 +81,7 @@ public class DeviceLocation implements Parcelable {
         dest.writeString(this.city);
         dest.writeString(this.countryCode);
         dest.writeString(this.country);
+        dest.writeString(this.address);
     }
 
     public DeviceLocation() {
@@ -96,6 +97,7 @@ public class DeviceLocation implements Parcelable {
         this.city = in.readString();
         this.countryCode = in.readString();
         this.country = in.readString();
+        this.address = in.readString();
     }
 
     public static final Parcelable.Creator<DeviceLocation> CREATOR = new Parcelable.Creator<DeviceLocation>() {

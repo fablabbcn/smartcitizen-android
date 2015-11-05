@@ -70,7 +70,7 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
     ScrollView mScrollView;
 
     @InjectView(R.id.refreshLayout)
-    SwipeRefreshLayout mRegreshLayout;
+    SwipeRefreshLayout mRefreshLayout;
 
     @InjectView(R.id.kit_detail_header)
     LinearLayout mHeaderView;
@@ -104,7 +104,7 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mRegreshLayout.setColorSchemeResources(R.color.blue_smartcitizen, R.color.sensor_text_color, R.color.blue_smartcitizen_selected);
+        mRefreshLayout.setColorSchemeResources(R.color.blue_smartcitizen, R.color.sensor_text_color, R.color.blue_smartcitizen_selected);
 
         mCardView.setVisibility(View.GONE);
 
@@ -113,16 +113,21 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
             init(device);
         } else if (getIntent().hasExtra("deviceId")) {
             int deviceId = getIntent().getIntExtra("deviceId", 0);
-            mRegreshLayout.setRefreshing(true);
+            mRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mRefreshLayout.setRefreshing(true);
+                }
+            });
             DeviceController.getDevice(deviceId, new DeviceController.GetDeviceListener() {
                 @Override
                 public void onGetDevice(Device device) {
-                    mRegreshLayout.setRefreshing(false);
                     init(device);
+                    mRefreshLayout.setRefreshing(false);
                 }
                 @Override
                 public void onError(RetrofitError error) {
-                    mRegreshLayout.setRefreshing(false);
+                    mRefreshLayout.setRefreshing(false);
                     Log.e(TAG, "onError "+error.toString());
                 }
             });
@@ -145,7 +150,7 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
 
         setDeviceViews();
 
-        mRegreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (mDevice != null)
@@ -278,7 +283,8 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
 
     private void setTextLabels() {
         mKitTitle.setText(mDevice.getName());
-        mKitType.setText(mDevice.getKit().getName().toUpperCase());
+        String kitName = mDevice.getKit() != null && mDevice.getKit().getName() != null ? mDevice.getKit().getName() : "N/A";
+        mKitType.setText(kitName);
 
         if (mDevice.getLastReadingAt() != null) {
             String updatedAt = "";
@@ -298,8 +304,11 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
         if (mDevice.getDeviceData() != null && mDevice.getDeviceData().getLocation() != null) {
             String location = mDevice.getDeviceData().getLocation().getCity();
             String country = mDevice.getDeviceData().getLocation().getCountry();
-            if (country != null) {
+            if (location != null && country != null) {
                 location += ", " + country;
+
+            } else {
+                location = getString(R.string.no_location);
             }
             mKitLocation.setText(location);
         } else {
@@ -310,7 +319,7 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
     //Update device info (refresh)
     @Override
     public void onGetDevice(Device device) {
-        mRegreshLayout.setRefreshing(false);
+        mRefreshLayout.setRefreshing(false);
         mDevice = device;
         setDeviceViews();
         Toast.makeText(this, "Device info updated", Toast.LENGTH_SHORT).show();
@@ -318,7 +327,7 @@ public class DeviceDetailActivity extends AppCompatActivity implements DeviceCon
 
     @Override
     public void onError(RetrofitError error) {
-        mRegreshLayout.setRefreshing(false);
+        mRefreshLayout.setRefreshing(false);
         Toast.makeText(this, "Error updating device. Error kind: "+error.getKind().name(), Toast.LENGTH_LONG).show();
     }
 }

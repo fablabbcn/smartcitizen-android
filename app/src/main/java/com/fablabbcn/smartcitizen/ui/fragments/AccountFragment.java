@@ -168,6 +168,7 @@ public class AccountFragment extends Fragment implements UserController.UserCont
             Collections.sort(mDevices, Device.COMPARE_BY_UPDATED);
 
             Context ctx = getActivity();
+            String noLocation = ctx.getString(R.string.no_location);
             for (int i = maxDevices - 1; i >= 0; i--) {
 
                 //add to the preview list
@@ -178,10 +179,10 @@ public class AccountFragment extends Fragment implements UserController.UserCont
                 final Device device = mDevices.get(i);
 
                 Drawable drawable = Utils.getDrawable(getActivity(), R.drawable.device_icon);//do it outside the foor loop?
-                if (device.getLocation() != null) {
+                if (device.getLocation() != null && device.getLocation().getAddress() != null) {
                     kitView.setKitsData(device.getName(), device.getLocation().getAddress(), drawable);
                 } else {
-                    kitView.setKitsData(device.getName(), null, drawable);
+                    kitView.setKitsData(device.getName(), noLocation, drawable);
                 }
                 kitView.updateTitleColor("todo");//todo no kit info from /v0/me endpoint (need slug info : sck 1.1....). How determine the title color?
 

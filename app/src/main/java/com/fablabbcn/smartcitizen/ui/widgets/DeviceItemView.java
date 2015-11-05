@@ -44,13 +44,8 @@ public class DeviceItemView extends InterceptorLayout {
 
     public void setKitsData(String name, String location, Drawable drawable) {
         mKitName.setText(name);
-        if (location != null) {
-            mKitLocation.setVisibility(VISIBLE);
-            mKitLocation.setText(location);
-            mKitLocation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_location_device_view, 0, 0, 0);//R.mipmap.ic_location_device_view, null, null, null
-        } else {
-            mKitLocation.setVisibility(GONE);
-        }
+        //mKitLocation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_location_device_view, 0, 0, 0);//R.mipmap.ic_location_device_view, null, null, null
+        mKitLocation.setText(location);
         mKitName.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         //mSensorName.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
     }

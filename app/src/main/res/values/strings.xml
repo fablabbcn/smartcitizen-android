@@ -38,5 +38,6 @@
     <string name="device_owner_label">%1$s\'s kits</string>
     <string name="support_mail_subject">Smartcitizen Android App support</string>
     <string name="support_mail_body" formatted="false">Hello Smartcitizen,\n\n\nI\'m using an %s running on Android %s and using %s.</string>
+    <string name="no_location">Location N/A</string>
 
 </resources>
