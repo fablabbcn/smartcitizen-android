@@ -4,4 +4,21 @@
     <color name="ColorPrimaryDark">#065063</color>
 
     <color name="tab_title_unselected">#80ffffff</color>
+
+    <color name="blue_smartcitizen">#35C2E5</color>
+    <color name="blue_smartcitizen_selected">#2d7b9b</color>
+
+    <color name="sensor_text_color">#9B9B9B</color>
+
+    <color name="base_background">#F1F5F7</color>
+
+    <color name="account_text_1">#88A3AD</color>
+    <color name="account_text_2">#637880</color>
+
+    <color name="forgot_passw">#35C2E5</color>
+
+    <color name="tag_text_color">#88A3AD</color>
+    <color name="tag_background_color">#cfd9dc</color>
+
+    <color name="separator">#E0E0E0</color>
 </resources>

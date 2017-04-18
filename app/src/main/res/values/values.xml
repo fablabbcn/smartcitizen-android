@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--MAPBOX-->
+    <!--<string name="accessToken">pk.eyJ1IjoiZmVycmFucGFsaWNpdSIsImEiOiJkNWUyM2VlZmEwMTdlZGU3OGE1YmE4MDRlNDRmMDdhZSJ9.2-WDl8I6gV8zUDIyB6B0oQ</string>-->
+    <string name="accessToken">pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg</string>
+    <string name="mapbox_id_street">mapbox.streets</string>
+
+
+    <string name="forgot_passw_url">http://new-web.smartcitizen.me/password_recovery</string>
+    <string name="sign_up">https://smartcitizen.me/users/add</string>
+</resources>
